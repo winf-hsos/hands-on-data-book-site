@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.3">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Prof.&nbsp;Dr.&nbsp;Nicolas Meseth">
+
+<title>4&nbsp; Regelbasierte Textanalyse – Hands-On Exploratory Data Analytics</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../experiments/experiment-survey-explore-variables.html" rel="next">
+<link href="../experiments/experiment-news-visualize.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e44360b8a8db1e130c7792fece1c8032.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-b8d9931f9950fed7c9eff99d2a950632.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../experiments/experiment-news-explore-structured-unstructured.html">Tagesschau</a></li><li class="breadcrumb-item"><a href="../experiments/experiment-news-rule-based-text-analysis.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Regelbasierte Textanalyse</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Hands-On Exploratory Data Analytics</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Tagesschau</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../experiments/experiment-news-explore-structured-unstructured.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Erkunden</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../experiments/experiment-news-transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Transformieren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../experiments/experiment-news-visualize.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Visualisieren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../experiments/experiment-news-rule-based-text-analysis.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Regelbasierte Textanalyse</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Umfrage</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../experiments/experiment-survey-explore-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Variablen erkunden</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../experiments/experiment-survey-viewing-grouped-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Gruppierte Betrachtung von Variablen</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Literaturverzeichnis</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#schritt-1-pakete-laden-und-daten-einlesen" id="toc-schritt-1-pakete-laden-und-daten-einlesen" class="nav-link active" data-scroll-target="#schritt-1-pakete-laden-und-daten-einlesen">Schritt 1: Pakete laden und Daten einlesen</a></li>
+  <li><a href="#schritt-2-texte-durchsuchen-und-klassifizieren" id="toc-schritt-2-texte-durchsuchen-und-klassifizieren" class="nav-link" data-scroll-target="#schritt-2-texte-durchsuchen-und-klassifizieren">Schritt 2: Texte durchsuchen und klassifizieren</a></li>
+  <li><a href="#schritt-3-texte-bereinigen-und-strukturieren" id="toc-schritt-3-texte-bereinigen-und-strukturieren" class="nav-link" data-scroll-target="#schritt-3-texte-bereinigen-und-strukturieren">Schritt 3: Texte bereinigen und strukturieren</a></li>
+  <li><a href="#schritt-4-strukturierte-textfelder-parsen" id="toc-schritt-4-strukturierte-textfelder-parsen" class="nav-link" data-scroll-target="#schritt-4-strukturierte-textfelder-parsen">Schritt 4: Strukturierte Textfelder parsen</a></li>
+  <li><a href="#schritt-5-tokenisierung-und-worthäufigkeiten" id="toc-schritt-5-tokenisierung-und-worthäufigkeiten" class="nav-link" data-scroll-target="#schritt-5-tokenisierung-und-worthäufigkeiten">Schritt 5: Tokenisierung und Worthäufigkeiten</a></li>
+  <li><a href="#schritt-6-wörterbuch-basierte-klassifikation-und-reflexion" id="toc-schritt-6-wörterbuch-basierte-klassifikation-und-reflexion" class="nav-link" data-scroll-target="#schritt-6-wörterbuch-basierte-klassifikation-und-reflexion">Schritt 6: Wörterbuch-basierte Klassifikation und Reflexion</a></li>
+  <li><a href="#zusatzmaterial" id="toc-zusatzmaterial" class="nav-link" data-scroll-target="#zusatzmaterial">Zusatzmaterial</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../experiments/experiment-news-explore-structured-unstructured.html">Tagesschau</a></li><li class="breadcrumb-item"><a href="../experiments/experiment-news-rule-based-text-analysis.html"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Regelbasierte Textanalyse</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Regelbasierte Textanalyse</span></h1>
+<p class="subtitle lead">Am Beispiel der Tagesschau-Daten</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Prof.&nbsp;Dr.&nbsp;Nicolas Meseth </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Text in Nachrichtenartikeln ist unstrukturiert, aber nicht formlos. Überschriften folgen Mustern. Autoren wiederholen sich. Themen tauchen auf, verschwinden und kehren wieder. Regelbasierte Textanalyse macht genau diese Muster sichtbar, indem sie auf rohen Text Struktur projiziert: durch Suchen, Extrahieren, Transformieren und Zählen. In dieser Übung baut ihr mit dem Tagesschau-Datensatz eine vollständige Analysepipeline auf, vom einfachen Keyword-Suchen bis zur dictionary-basierten Themenklassifikation über zwei Jahrzehnte Nachrichtengeschichte.</p>
+<section id="schritt-1-pakete-laden-und-daten-einlesen" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-1-pakete-laden-und-daten-einlesen">Schritt 1: Pakete laden und Daten einlesen</h2>
+<div class="task">
+<p><strong>1.</strong> Installiert und ladet mit <code>pacman::p_load()</code> die folgenden Pakete: <code>tidyverse</code>, <code>skimr</code>, <code>tidytext</code>, <code>jsonlite</code>, <code>stopwords</code>. Beschreibt in einem Satz, wozu <code>tidytext</code>, <code>jsonlite</code> und <code>stopwords</code> jeweils eingesetzt werden.</p>
+</div>
+<p><code>tidytext</code> liefert <code>unnest_tokens()</code> und weitere Werkzeuge für die Tokenisierung von Texten. <code>jsonlite</code> parst JSON-Strings (wie die <code>keywords</code>- oder <code>related_links</code>-Spalte) in R-Objekte. <code>stopwords</code> stellt vorgefertigte Stoppwortlisten für viele Sprachen bereit.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"pacman"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">"pacman"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, skimr, tidytext, jsonlite, stopwords)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>2.</strong> Lest den Tagesschau-Datensatz mit <code>read_csv()</code> ein. Ergänzt direkt im selben Pipeline-Schritt zwei neue Variablen: <code>year</code> (Erscheinungsjahr aus <code>date_time</code> mit <code>lubridate::year()</code>) und <code>date</code> (nur das Datum als <code>as.Date(date_time)</code>).</p>
+<p>Welche Spalten des Datensatzes enthalten freien Text, welche strukturierte Werte?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a>news <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/tagesschau.zip"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-2"><a href="#cb2-2"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb2-3"><a href="#cb2-3"></a>    <span class="at">year =</span> lubridate<span class="sc">::</span><span class="fu">year</span>(date_time),</span>
+<span id="cb2-4"><a href="#cb2-4"></a>    <span class="at">date =</span> <span class="fu">as.Date</span>(date_time)</span>
+<span id="cb2-5"><a href="#cb2-5"></a>  )</span>
+<span id="cb2-6"><a href="#cb2-6"></a></span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="fu">glimpse</span>(news)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Freie Textspalten: <code>title</code>, <code>shorttext</code>, <code>text</code>, <code>author</code>, <code>supertitle</code>. Strukturierte Werte: <code>ressort</code>, <code>tag</code>, <code>date_time</code>, <code>word_count</code>, <code>language</code>.</p>
+</section>
+<section id="schritt-2-texte-durchsuchen-und-klassifizieren" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-2-texte-durchsuchen-und-klassifizieren">Schritt 2: Texte durchsuchen und klassifizieren</h2>
+<div class="task">
+<p><strong>3.</strong> Nutzt <code>str_detect()</code>, um vier neue logische Spalten zu erzeugen:</p>
+<ul>
+<li><code>thema_klima</code> (Muster <code>"Klima"</code>),</li>
+<li><code>thema_corona</code> (Muster <code>"Corona|COVID"</code>),</li>
+<li><code>thema_ukraine</code> (Muster <code>"Ukraine"</code>) und</li>
+<li><code>thema_ki</code> (Muster <code>"\bKI\b|[Kk]ünstliche Intelligenz"</code>).</li>
+</ul>
+<p>Sucht jeweils in der <code>title</code>-Spalte. Wie viele Artikel enthalten pro Thema das Muster?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>news <span class="ot">&lt;-</span> news <span class="sc">|&gt;</span></span>
+<span id="cb3-2"><a href="#cb3-2"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb3-3"><a href="#cb3-3"></a>    <span class="at">thema_klima   =</span> <span class="fu">str_detect</span>(title, <span class="st">"Klima"</span>),</span>
+<span id="cb3-4"><a href="#cb3-4"></a>    <span class="at">thema_corona  =</span> <span class="fu">str_detect</span>(title, <span class="st">"Corona|COVID"</span>),</span>
+<span id="cb3-5"><a href="#cb3-5"></a>    <span class="at">thema_ukraine =</span> <span class="fu">str_detect</span>(title, <span class="st">"Ukraine"</span>),</span>
+<span id="cb3-6"><a href="#cb3-6"></a>    <span class="at">thema_ki      =</span> <span class="fu">str_detect</span>(title, <span class="st">"</span><span class="sc">\\</span><span class="st">bKI</span><span class="sc">\\</span><span class="st">b|[Kk]ünstliche Intelligenz"</span>)</span>
+<span id="cb3-7"><a href="#cb3-7"></a>  )</span>
+<span id="cb3-8"><a href="#cb3-8"></a></span>
+<span id="cb3-9"><a href="#cb3-9"></a>news <span class="sc">|&gt;</span></span>
+<span id="cb3-10"><a href="#cb3-10"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb3-11"><a href="#cb3-11"></a>    <span class="at">Klima   =</span> <span class="fu">sum</span>(thema_klima,   <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb3-12"><a href="#cb3-12"></a>    <span class="at">Corona  =</span> <span class="fu">sum</span>(thema_corona,  <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb3-13"><a href="#cb3-13"></a>    <span class="at">Ukraine =</span> <span class="fu">sum</span>(thema_ukraine, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb3-14"><a href="#cb3-14"></a>    <span class="at">KI      =</span> <span class="fu">sum</span>(thema_ki,      <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb3-15"><a href="#cb3-15"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>4.</strong> Stellt die zeitliche Entwicklung aller vier Themen in einem Liniendiagramm dar. Berechnet zunächst die Anzahl der Treffer pro Jahr und Thema, überführt das Ergebnis mit <code>pivot_longer()</code> in Langform und plottet es mit <code>ggplot2</code>. Wann war Corona am stärksten präsent? Wann beginnt das Thema KI merklich zu wachsen?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a>news <span class="sc">|&gt;</span></span>
+<span id="cb4-2"><a href="#cb4-2"></a>  <span class="fu">group_by</span>(year) <span class="sc">|&gt;</span></span>
+<span id="cb4-3"><a href="#cb4-3"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb4-4"><a href="#cb4-4"></a>    <span class="at">Klima   =</span> <span class="fu">sum</span>(thema_klima,   <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-5"><a href="#cb4-5"></a>    <span class="at">Corona  =</span> <span class="fu">sum</span>(thema_corona,  <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-6"><a href="#cb4-6"></a>    <span class="at">Ukraine =</span> <span class="fu">sum</span>(thema_ukraine, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb4-7"><a href="#cb4-7"></a>    <span class="at">KI      =</span> <span class="fu">sum</span>(thema_ki,      <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb4-8"><a href="#cb4-8"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb4-9"><a href="#cb4-9"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>year, <span class="at">names_to =</span> <span class="st">"Thema"</span>, <span class="at">values_to =</span> <span class="st">"n"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-10"><a href="#cb4-10"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> n, <span class="at">color =</span> Thema)) <span class="sc">+</span></span>
+<span id="cb4-11"><a href="#cb4-11"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb4-12"><a href="#cb4-12"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb4-13"><a href="#cb4-13"></a>  <span class="fu">labs</span>(</span>
+<span id="cb4-14"><a href="#cb4-14"></a>    <span class="at">x =</span> <span class="st">"Jahr"</span>, <span class="at">y =</span> <span class="st">"Artikel mit Treffer im Titel"</span>,</span>
+<span id="cb4-15"><a href="#cb4-15"></a>    <span class="at">color =</span> <span class="st">"Thema"</span>, <span class="at">title =</span> <span class="st">"Themenkonjunkturen in Tagesschau-Überschriften"</span></span>
+<span id="cb4-16"><a href="#cb4-16"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>5.</strong> Die absoluten Zählungen aus Aufgabe 4 können irreführend sein: In späteren Jahren erscheinen generell mehr Artikel, sodass ein absoluter Anstieg auch einfach das gestiegene Gesamtvolumen widerspiegeln kann, statt eines echten inhaltlichen Bedeutungsgewinns. Berechnet daher die <em>relative Häufigkeit</em> jedes Themas pro Jahr als Anteil aller Artikel des jeweiligen Jahres in Prozent. Stellt die relativen Frequenzen als Liniendiagramm dar.</p>
+<p>Vergleicht das Ergebnis mit dem Diagramm aus Aufgabe 4. Bei welchen Themen verändert sich das Bild? Was lässt sich nur aus der relativen Darstellung schließen?</p>
+</div>
+<p>Der Trick liegt darin, <code>mean()</code> statt <code>sum()</code> auf eine logische Spalte anzuwenden: <code>mean(TRUE, FALSE, TRUE)</code> ergibt 0,667, also direkt den Anteil. Kein separater Join mit den Jahresgesamtzahlen nötig.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>news <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">group_by</span>(year) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb5-4"><a href="#cb5-4"></a>    <span class="at">Klima   =</span> <span class="fu">mean</span>(thema_klima,   <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb5-5"><a href="#cb5-5"></a>    <span class="at">Corona  =</span> <span class="fu">mean</span>(thema_corona,  <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb5-6"><a href="#cb5-6"></a>    <span class="at">Ukraine =</span> <span class="fu">mean</span>(thema_ukraine, <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">*</span> <span class="dv">100</span>,</span>
+<span id="cb5-7"><a href="#cb5-7"></a>    <span class="at">KI      =</span> <span class="fu">mean</span>(thema_ki,      <span class="at">na.rm =</span> <span class="cn">TRUE</span>) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb5-8"><a href="#cb5-8"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb5-9"><a href="#cb5-9"></a>  <span class="fu">pivot_longer</span>(<span class="sc">-</span>year, <span class="at">names_to =</span> <span class="st">"Thema"</span>, <span class="at">values_to =</span> <span class="st">"anteil"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-10"><a href="#cb5-10"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> anteil, <span class="at">color =</span> Thema)) <span class="sc">+</span></span>
+<span id="cb5-11"><a href="#cb5-11"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb5-12"><a href="#cb5-12"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb5-13"><a href="#cb5-13"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">label_percent</span>(<span class="at">scale =</span> <span class="dv">1</span>)) <span class="sc">+</span></span>
+<span id="cb5-14"><a href="#cb5-14"></a>  <span class="fu">labs</span>(</span>
+<span id="cb5-15"><a href="#cb5-15"></a>    <span class="at">x =</span> <span class="st">"Jahr"</span>, <span class="at">y =</span> <span class="st">"Anteil der Artikel (%)"</span>,</span>
+<span id="cb5-16"><a href="#cb5-16"></a>    <span class="at">color =</span> <span class="st">"Thema"</span>,</span>
+<span id="cb5-17"><a href="#cb5-17"></a>    <span class="at">title =</span> <span class="st">"Relative Themenfrequenz in Tagesschau-Überschriften"</span></span>
+<span id="cb5-18"><a href="#cb5-18"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Der Unterschied ist besonders bei <em>Corona</em> sichtbar: Absolut bleibt die Kurve nach 2022 noch hoch, relativ fällt sie steil ab, weil das Gesamtvolumen stark gestiegen ist. Bei <em>KI</em> zeigt die relative Kurve, dass das Thema ab 2023 einen deutlich größeren Anteil an der Berichterstattung einnimmt, als es die absoluten Zahlen allein vermuten lassen.</p>
+<div class="task">
+<p><strong>6.</strong> <code>stringr</code> bietet neben <code>str_detect()</code> auch <code>str_starts()</code> und <code>str_ends()</code>. Nutzt <code>str_starts()</code>, um Artikel zu finden, deren Titel mit <code>"Interview:"</code> oder mit <code>"Liveblog:"</code> beginnen. Nutzt <code>str_ends()</code>, um Titel zu finden, die mit einem Fragezeichen enden. Wie viele Treffer liefern die drei Muster jeweils? Was ist der Unterschied zu <code>str_detect()</code> für dasselbe Suchmuster?</p>
+</div>
+<p><code>str_starts()</code> und <code>str_ends()</code> sind semantisch präziser als <code>str_detect()</code> für Muster, die gezielt am Anfang oder Ende stehen sollen. Mit <code>str_detect(title, "^Interview:")</code> erreicht ihr dasselbe, aber explizite Funktionen sind lesbarer.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>news <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb6-3"><a href="#cb6-3"></a>    <span class="at">n_interview =</span> <span class="fu">sum</span>(<span class="fu">str_starts</span>(title, <span class="fu">fixed</span>(<span class="st">"Interview:"</span>)), <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-4"><a href="#cb6-4"></a>    <span class="at">n_liveblog  =</span> <span class="fu">sum</span>(<span class="fu">str_starts</span>(title, <span class="fu">fixed</span>(<span class="st">"Liveblog:"</span>)),  <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb6-5"><a href="#cb6-5"></a>    <span class="at">n_frage     =</span> <span class="fu">sum</span>(<span class="fu">str_ends</span>(title,   <span class="fu">fixed</span>(<span class="st">"?"</span>)),          <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb6-6"><a href="#cb6-6"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>7.</strong> Viele Tagesschau-Titel folgen dem Muster <code>"Format: Überschrift"</code>. Erstellt eine neue Variable <code>format</code>, die den Artikeltyp klassifiziert. Nutzt <code>case_when()</code> in Kombination mit <code>str_starts()</code> und Vergleichen auf die <code>tag</code>-Spalte. Unterscheidet mindestens: <em>Interview</em>, <em>FAQ</em>, <em>Analyse</em>, <em>Hintergrund</em>, <em>Kommentar</em>, <em>Liveblog</em> und <em>Meldung</em> als Auffangkategorie. Wie häufig ist jedes Format?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>news <span class="ot">&lt;-</span> news <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb7-3"><a href="#cb7-3"></a>    <span class="at">format =</span> <span class="fu">case_when</span>(</span>
+<span id="cb7-4"><a href="#cb7-4"></a>      <span class="fu">str_starts</span>(title, <span class="fu">fixed</span>(<span class="st">"Interview:"</span>)) <span class="sc">|</span> tag <span class="sc">==</span> <span class="st">"INTERVIEW"</span>   <span class="sc">~</span> <span class="st">"Interview"</span>,</span>
+<span id="cb7-5"><a href="#cb7-5"></a>      <span class="fu">str_starts</span>(title, <span class="fu">fixed</span>(<span class="st">"FAQ:"</span>))        <span class="sc">|</span> tag <span class="sc">==</span> <span class="st">"FAQ"</span>         <span class="sc">~</span> <span class="st">"FAQ"</span>,</span>
+<span id="cb7-6"><a href="#cb7-6"></a>      <span class="fu">str_starts</span>(title, <span class="fu">fixed</span>(<span class="st">"Analyse:"</span>))    <span class="sc">|</span> tag <span class="sc">==</span> <span class="st">"ANALYSE"</span>     <span class="sc">~</span> <span class="st">"Analyse"</span>,</span>
+<span id="cb7-7"><a href="#cb7-7"></a>      <span class="fu">str_starts</span>(title, <span class="fu">fixed</span>(<span class="st">"Hintergrund:"</span>))<span class="sc">|</span> tag <span class="sc">==</span> <span class="st">"HINTERGRUND"</span> <span class="sc">~</span> <span class="st">"Hintergrund"</span>,</span>
+<span id="cb7-8"><a href="#cb7-8"></a>      <span class="fu">str_starts</span>(title, <span class="fu">fixed</span>(<span class="st">"Kommentar:"</span>))  <span class="sc">|</span> tag <span class="sc">==</span> <span class="st">"KOMMENTAR"</span>   <span class="sc">~</span> <span class="st">"Kommentar"</span>,</span>
+<span id="cb7-9"><a href="#cb7-9"></a>      <span class="fu">str_starts</span>(title, <span class="fu">fixed</span>(<span class="st">"Liveblog:"</span>))   <span class="sc">|</span> tag <span class="sc">==</span> <span class="st">"LIVEBLOG"</span>    <span class="sc">~</span> <span class="st">"Liveblog"</span>,</span>
+<span id="cb7-10"><a href="#cb7-10"></a>      <span class="cn">TRUE</span>                                                            <span class="sc">~</span> <span class="st">"Meldung"</span></span>
+<span id="cb7-11"><a href="#cb7-11"></a>    )</span>
+<span id="cb7-12"><a href="#cb7-12"></a>  )</span>
+<span id="cb7-13"><a href="#cb7-13"></a></span>
+<span id="cb7-14"><a href="#cb7-14"></a>news <span class="sc">|&gt;</span> <span class="fu">count</span>(format, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>8.</strong> Stellt die Formatverteilung für die vier größten Ressorts (<code>ausland</code>, <code>wirtschaft</code>, <code>inland</code>, <code>wissen</code>) als gestapeltes Balkendiagramm mit relativen Anteilen dar. Nutzt dafür <code>geom_col(position = "fill")</code> oder berechnet die Anteile explizit mit <code>mutate(anteil = n / sum(n))</code>. Welches Ressort hat den höchsten Anteil an FAQ-Artikeln? Welches an Analysen?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>news <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>  <span class="fu">filter</span>(ressort <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"ausland"</span>, <span class="st">"wirtschaft"</span>, <span class="st">"inland"</span>, <span class="st">"wissen"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb8-3"><a href="#cb8-3"></a>  <span class="fu">count</span>(ressort, format) <span class="sc">|&gt;</span></span>
+<span id="cb8-4"><a href="#cb8-4"></a>  <span class="fu">group_by</span>(ressort) <span class="sc">|&gt;</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a>  <span class="fu">mutate</span>(<span class="at">anteil =</span> n <span class="sc">/</span> <span class="fu">sum</span>(n)) <span class="sc">|&gt;</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> ressort, <span class="at">y =</span> anteil, <span class="at">fill =</span> format)) <span class="sc">+</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a>  <span class="fu">scale_y_continuous</span>(<span class="at">labels =</span> scales<span class="sc">::</span><span class="fu">percent_format</span>()) <span class="sc">+</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a>  <span class="fu">labs</span>(</span>
+<span id="cb8-11"><a href="#cb8-11"></a>    <span class="at">x =</span> <span class="st">"Ressort"</span>, <span class="at">y =</span> <span class="st">"Anteil"</span>, <span class="at">fill =</span> <span class="st">"Format"</span>,</span>
+<span id="cb8-12"><a href="#cb8-12"></a>    <span class="at">title =</span> <span class="st">"Artikelformate nach Ressort"</span></span>
+<span id="cb8-13"><a href="#cb8-13"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="schritt-3-texte-bereinigen-und-strukturieren" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-3-texte-bereinigen-und-strukturieren">Schritt 3: Texte bereinigen und strukturieren</h2>
+<p>Reale Datensätze sind selten sauber. Die Tagesschau-Daten enthalten HTML-Fragmente in Autorennamen, fehlerhafte Ressort-Einträge und uneinheitliche Schreibweisen. Bevor ihr analysiert, müsst ihr bereinigen.</p>
+<div class="task">
+<p><strong>9.</strong> Schaut euch die <code>ressort</code>-Spalte genau an: Gebt alle Ressorts mit weniger als 100 Artikeln aus. Welche Einträge sind offensichtlich fehlerhaft oder technischen Ursprungs? Erstellt anschließend eine bereinigte Version <code>news_clean</code>, die nur Artikel mit sinnvollen Ressort-Werten enthält. Wie viele Zeilen werden dabei entfernt?</p>
+</div>
+<p>Im Datensatz gibt es offensichtlich falsche Einträge, z.B. <code>"Einstellungen einblenden Pfeil rechts"</code> mit 260 Artikeln – ein Web-Scraping-Artefakt, kein echtes Ressort.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>news <span class="sc">|&gt;</span> <span class="fu">count</span>(ressort, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">print</span>(<span class="at">n =</span> <span class="dv">30</span>)</span>
+<span id="cb9-2"><a href="#cb9-2"></a></span>
+<span id="cb9-3"><a href="#cb9-3"></a>saubere_ressorts <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb9-4"><a href="#cb9-4"></a>  <span class="st">"ausland"</span>, <span class="st">"wirtschaft"</span>, <span class="st">"inland"</span>, <span class="st">"wissen"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5"></a>  <span class="st">"investigativ"</span>, <span class="st">"faktenfinder"</span>, <span class="st">"newsticker"</span>,</span>
+<span id="cb9-6"><a href="#cb9-6"></a>  <span class="st">"multimedia"</span>, <span class="st">"kommentar"</span>, <span class="st">"kultur"</span>, <span class="st">"europawahl"</span>,</span>
+<span id="cb9-7"><a href="#cb9-7"></a>  <span class="st">"eilmeldung"</span>, <span class="st">"nachrichten"</span>, <span class="st">"sport"</span>,</span>
+<span id="cb9-8"><a href="#cb9-8"></a>  <span class="st">"jahresrueckblick"</span>, <span class="st">"wetter"</span>, <span class="st">"schlusslicht"</span></span>
+<span id="cb9-9"><a href="#cb9-9"></a>)</span>
+<span id="cb9-10"><a href="#cb9-10"></a></span>
+<span id="cb9-11"><a href="#cb9-11"></a>news_clean <span class="ot">&lt;-</span> news <span class="sc">|&gt;</span> <span class="fu">filter</span>(ressort <span class="sc">%in%</span> saubere_ressorts)</span>
+<span id="cb9-12"><a href="#cb9-12"></a><span class="fu">nrow</span>(news) <span class="sc">-</span> <span class="fu">nrow</span>(news_clean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>10.</strong> Die Spalte <code>author</code> enthält viele Unregelmäßigkeiten: HTML-Tags wie <code>&lt;em&gt;...&lt;/em&gt;</code>, Präfixe wie <code>"Von "</code> und Quellenangaben wie <code>", ARD-Studio Brüssel"</code>. Bereinigt die Spalte schrittweise und speichert das Ergebnis als <code>author_clean</code>. Wendet folgende Schritte der Reihe nach an: (1) HTML-Tags entfernen, (2) führendes <code>"Von "</code> entfernen, (3) alles ab dem ersten Komma entfernen, (4) Leerzeichen normalisieren mit <code>str_squish()</code>. Überprüft das Ergebnis mit einigen Beispielzeilen.</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>news <span class="ot">&lt;-</span> news <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb10-3"><a href="#cb10-3"></a>    <span class="at">author_clean =</span> author <span class="sc">|&gt;</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a>      <span class="fu">str_remove_all</span>(<span class="st">"&lt;[^&gt;]+&gt;"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-5"><a href="#cb10-5"></a>      <span class="fu">str_remove</span>(<span class="st">"(?i)^Von</span><span class="sc">\\</span><span class="st">s+"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a>      <span class="fu">str_remove</span>(<span class="st">",.*$"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a>      <span class="fu">str_squish</span>()</span>
+<span id="cb10-8"><a href="#cb10-8"></a>  )</span>
+<span id="cb10-9"><a href="#cb10-9"></a></span>
+<span id="cb10-10"><a href="#cb10-10"></a>news <span class="sc">|&gt;</span></span>
+<span id="cb10-11"><a href="#cb10-11"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(author, <span class="st">"&lt;"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a>  <span class="fu">select</span>(author, author_clean) <span class="sc">|&gt;</span></span>
+<span id="cb10-13"><a href="#cb10-13"></a>  <span class="fu">head</span>(<span class="dv">8</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>11.</strong> Ermittelt mit der bereinigten <code>author_clean</code>-Spalte die 15 produktivsten Autorinnen und Autoren im Datensatz. Filtert leere Strings und <code>NA</code>-Werte heraus. Stellt das Ergebnis als horizontales Balkendiagramm dar, sortiert nach Häufigkeit. Welche Redaktionen oder Studios tauchen auf?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>news <span class="sc">|&gt;</span></span>
+<span id="cb11-2"><a href="#cb11-2"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(author_clean), author_clean <span class="sc">!=</span> <span class="st">""</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-3"><a href="#cb11-3"></a>  <span class="fu">count</span>(author_clean, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-4"><a href="#cb11-4"></a>  <span class="fu">slice_max</span>(n, <span class="at">n =</span> <span class="dv">15</span>) <span class="sc">|&gt;</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_reorder</span>(author_clean, n), <span class="at">y =</span> n)) <span class="sc">+</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb11-7"><a href="#cb11-7"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Autor:in"</span>, <span class="at">y =</span> <span class="st">"Artikel"</span>, <span class="at">title =</span> <span class="st">"Produktivste Autor:innen"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>12.</strong> Viele Tagesschau-Titel folgen dem Muster <code>"Stichwort: Eigentliche Überschrift"</code>. Trennt dieses Muster auf: Erstellt eine Variable <code>stichwort</code> (Text vor dem ersten Doppelpunkt, bereinigt mit <code>str_trim()</code>) und eine Variable <code>ueberschrift</code> (Text nach dem Doppelpunkt). Für Artikel ohne Doppelpunkt soll <code>stichwort</code> <code>NA</code> sein und <code>ueberschrift</code> dem vollen Titel entsprechen. Welche zehn Stichworte kommen am häufigsten vor?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>news <span class="ot">&lt;-</span> news <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb12-3"><a href="#cb12-3"></a>    <span class="at">hat_doppelpunkt =</span> <span class="fu">str_detect</span>(title, <span class="st">":"</span>),</span>
+<span id="cb12-4"><a href="#cb12-4"></a>    <span class="at">stichwort    =</span> <span class="fu">if_else</span>(hat_doppelpunkt,</span>
+<span id="cb12-5"><a href="#cb12-5"></a>                           <span class="fu">str_trim</span>(<span class="fu">str_extract</span>(title, <span class="st">"^[^:]+"</span>)),</span>
+<span id="cb12-6"><a href="#cb12-6"></a>                           <span class="cn">NA_character_</span>),</span>
+<span id="cb12-7"><a href="#cb12-7"></a>    <span class="at">ueberschrift =</span> <span class="fu">if_else</span>(hat_doppelpunkt,</span>
+<span id="cb12-8"><a href="#cb12-8"></a>                           <span class="fu">str_trim</span>(<span class="fu">str_remove</span>(title, <span class="st">"^[^:]+:</span><span class="sc">\\</span><span class="st">s*"</span>)),</span>
+<span id="cb12-9"><a href="#cb12-9"></a>                           title)</span>
+<span id="cb12-10"><a href="#cb12-10"></a>  )</span>
+<span id="cb12-11"><a href="#cb12-11"></a></span>
+<span id="cb12-12"><a href="#cb12-12"></a>news <span class="sc">|&gt;</span></span>
+<span id="cb12-13"><a href="#cb12-13"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(stichwort)) <span class="sc">|&gt;</span></span>
+<span id="cb12-14"><a href="#cb12-14"></a>  <span class="fu">count</span>(stichwort, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb12-15"><a href="#cb12-15"></a>  <span class="fu">slice_max</span>(n, <span class="at">n =</span> <span class="dv">10</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>13.</strong> Reguläre Ausdrücke (<em>Regex</em>) ermöglichen komplexere Suchmuster. Sucht in der <code>title</code>-Spalte nach:</p>
+<ul>
+<li><ol type="a">
+<li>Prozentzahlen wie <code>"47 Prozent"</code> oder <code>"3,5 Prozent"</code></li>
+</ol></li>
+<li><ol start="2" type="a">
+<li>Zitate in Anführungszeichen</li>
+</ol></li>
+</ul>
+<p>Wie viele Treffer gibt es jeweils? Gebt fünf Beispieltitel pro Kategorie aus.</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a><span class="co"># (a) Prozentzahlen</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>news <span class="sc">|&gt;</span></span>
+<span id="cb13-3"><a href="#cb13-3"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(title, <span class="st">"</span><span class="sc">\\</span><span class="st">d+[,.]?</span><span class="sc">\\</span><span class="st">d*</span><span class="sc">\\</span><span class="st">s*Prozent"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb13-4"><a href="#cb13-4"></a>  <span class="fu">mutate</span>(<span class="at">treffer =</span> <span class="fu">str_extract</span>(title, <span class="st">"</span><span class="sc">\\</span><span class="st">d+[,.]?</span><span class="sc">\\</span><span class="st">d*</span><span class="sc">\\</span><span class="st">s*Prozent"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>  <span class="fu">select</span>(title, treffer) <span class="sc">|&gt;</span></span>
+<span id="cb13-6"><a href="#cb13-6"></a>  <span class="fu">head</span>(<span class="dv">5</span>)</span>
+<span id="cb13-7"><a href="#cb13-7"></a></span>
+<span id="cb13-8"><a href="#cb13-8"></a><span class="co"># (b) Zitate</span></span>
+<span id="cb13-9"><a href="#cb13-9"></a>news <span class="sc">|&gt;</span></span>
+<span id="cb13-10"><a href="#cb13-10"></a>  <span class="fu">filter</span>(<span class="fu">str_detect</span>(title, <span class="st">'"[^"]+"'</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb13-11"><a href="#cb13-11"></a>  <span class="fu">mutate</span>(<span class="at">zitat =</span> <span class="fu">str_extract</span>(title, <span class="st">'"[^"]+"'</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb13-12"><a href="#cb13-12"></a>  <span class="fu">select</span>(title, zitat) <span class="sc">|&gt;</span></span>
+<span id="cb13-13"><a href="#cb13-13"></a>  <span class="fu">head</span>(<span class="dv">5</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="schritt-4-strukturierte-textfelder-parsen" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-4-strukturierte-textfelder-parsen">Schritt 4: Strukturierte Textfelder parsen</h2>
+<p>Manche Spalten sind keine einfachen Zeichenketten, sondern serialisierte Datenstrukturen: JSON-Arrays, die als Text gespeichert wurden. <code>jsonlite::fromJSON()</code> macht daraus echte R-Objekte, die ihr dann mit den gewohnten tidyverse-Werkzeugen weiterverarbeiten könnt.</p>
+<div class="task">
+<p><strong>14.</strong> Die Spalte <code>keywords</code> enthält JSON-Arrays wie <code>["EU", "Trump", "Ukraine"]</code>. Parst diese Spalte mit <code>map()</code> und <code>jsonlite::fromJSON()</code> und bringt den Datensatz mit <code>unnest()</code> in eine Langform, sodass jede Zeile ein Keyword enthält. Nutzt <code>possibly()</code> aus <code>purrr</code>, um fehlerhafte JSON-Strings sicher abzufangen. Wie viele Keyword-Einträge gibt es insgesamt? Erstellt eine Rangliste der 20 häufigsten Keywords als Balkendiagramm.</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>news_kw <span class="ot">&lt;-</span> news <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(keywords), keywords <span class="sc">!=</span> <span class="st">"[]"</span>, keywords <span class="sc">!=</span> <span class="st">""</span>) <span class="sc">|&gt;</span></span>
+<span id="cb14-3"><a href="#cb14-3"></a>  <span class="fu">select</span>(url, year, ressort, keywords) <span class="sc">|&gt;</span></span>
+<span id="cb14-4"><a href="#cb14-4"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb14-5"><a href="#cb14-5"></a>    <span class="at">kw_list =</span> <span class="fu">map</span>(keywords, <span class="fu">possibly</span>(\(x) <span class="fu">fromJSON</span>(x), <span class="at">otherwise =</span> <span class="fu">character</span>(<span class="dv">0</span>)))</span>
+<span id="cb14-6"><a href="#cb14-6"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb14-7"><a href="#cb14-7"></a>  <span class="fu">unnest</span>(kw_list) <span class="sc">|&gt;</span></span>
+<span id="cb14-8"><a href="#cb14-8"></a>  <span class="fu">rename</span>(<span class="at">keyword =</span> kw_list)</span>
+<span id="cb14-9"><a href="#cb14-9"></a></span>
+<span id="cb14-10"><a href="#cb14-10"></a><span class="fu">nrow</span>(news_kw)</span>
+<span id="cb14-11"><a href="#cb14-11"></a></span>
+<span id="cb14-12"><a href="#cb14-12"></a>news_kw <span class="sc">|&gt;</span></span>
+<span id="cb14-13"><a href="#cb14-13"></a>  <span class="fu">count</span>(keyword, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb14-14"><a href="#cb14-14"></a>  <span class="fu">slice_max</span>(n, <span class="at">n =</span> <span class="dv">20</span>) <span class="sc">|&gt;</span></span>
+<span id="cb14-15"><a href="#cb14-15"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_reorder</span>(keyword, n), <span class="at">y =</span> n)) <span class="sc">+</span></span>
+<span id="cb14-16"><a href="#cb14-16"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb14-17"><a href="#cb14-17"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb14-18"><a href="#cb14-18"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Keyword"</span>, <span class="at">y =</span> <span class="st">"Häufigkeit"</span>, <span class="at">title =</span> <span class="st">"Top-20-Keywords im Datensatz"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>15.</strong> Wählt vier Keywords aus (z.B. <code>"Trump"</code>, <code>"Coronavirus"</code>, <code>"Ukraine"</code>, <code>"Klimawandel"</code>) und stellt deren Häufigkeit pro Jahr als Liniendiagramm dar. Filtert auf Artikel ab 2010. Lässt sich der Beginn des Ukraine-Kriegs 2022 ablesen? Wann verschwand Coronavirus von der Agenda?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>auswahl <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">"Trump"</span>, <span class="st">"Coronavirus"</span>, <span class="st">"Ukraine"</span>, <span class="st">"Klimawandel"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2"></a></span>
+<span id="cb15-3"><a href="#cb15-3"></a>news_kw <span class="sc">|&gt;</span></span>
+<span id="cb15-4"><a href="#cb15-4"></a>  <span class="fu">filter</span>(keyword <span class="sc">%in%</span> auswahl, year <span class="sc">&gt;=</span> <span class="dv">2010</span>) <span class="sc">|&gt;</span></span>
+<span id="cb15-5"><a href="#cb15-5"></a>  <span class="fu">count</span>(year, keyword) <span class="sc">|&gt;</span></span>
+<span id="cb15-6"><a href="#cb15-6"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> n, <span class="at">color =</span> keyword)) <span class="sc">+</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb15-8"><a href="#cb15-8"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb15-9"><a href="#cb15-9"></a>  <span class="fu">labs</span>(</span>
+<span id="cb15-10"><a href="#cb15-10"></a>    <span class="at">x =</span> <span class="st">"Jahr"</span>, <span class="at">y =</span> <span class="st">"Artikel mit Keyword"</span>,</span>
+<span id="cb15-11"><a href="#cb15-11"></a>    <span class="at">color =</span> <span class="st">"Keyword"</span>, <span class="at">title =</span> <span class="st">"Keyword-Trends im Zeitverlauf"</span></span>
+<span id="cb15-12"><a href="#cb15-12"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>16.</strong> Die Spalte <code>related_links</code> enthält JSON-Arrays von Objekten. Parst diese Spalte analog zu <code>keywords</code>, sodass ihr eine Zeile pro Link habt. Extrahiert aus den Link-URLs mit einem regulären Ausdruck die Domain und erstellt eine Rangliste der 15 häufigsten externen Domains (ohne <code>tagesschau.de</code> und <code>ard.de</code>).</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>news_links <span class="ot">&lt;-</span> news <span class="sc">|&gt;</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(related_links), related_links <span class="sc">!=</span> <span class="st">"[]"</span>, related_links <span class="sc">!=</span> <span class="st">""</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-3"><a href="#cb16-3"></a>  <span class="fu">select</span>(<span class="at">artikel_url =</span> url, year, ressort, related_links) <span class="sc">|&gt;</span></span>
+<span id="cb16-4"><a href="#cb16-4"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb16-5"><a href="#cb16-5"></a>    <span class="at">link_daten =</span> <span class="fu">map</span>(</span>
+<span id="cb16-6"><a href="#cb16-6"></a>      related_links,</span>
+<span id="cb16-7"><a href="#cb16-7"></a>      <span class="fu">possibly</span>(\(x) <span class="fu">fromJSON</span>(x) <span class="sc">|&gt;</span> <span class="fu">as_tibble</span>(), <span class="at">otherwise =</span> <span class="fu">tibble</span>())</span>
+<span id="cb16-8"><a href="#cb16-8"></a>    )</span>
+<span id="cb16-9"><a href="#cb16-9"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb16-10"><a href="#cb16-10"></a>  <span class="fu">unnest</span>(link_daten) <span class="sc">|&gt;</span></span>
+<span id="cb16-11"><a href="#cb16-11"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb16-12"><a href="#cb16-12"></a>    <span class="at">domain =</span> <span class="fu">str_remove</span>(</span>
+<span id="cb16-13"><a href="#cb16-13"></a>      <span class="fu">str_extract</span>(url, <span class="st">"https?://[^/]+"</span>),</span>
+<span id="cb16-14"><a href="#cb16-14"></a>      <span class="st">"https?://"</span></span>
+<span id="cb16-15"><a href="#cb16-15"></a>    )</span>
+<span id="cb16-16"><a href="#cb16-16"></a>  )</span>
+<span id="cb16-17"><a href="#cb16-17"></a></span>
+<span id="cb16-18"><a href="#cb16-18"></a>news_links <span class="sc">|&gt;</span></span>
+<span id="cb16-19"><a href="#cb16-19"></a>  <span class="fu">filter</span>(</span>
+<span id="cb16-20"><a href="#cb16-20"></a>    <span class="sc">!</span><span class="fu">is.na</span>(domain),</span>
+<span id="cb16-21"><a href="#cb16-21"></a>    <span class="sc">!</span><span class="fu">str_detect</span>(domain, <span class="st">"tagesschau|</span><span class="sc">\\</span><span class="st">bard</span><span class="sc">\\</span><span class="st">.de"</span>)</span>
+<span id="cb16-22"><a href="#cb16-22"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb16-23"><a href="#cb16-23"></a>  <span class="fu">count</span>(domain, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-24"><a href="#cb16-24"></a>  <span class="fu">slice_max</span>(n, <span class="at">n =</span> <span class="dv">15</span>) <span class="sc">|&gt;</span></span>
+<span id="cb16-25"><a href="#cb16-25"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_reorder</span>(domain, n), <span class="at">y =</span> n)) <span class="sc">+</span></span>
+<span id="cb16-26"><a href="#cb16-26"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"coral"</span>) <span class="sc">+</span></span>
+<span id="cb16-27"><a href="#cb16-27"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb16-28"><a href="#cb16-28"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Domain"</span>, <span class="at">y =</span> <span class="st">"Anzahl Links"</span>, <span class="at">title =</span> <span class="st">"Häufig verlinkte externe Domains"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="schritt-5-tokenisierung-und-worthäufigkeiten" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-5-tokenisierung-und-worthäufigkeiten">Schritt 5: Tokenisierung und Worthäufigkeiten</h2>
+<p>Für eine systematische Textanalyse zerlegt man Texte in einzelne <em>Tokens</em>, die kleinsten bedeutungstragenden Einheiten. Das <code>tidytext</code>-Paket fügt sich dabei nahtlos in den Tidyverse-Workflow ein und macht Texte tabellenartig behandelbar.</p>
+<div class="task">
+<p><strong>17.</strong> Tokenisiert die <code>title</code>-Spalte mit <code>unnest_tokens()</code> aus <code>tidytext</code>. Behaltet dabei <code>url</code>, <code>year</code> und <code>ressort</code>. Was macht <code>unnest_tokens()</code> automatisch mit Groß- und Kleinschreibung und mit Satzzeichen? Wie viele Tokens enthält der gesamte Datensatz?</p>
+</div>
+<p><code>unnest_tokens()</code> setzt standardmäßig alles auf Kleinschreibung, trennt an Leerzeichen und Satzzeichen und entfernt Satzzeichen als eigene Einheit.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>titel_tokens <span class="ot">&lt;-</span> news <span class="sc">|&gt;</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>  <span class="fu">select</span>(url, year, ressort, title) <span class="sc">|&gt;</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a>  <span class="fu">unnest_tokens</span>(word, title)</span>
+<span id="cb17-4"><a href="#cb17-4"></a></span>
+<span id="cb17-5"><a href="#cb17-5"></a><span class="fu">nrow</span>(titel_tokens)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>18.</strong> Ladet mit eine deutsche Stoppwortliste und entfernt diese aus den Daten mit <code>anti_join()</code>. Filtert zusätzlich alle Tokens heraus, die kürzer als drei Zeichen sind oder ausschließlich aus Ziffern bestehen (<code>str_detect(word, "^\\d+$")</code>). Wie viele Tokens bleiben nach der Bereinigung übrig?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1"></a>stopwoerter_de <span class="ot">&lt;-</span> <span class="fu">get_stopwords</span>(<span class="at">language =</span> <span class="st">"de"</span>, <span class="at">source =</span> <span class="st">"snowball"</span>)</span>
+<span id="cb18-2"><a href="#cb18-2"></a></span>
+<span id="cb18-3"><a href="#cb18-3"></a>titel_tokens_clean <span class="ot">&lt;-</span> titel_tokens <span class="sc">|&gt;</span></span>
+<span id="cb18-4"><a href="#cb18-4"></a>  <span class="fu">anti_join</span>(stopwoerter_de, <span class="at">by =</span> <span class="st">"word"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb18-5"><a href="#cb18-5"></a>  <span class="fu">filter</span>(</span>
+<span id="cb18-6"><a href="#cb18-6"></a>    <span class="fu">str_length</span>(word) <span class="sc">&gt;=</span> <span class="dv">3</span>,</span>
+<span id="cb18-7"><a href="#cb18-7"></a>    <span class="sc">!</span><span class="fu">str_detect</span>(word, <span class="st">"^</span><span class="sc">\\</span><span class="st">d+$"</span>)</span>
+<span id="cb18-8"><a href="#cb18-8"></a>  )</span>
+<span id="cb18-9"><a href="#cb18-9"></a></span>
+<span id="cb18-10"><a href="#cb18-10"></a><span class="fu">nrow</span>(titel_tokens_clean)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>19.</strong> Ermittelt die 20 häufigsten Wörter in den Tagesschau-Überschriften nach der Bereinigung und stellt sie als horizontales Balkendiagramm dar. Welche Wörter erscheinen, und entspricht das euren Erwartungen? Gibt es Wörter in der Liste, die ihr für inhaltlich wenig aussagekräftig haltet und die noch herausgefiltert werden könnten?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>titel_tokens_clean <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a>  <span class="fu">count</span>(word, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a>  <span class="fu">slice_max</span>(n, <span class="at">n =</span> <span class="dv">20</span>) <span class="sc">|&gt;</span></span>
+<span id="cb19-4"><a href="#cb19-4"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_reorder</span>(word, n), <span class="at">y =</span> n)) <span class="sc">+</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"steelblue"</span>) <span class="sc">+</span></span>
+<span id="cb19-6"><a href="#cb19-6"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb19-7"><a href="#cb19-7"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Wort"</span>, <span class="at">y =</span> <span class="st">"Häufigkeit"</span>, <span class="at">title =</span> <span class="st">"Häufigste Wörter in Tagesschau-Titeln"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>20.</strong> Vergleicht die häufigsten Wörter in den vier größten Ressorts (<code>ausland</code>, <code>wirtschaft</code>, <code>inland</code>, <code>wissen</code>) in einem facettierten Diagramm mit je zehn Wörtern pro Ressort. Nutzt <code>reorder_within()</code> und <code>scale_x_reordered()</code> aus <code>tidytext</code>, damit die Wörter innerhalb jedes Facetts korrekt sortiert sind. Was verraten die Unterschiede über die inhaltlichen Schwerpunkte der Ressorts?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>titel_tokens_clean <span class="sc">|&gt;</span></span>
+<span id="cb20-2"><a href="#cb20-2"></a>  <span class="fu">filter</span>(ressort <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"ausland"</span>, <span class="st">"wirtschaft"</span>, <span class="st">"inland"</span>, <span class="st">"wissen"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb20-3"><a href="#cb20-3"></a>  <span class="fu">count</span>(ressort, word) <span class="sc">|&gt;</span></span>
+<span id="cb20-4"><a href="#cb20-4"></a>  <span class="fu">group_by</span>(ressort) <span class="sc">|&gt;</span></span>
+<span id="cb20-5"><a href="#cb20-5"></a>  <span class="fu">slice_max</span>(n, <span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span></span>
+<span id="cb20-6"><a href="#cb20-6"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb20-7"><a href="#cb20-7"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder_within</span>(word, n, ressort), <span class="at">y =</span> n, <span class="at">fill =</span> ressort)) <span class="sc">+</span></span>
+<span id="cb20-8"><a href="#cb20-8"></a>  <span class="fu">geom_col</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb20-9"><a href="#cb20-9"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>ressort, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
+<span id="cb20-10"><a href="#cb20-10"></a>  <span class="fu">scale_x_reordered</span>() <span class="sc">+</span></span>
+<span id="cb20-11"><a href="#cb20-11"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb20-12"><a href="#cb20-12"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Wort"</span>, <span class="at">y =</span> <span class="st">"Häufigkeit"</span>, <span class="at">title =</span> <span class="st">"Top-Wörter nach Ressort"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>21.</strong> Die reine Häufigkeit bevorzugt Wörter, die in allen Ressorts vorkommen. <em>TF-IDF</em> (Term Frequency – Inverse Document Frequency) gewichtet Wörter so, dass charakteristische, ressortspezifische Begriffe hervorgehoben werden. Berechnet TF-IDF mit <code>bind_tf_idf(word, ressort, n)</code> aus <code>tidytext</code> und stellt die jeweils fünf charakteristischsten Wörter pro Ressort als facettiertes Balkendiagramm dar.</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1"></a>tfidf <span class="ot">&lt;-</span> titel_tokens_clean <span class="sc">|&gt;</span></span>
+<span id="cb21-2"><a href="#cb21-2"></a>  <span class="fu">filter</span>(ressort <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"ausland"</span>, <span class="st">"wirtschaft"</span>, <span class="st">"inland"</span>, <span class="st">"wissen"</span>, <span class="st">"faktenfinder"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb21-3"><a href="#cb21-3"></a>  <span class="fu">count</span>(ressort, word) <span class="sc">|&gt;</span></span>
+<span id="cb21-4"><a href="#cb21-4"></a>  <span class="fu">bind_tf_idf</span>(word, ressort, n)</span>
+<span id="cb21-5"><a href="#cb21-5"></a></span>
+<span id="cb21-6"><a href="#cb21-6"></a>tfidf <span class="sc">|&gt;</span></span>
+<span id="cb21-7"><a href="#cb21-7"></a>  <span class="fu">group_by</span>(ressort) <span class="sc">|&gt;</span></span>
+<span id="cb21-8"><a href="#cb21-8"></a>  <span class="fu">slice_max</span>(tf_idf, <span class="at">n =</span> <span class="dv">5</span>) <span class="sc">|&gt;</span></span>
+<span id="cb21-9"><a href="#cb21-9"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb21-10"><a href="#cb21-10"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder_within</span>(word, tf_idf, ressort), <span class="at">y =</span> tf_idf, <span class="at">fill =</span> ressort)) <span class="sc">+</span></span>
+<span id="cb21-11"><a href="#cb21-11"></a>  <span class="fu">geom_col</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb21-12"><a href="#cb21-12"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span>ressort, <span class="at">scales =</span> <span class="st">"free"</span>) <span class="sc">+</span></span>
+<span id="cb21-13"><a href="#cb21-13"></a>  <span class="fu">scale_x_reordered</span>() <span class="sc">+</span></span>
+<span id="cb21-14"><a href="#cb21-14"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb21-15"><a href="#cb21-15"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Wort"</span>, <span class="at">y =</span> <span class="st">"TF-IDF"</span>, <span class="at">title =</span> <span class="st">"Charakteristische Wörter je Ressort (TF-IDF)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>22.</strong> Vergleicht die TF-IDF-Ergebnisse mit den reinen Häufigkeiten aus Aufgabe 19 für ein oder zwei Ressorts. Welche Wörter sind in beiden Listen? Welche tauchen nur bei TF-IDF auf? Was sagt euch das über die Stärken und Schwächen beider Maße als Beschreibung von Textinhalten?</p>
+</div>
+<p>Reine Häufigkeit bevorzugt allgemeine Begriffe, die in allen Ressorts dominant sind (z.B. “deutschland”, “regierung”). TF-IDF hebt ressortspezifische Fachbegriffe hervor: im Ressort <em>wissen</em> zum Beispiel “studie”, “forscher”, “gen”; in <em>wirtschaft</em> “dax”, “inflation”, “ezb”. Wörter wie “ukraine” oder “usa” erscheinen bei <em>ausland</em> in beiden Listen, weil sie sowohl häufig als auch charakteristisch sind.</p>
+</section>
+<section id="schritt-6-wörterbuch-basierte-klassifikation-und-reflexion" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-6-wörterbuch-basierte-klassifikation-und-reflexion">Schritt 6: Wörterbuch-basierte Klassifikation und Reflexion</h2>
+<p>Bisher habt ihr einzelne Muster untersucht. Jetzt geht es um systematische Klassifikation: Ihr erstellt ein Themen-Dictionary und wendet es auf den gesamten Datensatz an. Das ist <em>deduktive Inhaltsanalyse</em> – ihr bringt eure theoretischen Kategorien mit und sucht sie im Text.</p>
+<div class="task">
+<p><strong>23.</strong> Erstellt ein Themen-Dictionary in Excel und ladet es als Tibble mit den Spalten <code>word</code> (Kleinbuchstaben) und <code>thema</code>. Deckt mindestens vier Themen ab: <em>Klimapolitik</em>, <em>Sicherheit &amp; Krieg</em>, <em>Wirtschaft &amp; Finanzen</em> und <em>Gesundheit</em>.</p>
+<p>Verwendet pro Thema mindestens fünf charakteristische Wörter. Welche Wörter könnten zu Fehlzuordnungen führen?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>dictionary <span class="ot">&lt;-</span> <span class="fu">tribble</span>(</span>
+<span id="cb22-2"><a href="#cb22-2"></a>  <span class="sc">~</span>word,              <span class="sc">~</span>thema,</span>
+<span id="cb22-3"><a href="#cb22-3"></a>  <span class="st">"klima"</span>,            <span class="st">"Klimapolitik"</span>,</span>
+<span id="cb22-4"><a href="#cb22-4"></a>  <span class="st">"klimaschutz"</span>,      <span class="st">"Klimapolitik"</span>,</span>
+<span id="cb22-5"><a href="#cb22-5"></a>  <span class="st">"klimawandel"</span>,      <span class="st">"Klimapolitik"</span>,</span>
+<span id="cb22-6"><a href="#cb22-6"></a>  <span class="st">"emission"</span>,         <span class="st">"Klimapolitik"</span>,</span>
+<span id="cb22-7"><a href="#cb22-7"></a>  <span class="st">"erneuerbar"</span>,       <span class="st">"Klimapolitik"</span>,</span>
+<span id="cb22-8"><a href="#cb22-8"></a>  <span class="st">"windenergie"</span>,      <span class="st">"Klimapolitik"</span>,</span>
+<span id="cb22-9"><a href="#cb22-9"></a>  <span class="st">"krieg"</span>,            <span class="st">"Sicherheit"</span>,</span>
+<span id="cb22-10"><a href="#cb22-10"></a>  <span class="st">"angriff"</span>,          <span class="st">"Sicherheit"</span>,</span>
+<span id="cb22-11"><a href="#cb22-11"></a>  <span class="st">"nato"</span>,             <span class="st">"Sicherheit"</span>,</span>
+<span id="cb22-12"><a href="#cb22-12"></a>  <span class="st">"militär"</span>,          <span class="st">"Sicherheit"</span>,</span>
+<span id="cb22-13"><a href="#cb22-13"></a>  <span class="st">"waffe"</span>,            <span class="st">"Sicherheit"</span>,</span>
+<span id="cb22-14"><a href="#cb22-14"></a>  <span class="st">"bundeswehr"</span>,       <span class="st">"Sicherheit"</span>,</span>
+<span id="cb22-15"><a href="#cb22-15"></a>  <span class="st">"inflation"</span>,        <span class="st">"Wirtschaft"</span>,</span>
+<span id="cb22-16"><a href="#cb22-16"></a>  <span class="st">"zinsen"</span>,           <span class="st">"Wirtschaft"</span>,</span>
+<span id="cb22-17"><a href="#cb22-17"></a>  <span class="st">"rezession"</span>,        <span class="st">"Wirtschaft"</span>,</span>
+<span id="cb22-18"><a href="#cb22-18"></a>  <span class="st">"haushalt"</span>,         <span class="st">"Wirtschaft"</span>,</span>
+<span id="cb22-19"><a href="#cb22-19"></a>  <span class="st">"konjunktur"</span>,       <span class="st">"Wirtschaft"</span>,</span>
+<span id="cb22-20"><a href="#cb22-20"></a>  <span class="st">"arbeitslosigkeit"</span>, <span class="st">"Wirtschaft"</span>,</span>
+<span id="cb22-21"><a href="#cb22-21"></a>  <span class="st">"corona"</span>,           <span class="st">"Gesundheit"</span>,</span>
+<span id="cb22-22"><a href="#cb22-22"></a>  <span class="st">"impfung"</span>,          <span class="st">"Gesundheit"</span>,</span>
+<span id="cb22-23"><a href="#cb22-23"></a>  <span class="st">"krankenhaus"</span>,      <span class="st">"Gesundheit"</span>,</span>
+<span id="cb22-24"><a href="#cb22-24"></a>  <span class="st">"virus"</span>,            <span class="st">"Gesundheit"</span>,</span>
+<span id="cb22-25"><a href="#cb22-25"></a>  <span class="st">"pandemie"</span>,         <span class="st">"Gesundheit"</span>,</span>
+<span id="cb22-26"><a href="#cb22-26"></a>  <span class="st">"gesundheit"</span>,       <span class="st">"Gesundheit"</span></span>
+<span id="cb22-27"><a href="#cb22-27"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>24.</strong> Wendet das Dictionary auf die tokenisierten Titel an. Nutzt <code>left_join()</code> zwischen dem bereinigten Token-Datensatz und dem Dictionary. Wie viele Artikel lassen sich den vier Themen zuordnen?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb23"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1"></a>themen_artikel <span class="ot">&lt;-</span> titel_tokens_clean <span class="sc">|&gt;</span></span>
+<span id="cb23-2"><a href="#cb23-2"></a>  <span class="fu">inner_join</span>(dictionary, <span class="at">by =</span> <span class="st">"word"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb23-3"><a href="#cb23-3"></a>  <span class="fu">distinct</span>(url, year, thema)</span>
+<span id="cb23-4"><a href="#cb23-4"></a></span>
+<span id="cb23-5"><a href="#cb23-5"></a>themen_artikel <span class="sc">|&gt;</span> <span class="fu">count</span>(thema, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>25.</strong> Stellt die Entwicklung aller vier Themen ab 2006 als Liniendiagramm dar. Beschreibt Auffälligkeiten in der zeitlichen Entwicklung der Themen.</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a>themen_artikel <span class="sc">|&gt;</span></span>
+<span id="cb24-2"><a href="#cb24-2"></a>  <span class="fu">filter</span>(year <span class="sc">&gt;=</span> <span class="dv">2006</span>) <span class="sc">|&gt;</span></span>
+<span id="cb24-3"><a href="#cb24-3"></a>  <span class="fu">count</span>(year, thema) <span class="sc">|&gt;</span></span>
+<span id="cb24-4"><a href="#cb24-4"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> n, <span class="at">color =</span> thema)) <span class="sc">+</span></span>
+<span id="cb24-5"><a href="#cb24-5"></a>  <span class="fu">geom_line</span>(<span class="at">linewidth =</span> <span class="fl">0.9</span>) <span class="sc">+</span></span>
+<span id="cb24-6"><a href="#cb24-6"></a>  <span class="fu">geom_point</span>(<span class="at">size =</span> <span class="fl">1.5</span>) <span class="sc">+</span></span>
+<span id="cb24-7"><a href="#cb24-7"></a>  <span class="fu">labs</span>(</span>
+<span id="cb24-8"><a href="#cb24-8"></a>    <span class="at">x =</span> <span class="st">"Jahr"</span>, <span class="at">y =</span> <span class="st">"Artikel"</span>, <span class="at">color =</span> <span class="st">"Thema"</span>,</span>
+<span id="cb24-9"><a href="#cb24-9"></a>    <span class="at">title =</span> <span class="st">"Themenkonjunkturen im Zeitverlauf (Dictionary-Analyse)"</span></span>
+<span id="cb24-10"><a href="#cb24-10"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>26.</strong> Ruft zehn zufällige Artikel auf, die dem Thema <em>Klimapolitik</em> zugeordnet wurden (<code>slice_sample(n = 10)</code>), und inspiziert ihre Titel. Sind die Zuordnungen korrekt? Gebt je ein konkretes Beispiel für einen möglichen <em>falsch-positiven</em> Treffer (Artikel wird fälschlich zugeordnet) und einen möglichen <em>falsch-negativen</em> Treffer (Artikel müsste zugeordnet werden, wird es aber nicht).</p>
+<p>Was könnt ihr tun, um das Ergebnis zu verbessern?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>themen_artikel <span class="sc">|&gt;</span></span>
+<span id="cb25-2"><a href="#cb25-2"></a>  <span class="fu">filter</span>(thema <span class="sc">==</span> <span class="st">"Klimapolitik"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb25-3"><a href="#cb25-3"></a>  <span class="fu">left_join</span>(<span class="fu">select</span>(news, url, title), <span class="at">by =</span> <span class="st">"url"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb25-4"><a href="#cb25-4"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">10</span>) <span class="sc">|&gt;</span></span>
+<span id="cb25-5"><a href="#cb25-5"></a>  <span class="fu">select</span>(title, thema)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><em>Falsch-positiv</em>: Ein Artikel über “Klimagespräche zwischen Außenministern” könnte als Klimapolitik eingestuft werden, obwohl er diplomatischer Natur ist. <em>Falsch-negativ</em>: Ein Artikel über “CO₂-Bepreisung im Verkehr” würde nicht erkannt, weil keines unserer Dictionary-Wörter vorkommt.</p>
+<div class="task">
+<p><strong>27.</strong> Die regelbasierte Textanalyse, die ihr in dieser Übung angewendet habt, ist eine Form der <em>deduktiven Inhaltsanalyse</em>. Diskutiert die folgenden Fragen:</p>
+<ul>
+<li>Was sind die zentralen Stärken dieses Ansatzes gegenüber manuellem Durchlesen?</li>
+<li>Was wäre ein <em>induktiver</em> Ansatz (z.B. Topic Modeling), und in welcher Situation würdet ihr ihn bevorzugen?</li>
+<li>Nennt zwei Situationen, in denen regelbasierte Textanalyse klar an ihre Grenzen stößt.</li>
+</ul>
+</div>
+<p><em>Stärken der deduktiven Analyse</em>: skalierbar auf Hunderttausende Artikel, reproduzierbar, transparent und leicht zu erklären. <em>Grenzen</em>: Das Dictionary muss vollständig und präzise sein; Verneinungen (“kein Krieg”), Ironie und implizites Framing werden nicht erkannt; mehrdeutige Wörter erzeugen systematische Fehler (“Flügel” in Musik vs.&nbsp;Politik).</p>
+<p>Ein <em>induktiver</em> Ansatz wie Topic Modeling (z.B. LDA) entdeckt Themen direkt aus den Häufigkeitsmustern im Text, ohne Vorannahmen. Er ist besser geeignet, wenn man nicht weiß, welche Themen vorhanden sind, und möchte den Text “sprechen lassen”. Der Nachteil: Die Themen sind schwer zu benennen und die Ergebnisse schlechter zu validieren.</p>
+<p>Klare Grenzen regelbasierter Analyse: (1) Verneinungen (“Trump verliert an Bedeutung” vs.&nbsp;“Trump gewinnt”); (2) Neologismen und neue Ereignisse, die noch nicht im Dictionary stehen.</p>
+</section>
+<section id="zusatzmaterial" class="level2">
+<h2 class="anchored" data-anchor-id="zusatzmaterial">Zusatzmaterial</h2>
+<p>Zu diesem Experiment gibt es folgendes Zusatzmaterial:</p>
+<ul>
+<li><a href="experiment-news-rule-based-text-analysis.pdf">Aufgabenblatt als PDF</a></li>
+<li><a href="experiment-news-rule-based-text-analysis.qmd.txt" download="experiment-news-rule-based-text-analysis.qmd">Quarto-Notebook mit ausführbarem R-Code</a></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+        for (let i=0; i<annoteTargets.length; i++) {
+          const annoteTarget = annoteTargets[i];
+          const targetCell = annoteTarget.getAttribute("data-target-cell");
+          const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+          const contentFn = () => {
+            const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+            if (content) {
+              const tipContent = content.cloneNode(true);
+              tipContent.classList.add("code-annotation-tip-content");
+              return tipContent.outerHTML;
+            }
+          }
+          const config = {
+            allowHTML: true,
+            content: contentFn,
+            onShow: (instance) => {
+              selectCodeLines(instance.reference);
+              instance.reference.classList.add('code-annotation-active');
+              window.tippy.hideAll();
+            },
+            onHide: (instance) => {
+              unselectCodeLines();
+              instance.reference.classList.remove('code-annotation-active');
+            },
+            maxWidth: 300,
+            delay: [50, 0],
+            duration: [200, 0],
+            offset: [5, 10],
+            arrow: true,
+            appendTo: function(el) {
+              return el.parentElement.parentElement.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'quarto',
+            placement: 'right',
+            popperOptions: {
+              modifiers: [
+              {
+                name: 'flip',
+                options: {
+                  flipVariations: false, // true by default
+                  allowedAutoPlacements: ['right'],
+                  fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
+                },
+              },
+              {
+                name: 'preventOverflow',
+                options: {
+                  mainAxis: false,
+                  altAxis: false
+                }
+              }
+              ]        
+            }      
+          };
+          window.tippy(annoteTarget, config); 
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../experiments/experiment-news-visualize.html" class="pagination-link" aria-label="Visualisieren">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Visualisieren</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../experiments/experiment-survey-explore-variables.html" class="pagination-link" aria-label="Variablen erkunden">
+        <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Variablen erkunden</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,1475 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.3">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Prof.&nbsp;Dr.&nbsp;Nicolas Meseth">
+
+<title>5&nbsp; Variablen erkunden – Hands-On Exploratory Data Analytics</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../experiments/experiment-survey-viewing-grouped-variables.html" rel="next">
+<link href="../experiments/experiment-news-rule-based-text-analysis.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e44360b8a8db1e130c7792fece1c8032.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-b8d9931f9950fed7c9eff99d2a950632.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../experiments/experiment-survey-explore-variables.html">Umfrage</a></li><li class="breadcrumb-item"><a href="../experiments/experiment-survey-explore-variables.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Variablen erkunden</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Hands-On Exploratory Data Analytics</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Tagesschau</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../experiments/experiment-news-explore-structured-unstructured.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Erkunden</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../experiments/experiment-news-transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Transformieren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../experiments/experiment-news-visualize.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Visualisieren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../experiments/experiment-news-rule-based-text-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Regelbasierte Textanalyse</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Umfrage</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../experiments/experiment-survey-explore-variables.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Variablen erkunden</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../experiments/experiment-survey-viewing-grouped-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Gruppierte Betrachtung von Variablen</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Literaturverzeichnis</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#schritt-1-projekt-aufsetzen-und-daten-einlesen" id="toc-schritt-1-projekt-aufsetzen-und-daten-einlesen" class="nav-link active" data-scroll-target="#schritt-1-projekt-aufsetzen-und-daten-einlesen">Schritt 1: Projekt aufsetzen und Daten einlesen</a></li>
+  <li><a href="#schritt-2-erster-blick-auf-den-datensatz" id="toc-schritt-2-erster-blick-auf-den-datensatz" class="nav-link" data-scroll-target="#schritt-2-erster-blick-auf-den-datensatz">Schritt 2: Erster Blick auf den Datensatz</a></li>
+  <li><a href="#schritt-3-einfache-einzelvariablen-analysieren" id="toc-schritt-3-einfache-einzelvariablen-analysieren" class="nav-link" data-scroll-target="#schritt-3-einfache-einzelvariablen-analysieren">Schritt 3: Einfache Einzelvariablen analysieren</a></li>
+  <li><a href="#schritt-4-mehrfachnennungen-und-itembatterien" id="toc-schritt-4-mehrfachnennungen-und-itembatterien" class="nav-link" data-scroll-target="#schritt-4-mehrfachnennungen-und-itembatterien">Schritt 4: Mehrfachnennungen und Itembatterien</a></li>
+  <li><a href="#schritt-5-rangfolgen-imagebatterien-und-mediennutzung" id="toc-schritt-5-rangfolgen-imagebatterien-und-mediennutzung" class="nav-link" data-scroll-target="#schritt-5-rangfolgen-imagebatterien-und-mediennutzung">Schritt 5: Rangfolgen, Imagebatterien und Mediennutzung</a></li>
+  <li><a href="#schritt-6-reflexion" id="toc-schritt-6-reflexion" class="nav-link" data-scroll-target="#schritt-6-reflexion">Schritt 6: Reflexion</a></li>
+  <li><a href="#zusatzmaterial" id="toc-zusatzmaterial" class="nav-link" data-scroll-target="#zusatzmaterial">Zusatzmaterial</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../experiments/experiment-survey-explore-variables.html">Umfrage</a></li><li class="breadcrumb-item"><a href="../experiments/experiment-survey-explore-variables.html"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Variablen erkunden</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Variablen erkunden</span></h1>
+<p class="subtitle lead">Am Beispiel der Marktforschungs-Musterstudie</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Prof.&nbsp;Dr.&nbsp;Nicolas Meseth </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>In dieser Übung arbeitet ihr mit einem Umfragedatensatz aus einer Marktforschungs-Musterstudie zu Schokolade und Milchalternativen. Der Fokus liegt nicht auf komplexen Modellen, sondern auf den Grundlagen guter Datenanalyse: Welche Variablen gibt es, was messen sie, welche Datentypen liegen vor, welche Wertebereiche und Missing-Codes wurden verwendet, und welche Zusammenfassungen und Visualisierungen passen zu unterschiedlichen Variablentypen?</p>
+<section id="schritt-1-projekt-aufsetzen-und-daten-einlesen" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-1-projekt-aufsetzen-und-daten-einlesen">Schritt 1: Projekt aufsetzen und Daten einlesen</h2>
+<div class="task">
+<p><strong>1.</strong> Erstellt ein neues Projekt für diese Übung und öffnet es in der Entwicklungsumgebung Positron. Stellt sicher, dass ihr eine <em>virtuelle R-Umgebung</em> für das Projekt erstellt und aktiviert habt.</p>
+</div>
+<div class="task">
+<p><strong>2.</strong> Installiert die folgenden Pakete in eurer virtuellen Umgebung: <code>tidyverse</code>, <code>janitor</code> und <code>skimr</code>. Verwendet das Metapaket <code>pacman</code>, damit ihr die Pakete mit einem einzigen Befehl installieren und laden könnt.</p>
+</div>
+<div class="task">
+<p><strong>3.</strong> Ladet den Datensatz der Marktforschungs-Musterstudie auf euren Computer herunter und speichert ihn in einem Unterordner <code>data/</code> in eurem Projektverzeichnis.</p>
+</div>
+<div class="task">
+<p><strong>4.</strong> Erzeugt einen neuen Ordner <code>scripts/</code> in eurem Projektverzeichnis und erstellt eine neue R-Skriptdatei <code>explore_variables.R</code> in diesem Ordner.</p>
+</div>
+<div class="task">
+<p><strong>5.</strong> Lest den Datensatz <code>mds12_schoko_milch.csv</code> in R ein. Prüft dabei das Dateiformat, zum Beispiel Trennzeichen, Kodierung und Missing-Value-Darstellung. Speichert den Einlesecode in eurer Skriptdatei und legt direkt ein Objekt an, mit dem ihr in den folgenden Schritten weiterarbeitet.</p>
+</div>
+<p>Für die weitere Analyse reicht ein sauber eingelesener Datensatz mit expliziter Behandlung von <code>"NA"</code> und leeren Zellen. Da im Datensatz keine stabile Respondent:innen-ID enthalten ist, ergänzen wir gleich eine synthetische laufende ID.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">library</span>(janitor)</span>
+<span id="cb1-3"><a href="#cb1-3"></a></span>
+<span id="cb1-4"><a href="#cb1-4"></a><span class="fu">theme_set</span>(<span class="fu">theme_minimal</span>(<span class="at">base_size =</span> <span class="dv">12</span>))</span>
+<span id="cb1-5"><a href="#cb1-5"></a></span>
+<span id="cb1-6"><a href="#cb1-6"></a>survey_raw <span class="ot">&lt;-</span> readr<span class="sc">::</span><span class="fu">read_csv</span>(</span>
+<span id="cb1-7"><a href="#cb1-7"></a>  <span class="st">"data/mds12_schoko_milch.csv"</span>,</span>
+<span id="cb1-8"><a href="#cb1-8"></a>  <span class="at">na =</span> <span class="fu">c</span>(<span class="st">"NA"</span>, <span class="st">""</span>),</span>
+<span id="cb1-9"><a href="#cb1-9"></a>  <span class="at">show_col_types =</span> <span class="cn">FALSE</span></span>
+<span id="cb1-10"><a href="#cb1-10"></a>)</span>
+<span id="cb1-11"><a href="#cb1-11"></a></span>
+<span id="cb1-12"><a href="#cb1-12"></a>survey <span class="ot">&lt;-</span> survey_raw <span class="sc">|&gt;</span></span>
+<span id="cb1-13"><a href="#cb1-13"></a>  <span class="fu">mutate</span>(<span class="at">respondent_id =</span> <span class="fu">row_number</span>())</span>
+<span id="cb1-14"><a href="#cb1-14"></a></span>
+<span id="cb1-15"><a href="#cb1-15"></a>special_missing_codes <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="sc">-</span><span class="dv">1</span>, <span class="sc">-</span><span class="dv">2</span>)</span>
+<span id="cb1-16"><a href="#cb1-16"></a></span>
+<span id="cb1-17"><a href="#cb1-17"></a><span class="fu">nrow</span>(survey)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 2811</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="fu">ncol</span>(survey)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 814</code></pre>
+</div>
+</div>
+</section>
+<section id="schritt-2-erster-blick-auf-den-datensatz" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-2-erster-blick-auf-den-datensatz">Schritt 2: Erster Blick auf den Datensatz</h2>
+<div class="task">
+<p><strong>6.</strong> Verschafft euch einen ersten Überblick über den Datensatz. Wie viele Beobachtungen und wie viele Variablen sind enthalten? Welche Datentypen wurden beim Einlesen zugewiesen? Welche ersten Hinweise geben euch die Variablennamen über den Aufbau des Fragebogens?</p>
+</div>
+<p>Die Datei ist breit aufgebaut, also ein klassischer Umfragedatensatz mit vielen Fragen, Items und Ableitungen. Schon an den Namen sieht man unterschiedliche Frageblöcke, zum Beispiel <code>q...</code> für einfache Fragen, <code>p...</code> für Itembatterien und abgeleitete Variablen wie <code>Q002alter</code> oder <code>Q004geschlecht</code>.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a>survey <span class="sc">|&gt;</span></span>
+<span id="cb5-2"><a href="#cb5-2"></a>  <span class="fu">select</span>(respondent_id, <span class="dv">1</span><span class="sc">:</span><span class="dv">12</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-3"><a href="#cb5-3"></a>  <span class="fu">glimpse</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Rows: 2,811
+Columns: 13
+$ respondent_id       &lt;int&gt; 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15,…
+$ q001hheinkauf       &lt;dbl&gt; 2, 1, 2, 2, 2, 2, 2, 2, 2, 2, 2, 1, 2, 1, 2, 2, 1,…
+$ q002geburt          &lt;dbl&gt; 1970, 1990, 1963, 1989, 1965, 1957, 1960, 1984, 19…
+$ q003land            &lt;dbl&gt; 1, 7, 6, 13, 4, 2, 14, 13, 1, 13, 5, 14, 9, 4, 3, …
+$ q004geschlecht      &lt;dbl&gt; 1, 1, 1, 2, 1, 1, 2, 1, 2, 2, 1, 1, 1, 1, 2, 2, 1,…
+$ q005os              &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+$ v041nofleisch       &lt;dbl&gt; 0, 0, 0, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0,…
+$ v041nofleisch_other &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA…
+$ v041diaet_0nodiaet  &lt;dbl&gt; 1, 0, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 1, 1,…
+$ v041diaet_1lowcarb  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+$ v041diaet_2laktose  &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0,…
+$ v041diaet_3gluten   &lt;dbl&gt; 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0,…
+$ v041diaet_4paleo    &lt;dbl&gt; 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,…</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>survey <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>  <span class="fu">select</span>(respondent_id, q001hheinkauf, q002geburt, q003land, q004geschlecht, q005os) <span class="sc">|&gt;</span></span>
+<span id="cb7-3"><a href="#cb7-3"></a>  <span class="fu">summary</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code> respondent_id    q001hheinkauf     q002geburt      q003land     
+ Min.   :   1.0   Min.   :1.000   Min.   :1945   Min.   : 1.000  
+ 1st Qu.: 703.5   1st Qu.:1.000   1st Qu.:1965   1st Qu.: 3.000  
+ Median :1406.0   Median :2.000   Median :1975   Median : 9.000  
+ Mean   :1406.0   Mean   :1.673   Mean   :1977   Mean   : 7.567  
+ 3rd Qu.:2108.5   3rd Qu.:2.000   3rd Qu.:1989   3rd Qu.:10.000  
+ Max.   :2811.0   Max.   :2.000   Max.   :2007   Max.   :16.000  
+ q004geschlecht      q005os       
+ Min.   :1.000   Min.   :0.00000  
+ 1st Qu.:1.000   1st Qu.:0.00000  
+ Median :2.000   Median :0.00000  
+ Mean   :1.528   Mean   :0.04055  
+ 3rd Qu.:2.000   3rd Qu.:0.00000  
+ Max.   :3.000   Max.   :1.00000  </code></pre>
+</div>
+</div>
+<div class="task">
+<p><strong>7.</strong> Überlegt, wie in diesem Datensatz eine Beobachtung eindeutig identifizierbar gemacht werden kann. Gibt es eine bereits vorhandene Variable, die offensichtlich als Primärschlüssel taugt? Wenn nicht, wie würdet ihr das Problem praktisch lösen?</p>
+</div>
+<p>Eine gut sichtbare natürliche ID ist im Datensatz nicht vorhanden. Für die explorative Analyse ist eine synthetische laufende ID deshalb die sauberste Lösung. Damit bleiben alle Zeilen eindeutig referenzierbar.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>survey <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>  <span class="fu">count</span>(respondent_id <span class="sc">==</span> dplyr<span class="sc">::</span><span class="fu">row_number</span>()) <span class="sc">|&gt;</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a>  <span class="fu">rename</span>(<span class="at">is_running_id =</span> <span class="st">`</span><span class="at">respondent_id == dplyr::row_number()</span><span class="st">`</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 1 × 2
+  is_running_id     n
+  &lt;lgl&gt;         &lt;int&gt;
+1 TRUE           2811</code></pre>
+</div>
+</div>
+<div class="task">
+<p><strong>8.</strong> Prüft, welche Informationen ihr allein aus dem Datensatz rekonstruieren könnt und welche ihr nur mit einem Fragebogen oder Codebook sicher interpretieren könnt. Schaut euch insbesondere die Variablennamen für die Fragen <code>1, 2, 3, 4, 5, 8, 11, 12, 21, 22, 23, 26, 29</code> und <code>216</code> an.</p>
+</div>
+<p>Die Zuordnung vieler Fragen ist direkt über die Präfixe möglich. Für einige Fragen reicht der lokale CSV-Bestand aber nicht aus, um Antworttexte oder vollständige Kodierungen sicher zu rekonstruieren. Dafür bräuchtet ihr den Fragebogen oder ein Codebook.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>question_prefixes <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb11-2"><a href="#cb11-2"></a>  <span class="st">"q001"</span>, <span class="st">"q002"</span>, <span class="st">"q003"</span>, <span class="st">"q004"</span>, <span class="st">"q005"</span>,</span>
+<span id="cb11-3"><a href="#cb11-3"></a>  <span class="st">"v008"</span>, <span class="st">"p011"</span>, <span class="st">"p012"</span>, <span class="st">"v021"</span>, <span class="st">"v022"</span>, <span class="st">"v023"</span>,</span>
+<span id="cb11-4"><a href="#cb11-4"></a>  <span class="st">"p026"</span>, <span class="st">"p029"</span>, <span class="st">"d216"</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>)</span>
+<span id="cb11-6"><a href="#cb11-6"></a></span>
+<span id="cb11-7"><a href="#cb11-7"></a>question_lookup <span class="ot">&lt;-</span> <span class="fu">tibble</span>(</span>
+<span id="cb11-8"><a href="#cb11-8"></a>  <span class="at">prefix =</span> question_prefixes,</span>
+<span id="cb11-9"><a href="#cb11-9"></a>  <span class="at">variables =</span> <span class="fu">map</span>(</span>
+<span id="cb11-10"><a href="#cb11-10"></a>    prefix,</span>
+<span id="cb11-11"><a href="#cb11-11"></a>    <span class="sc">~</span> <span class="fu">names</span>(survey)[stringr<span class="sc">::</span><span class="fu">str_detect</span>(<span class="fu">names</span>(survey), <span class="fu">paste0</span>(<span class="st">"^"</span>, .x))]</span>
+<span id="cb11-12"><a href="#cb11-12"></a>  )</span>
+<span id="cb11-13"><a href="#cb11-13"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb11-14"><a href="#cb11-14"></a>  <span class="fu">mutate</span>(<span class="at">n_vars =</span> <span class="fu">map_int</span>(variables, length))</span>
+<span id="cb11-15"><a href="#cb11-15"></a></span>
+<span id="cb11-16"><a href="#cb11-16"></a>question_lookup <span class="sc">|&gt;</span></span>
+<span id="cb11-17"><a href="#cb11-17"></a>  <span class="fu">select</span>(prefix, n_vars, variables)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 14 × 3
+   prefix n_vars variables 
+   &lt;chr&gt;   &lt;int&gt; &lt;list&gt;    
+ 1 q001        1 &lt;chr [1]&gt; 
+ 2 q002        1 &lt;chr [1]&gt; 
+ 3 q003        1 &lt;chr [1]&gt; 
+ 4 q004        1 &lt;chr [1]&gt; 
+ 5 q005        1 &lt;chr [1]&gt; 
+ 6 v008       10 &lt;chr [10]&gt;
+ 7 p011        9 &lt;chr [9]&gt; 
+ 8 p012       10 &lt;chr [10]&gt;
+ 9 v021        7 &lt;chr [7]&gt; 
+10 v022       11 &lt;chr [11]&gt;
+11 v023       27 &lt;chr [27]&gt;
+12 p026       28 &lt;chr [28]&gt;
+13 p029       12 &lt;chr [12]&gt;
+14 d216       19 &lt;chr [19]&gt;</code></pre>
+</div>
+</div>
+</section>
+<section id="schritt-3-einfache-einzelvariablen-analysieren" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-3-einfache-einzelvariablen-analysieren">Schritt 3: Einfache Einzelvariablen analysieren</h2>
+<p>In diesem Abschnitt betrachtet ihr zunächst einfache Einzelvariablen. Ziel ist, für jede Variable den Typ, den Wertebereich, Missing Values und sinnvolle Zusammenfassungen sauber zu beschreiben.</p>
+<div class="task">
+<p><strong>9.</strong> Analysiert die Variablen zu den Fragen <code>1, 2, 3, 4</code> und <code>5</code>, also <code>q001hheinkauf</code>, <code>Q002alter</code>, <code>q003land</code>, <code>Q004geschlecht</code> und <code>q005os</code>. Prüft jeweils:</p>
+<ul>
+<li>Skalenniveau</li>
+<li>Datentyp in R</li>
+<li>Wertebereich und Füllgrad</li>
+<li>passende Kennzahlen</li>
+<li>eine sinnvolle Visualisierung</li>
+</ul>
+<p>Legt für jede dieser Fragen einen kleinen Analyse-Tibble an, der mindestens die <code>respondent_id</code> und die jeweils betrachtete Variable enthält.</p>
+</div>
+<p><code>Q002alter</code> ist klar metrisch. Die übrigen Variablen sind hier kategorial und sollten vor allem über Häufigkeiten beschrieben werden. Ohne Codebook können wir nicht jede Kategorie semantisch benennen, aber wir können die Struktur trotzdem sauber analysieren.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>s_q001 <span class="ot">&lt;-</span> survey <span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>  <span class="fu">select</span>(respondent_id, q001hheinkauf)</span>
+<span id="cb13-3"><a href="#cb13-3"></a></span>
+<span id="cb13-4"><a href="#cb13-4"></a>s_q002 <span class="ot">&lt;-</span> survey <span class="sc">|&gt;</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>  <span class="fu">select</span>(respondent_id, Q002alter)</span>
+<span id="cb13-6"><a href="#cb13-6"></a></span>
+<span id="cb13-7"><a href="#cb13-7"></a>s_q003 <span class="ot">&lt;-</span> survey <span class="sc">|&gt;</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a>  <span class="fu">select</span>(respondent_id, q003land)</span>
+<span id="cb13-9"><a href="#cb13-9"></a></span>
+<span id="cb13-10"><a href="#cb13-10"></a>s_q004 <span class="ot">&lt;-</span> survey <span class="sc">|&gt;</span></span>
+<span id="cb13-11"><a href="#cb13-11"></a>  <span class="fu">select</span>(respondent_id, Q004geschlecht)</span>
+<span id="cb13-12"><a href="#cb13-12"></a></span>
+<span id="cb13-13"><a href="#cb13-13"></a>s_q005 <span class="ot">&lt;-</span> survey <span class="sc">|&gt;</span></span>
+<span id="cb13-14"><a href="#cb13-14"></a>  <span class="fu">select</span>(respondent_id, q005os)</span>
+<span id="cb13-15"><a href="#cb13-15"></a></span>
+<span id="cb13-16"><a href="#cb13-16"></a><span class="fu">list</span>(</span>
+<span id="cb13-17"><a href="#cb13-17"></a>  <span class="at">q001 =</span> <span class="fu">count</span>(s_q001, q001hheinkauf, <span class="at">sort =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb13-18"><a href="#cb13-18"></a>  <span class="at">q002 =</span> <span class="fu">summarise</span>(</span>
+<span id="cb13-19"><a href="#cb13-19"></a>    s_q002,</span>
+<span id="cb13-20"><a href="#cb13-20"></a>    <span class="at">n =</span> <span class="fu">n</span>(),</span>
+<span id="cb13-21"><a href="#cb13-21"></a>    <span class="at">missing =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(Q002alter)),</span>
+<span id="cb13-22"><a href="#cb13-22"></a>    <span class="at">min =</span> <span class="fu">min</span>(Q002alter, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb13-23"><a href="#cb13-23"></a>    <span class="at">median =</span> <span class="fu">median</span>(Q002alter, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb13-24"><a href="#cb13-24"></a>    <span class="at">mean =</span> <span class="fu">mean</span>(Q002alter, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb13-25"><a href="#cb13-25"></a>    <span class="at">max =</span> <span class="fu">max</span>(Q002alter, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-26"><a href="#cb13-26"></a>  ),</span>
+<span id="cb13-27"><a href="#cb13-27"></a>  <span class="at">q003 =</span> <span class="fu">count</span>(s_q003, q003land, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">10</span>),</span>
+<span id="cb13-28"><a href="#cb13-28"></a>  <span class="at">q004 =</span> <span class="fu">count</span>(s_q004, Q004geschlecht, <span class="at">sort =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb13-29"><a href="#cb13-29"></a>  <span class="at">q005 =</span> <span class="fu">count</span>(s_q005, q005os, <span class="at">sort =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-30"><a href="#cb13-30"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$q001
+# A tibble: 2 × 2
+  q001hheinkauf     n
+          &lt;dbl&gt; &lt;int&gt;
+1             2  1892
+2             1   919
+
+$q002
+# A tibble: 1 × 6
+      n missing   min median  mean   max
+  &lt;int&gt;   &lt;int&gt; &lt;dbl&gt;  &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;
+1  2811       0    18     50  48.4    80
+
+$q003
+# A tibble: 10 × 2
+   q003land     n
+      &lt;dbl&gt; &lt;int&gt;
+ 1       10   446
+ 2        9   382
+ 3        2   356
+ 4        1   310
+ 5        7   186
+ 6       11   146
+ 7       13   146
+ 8        3   141
+ 9       15   118
+10        4   116
+
+$q004
+# A tibble: 3 × 2
+  Q004geschlecht     n
+           &lt;dbl&gt; &lt;int&gt;
+1              2  1481
+2              1  1328
+3             NA     2
+
+$q005
+# A tibble: 2 × 2
+  q005os     n
+   &lt;dbl&gt; &lt;int&gt;
+1      0  2697
+2      1   114</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a><span class="fu">ggplot</span>(s_q002, <span class="fu">aes</span>(<span class="at">x =</span> Q002alter)) <span class="sc">+</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">30</span>, <span class="at">fill =</span> <span class="st">"#2c7fb8"</span>, <span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
+<span id="cb15-3"><a href="#cb15-3"></a>  <span class="fu">labs</span>(</span>
+<span id="cb15-4"><a href="#cb15-4"></a>    <span class="at">title =</span> <span class="st">"Altersverteilung im Datensatz"</span>,</span>
+<span id="cb15-5"><a href="#cb15-5"></a>    <span class="at">x =</span> <span class="st">"Alter"</span>,</span>
+<span id="cb15-6"><a href="#cb15-6"></a>    <span class="at">y =</span> <span class="st">"Häufigkeit"</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="experiment-survey-explore-variables_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a><span class="fu">bind_rows</span>(</span>
+<span id="cb16-2"><a href="#cb16-2"></a>  <span class="fu">count</span>(s_q001, <span class="at">code =</span> q001hheinkauf, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="st">"q001hheinkauf"</span>),</span>
+<span id="cb16-3"><a href="#cb16-3"></a>  <span class="fu">count</span>(s_q004, <span class="at">code =</span> Q004geschlecht, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="st">"Q004geschlecht"</span>),</span>
+<span id="cb16-4"><a href="#cb16-4"></a>  <span class="fu">count</span>(s_q005, <span class="at">code =</span> q005os, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">variable =</span> <span class="st">"q005os"</span>)</span>
+<span id="cb16-5"><a href="#cb16-5"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_inorder</span>(<span class="fu">as.character</span>(code)), <span class="at">y =</span> n, <span class="at">fill =</span> variable)) <span class="sc">+</span></span>
+<span id="cb16-7"><a href="#cb16-7"></a>  <span class="fu">geom_col</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb16-8"><a href="#cb16-8"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> variable, <span class="at">scales =</span> <span class="st">"free_x"</span>) <span class="sc">+</span></span>
+<span id="cb16-9"><a href="#cb16-9"></a>  <span class="fu">labs</span>(</span>
+<span id="cb16-10"><a href="#cb16-10"></a>    <span class="at">title =</span> <span class="st">"Beispiel für kategoriale Einzelvariablen"</span>,</span>
+<span id="cb16-11"><a href="#cb16-11"></a>    <span class="at">x =</span> <span class="st">"Code"</span>,</span>
+<span id="cb16-12"><a href="#cb16-12"></a>    <span class="at">y =</span> <span class="st">"Häufigkeit"</span></span>
+<span id="cb16-13"><a href="#cb16-13"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="experiment-survey-explore-variables_files/figure-html/unnamed-chunk-16-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="schritt-4-mehrfachnennungen-und-itembatterien" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-4-mehrfachnennungen-und-itembatterien">Schritt 4: Mehrfachnennungen und Itembatterien</h2>
+<p>Viele Fragen liegen nicht als einzelne Variable vor, sondern als Block aus mehreren dichotomen Variablen oder als Itembatterie. Diese Struktur verlangt eine andere Vorgehensweise als bei einer einfachen Einzelvariable.</p>
+<div class="task">
+<p><strong>10.</strong> Analysiert Frage <code>8</code>, also den Block <code>v008ort_*</code>. Beschreibt zuerst, warum es sich hier nicht um eine einzelne kategoriale Variable, sondern um eine Mehrfachantwort-Struktur handelt. Ermittelt anschließend:</p>
+<ul>
+<li>welche Variablen zum Block gehören</li>
+<li>wie hoch der Füllgrad je Item ist</li>
+<li>wie häufig die einzelnen Antwortoptionen gewählt wurden</li>
+<li>eine geeignete Visualisierung</li>
+</ul>
+</div>
+<p>An <code>v008ort_1discount</code>, <code>v008ort_2super</code> und den weiteren Spalten erkennt man eine klassische Mehrfachnennung. Jede Option ist als eigene binäre Variable gespeichert. Für die Auswertung bringt man solche Blöcke meist in ein langes Format.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1"></a>s_q008 <span class="ot">&lt;-</span> survey <span class="sc">|&gt;</span></span>
+<span id="cb17-2"><a href="#cb17-2"></a>  <span class="fu">select</span>(respondent_id, <span class="fu">matches</span>(<span class="st">"^v008ort_[0-9]"</span>))</span>
+<span id="cb17-3"><a href="#cb17-3"></a></span>
+<span id="cb17-4"><a href="#cb17-4"></a>q008_long <span class="ot">&lt;-</span> s_q008 <span class="sc">|&gt;</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb17-6"><a href="#cb17-6"></a>    <span class="at">cols =</span> <span class="sc">-</span>respondent_id,</span>
+<span id="cb17-7"><a href="#cb17-7"></a>    <span class="at">names_to =</span> <span class="st">"item"</span>,</span>
+<span id="cb17-8"><a href="#cb17-8"></a>    <span class="at">values_to =</span> <span class="st">"value"</span></span>
+<span id="cb17-9"><a href="#cb17-9"></a>  )</span>
+<span id="cb17-10"><a href="#cb17-10"></a></span>
+<span id="cb17-11"><a href="#cb17-11"></a>q008_summary <span class="ot">&lt;-</span> q008_long <span class="sc">|&gt;</span></span>
+<span id="cb17-12"><a href="#cb17-12"></a>  <span class="fu">group_by</span>(item) <span class="sc">|&gt;</span></span>
+<span id="cb17-13"><a href="#cb17-13"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb17-14"><a href="#cb17-14"></a>    <span class="at">n_valid =</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(value)),</span>
+<span id="cb17-15"><a href="#cb17-15"></a>    <span class="at">selected =</span> <span class="fu">sum</span>(value <span class="sc">==</span> <span class="dv">1</span>, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb17-16"><a href="#cb17-16"></a>    <span class="at">share_selected =</span> selected <span class="sc">/</span> n_valid,</span>
+<span id="cb17-17"><a href="#cb17-17"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb17-18"><a href="#cb17-18"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb17-19"><a href="#cb17-19"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(selected))</span>
+<span id="cb17-20"><a href="#cb17-20"></a></span>
+<span id="cb17-21"><a href="#cb17-21"></a>q008_summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 9 × 4
+  item              n_valid selected share_selected
+  &lt;chr&gt;               &lt;int&gt;    &lt;int&gt;          &lt;dbl&gt;
+1 v008ort_2super       2811     2134         0.759 
+2 v008ort_1discount    2811     2065         0.735 
+3 v008ort_4fach        2811     1029         0.366 
+4 v008ort_3sbmarkt     2811      848         0.302 
+5 v008ort_5markt       2811      493         0.175 
+6 v008ort_6hof         2811      396         0.141 
+7 v008ort_7bioladen    2811      359         0.128 
+8 v008ort_8onlineds    2811      303         0.108 
+9 v008ort_9online      2811      173         0.0615</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1"></a>q008_summary <span class="sc">|&gt;</span></span>
+<span id="cb19-2"><a href="#cb19-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">reorder</span>(item, selected), <span class="at">y =</span> selected)) <span class="sc">+</span></span>
+<span id="cb19-3"><a href="#cb19-3"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#225ea8"</span>) <span class="sc">+</span></span>
+<span id="cb19-4"><a href="#cb19-4"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a>  <span class="fu">labs</span>(</span>
+<span id="cb19-6"><a href="#cb19-6"></a>    <span class="at">title =</span> <span class="st">"Frage 8: Häufigkeit der Einkaufsorte"</span>,</span>
+<span id="cb19-7"><a href="#cb19-7"></a>    <span class="at">x =</span> <span class="cn">NULL</span>,</span>
+<span id="cb19-8"><a href="#cb19-8"></a>    <span class="at">y =</span> <span class="st">"Anzahl Nennungen"</span></span>
+<span id="cb19-9"><a href="#cb19-9"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="experiment-survey-explore-variables_files/figure-html/unnamed-chunk-19-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="task">
+<p><strong>11.</strong> Analysiert die Fragen <code>11</code> und <code>12</code>, also die Blöcke <code>p011regio_*</code> und <code>p012neo_*</code>. Prüft, welche Codes als echte Antwortkategorien und welche eher als Sonder- oder Missing-Codes zu interpretieren sind. Bereitet die Daten für die Analyse so auf, dass sich die inhaltlichen Bewertungen sinnvoll zusammenfassen und visualisieren lassen.</p>
+</div>
+<p>Bei beiden Blöcken sprechen die Werteverteilungen stark dafür, dass <code>-1</code> und <code>-2</code> keine inhaltlichen Antwortstufen, sondern Sondercodes sind. Für Substanzanalysen sollten sie deshalb als fehlend behandelt werden, zugleich sollte man ihre Häufigkeit dokumentieren.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1"></a>likert_battery_summary <span class="ot">&lt;-</span> <span class="cf">function</span>(data, prefix) {</span>
+<span id="cb20-2"><a href="#cb20-2"></a>  data <span class="sc">|&gt;</span></span>
+<span id="cb20-3"><a href="#cb20-3"></a>    <span class="fu">select</span>(respondent_id, <span class="fu">starts_with</span>(prefix)) <span class="sc">|&gt;</span></span>
+<span id="cb20-4"><a href="#cb20-4"></a>    <span class="fu">pivot_longer</span>(</span>
+<span id="cb20-5"><a href="#cb20-5"></a>      <span class="at">cols =</span> <span class="sc">-</span>respondent_id,</span>
+<span id="cb20-6"><a href="#cb20-6"></a>      <span class="at">names_to =</span> <span class="st">"item"</span>,</span>
+<span id="cb20-7"><a href="#cb20-7"></a>      <span class="at">values_to =</span> <span class="st">"value_raw"</span></span>
+<span id="cb20-8"><a href="#cb20-8"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb20-9"><a href="#cb20-9"></a>    <span class="fu">mutate</span>(</span>
+<span id="cb20-10"><a href="#cb20-10"></a>      <span class="at">value_clean =</span> <span class="fu">if_else</span>(value_raw <span class="sc">%in%</span> special_missing_codes, <span class="cn">NA_real_</span>, value_raw)</span>
+<span id="cb20-11"><a href="#cb20-11"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb20-12"><a href="#cb20-12"></a>    <span class="fu">group_by</span>(item) <span class="sc">|&gt;</span></span>
+<span id="cb20-13"><a href="#cb20-13"></a>    <span class="fu">summarise</span>(</span>
+<span id="cb20-14"><a href="#cb20-14"></a>      <span class="at">missing_special =</span> <span class="fu">sum</span>(value_raw <span class="sc">%in%</span> special_missing_codes, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb20-15"><a href="#cb20-15"></a>      <span class="at">missing_na =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(value_raw)),</span>
+<span id="cb20-16"><a href="#cb20-16"></a>      <span class="at">mean_score =</span> <span class="fu">mean</span>(value_clean, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb20-17"><a href="#cb20-17"></a>      <span class="at">median_score =</span> <span class="fu">median</span>(value_clean, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb20-18"><a href="#cb20-18"></a>      <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb20-19"><a href="#cb20-19"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb20-20"><a href="#cb20-20"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(mean_score))</span>
+<span id="cb20-21"><a href="#cb20-21"></a>}</span>
+<span id="cb20-22"><a href="#cb20-22"></a></span>
+<span id="cb20-23"><a href="#cb20-23"></a>q011_summary <span class="ot">&lt;-</span> <span class="fu">likert_battery_summary</span>(survey, <span class="st">"p011regio_"</span>)</span>
+<span id="cb20-24"><a href="#cb20-24"></a>q012_summary <span class="ot">&lt;-</span> <span class="fu">likert_battery_summary</span>(survey, <span class="st">"p012neo_"</span>)</span>
+<span id="cb20-25"><a href="#cb20-25"></a></span>
+<span id="cb20-26"><a href="#cb20-26"></a>q011_summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 9 × 5
+  item                  missing_special missing_na mean_score median_score
+  &lt;chr&gt;                           &lt;int&gt;      &lt;int&gt;      &lt;dbl&gt;        &lt;dbl&gt;
+1 p011regio_4umwelt                 206         13      0.977            1
+2 p011regio_9regional               267         10      0.937            1
+3 p011regio_1wirtschaft             336         10      0.916            1
+4 p011regio_2vertrauen              329          8      0.850            1
+5 p011regio_5tierschutz             468          8      0.716            1
+6 p011regio_6teuer                  369          7      0.713            1
+7 p011regio_3preis                  693          5      0.687            1
+8 p011regio_7noherkunft             525          7      0.642            0
+9 p011regio_8bio                   1405          6      0.477            0</code></pre>
+</div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1"></a>q012_summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 10 × 5
+   item                 missing_special missing_na mean_score median_score
+   &lt;chr&gt;                          &lt;int&gt;      &lt;int&gt;      &lt;dbl&gt;        &lt;dbl&gt;
+ 1 p012neo_9alles                   549          8      1.01             1
+ 2 p012neo_4laender                 268          5      0.989            1
+ 3 p012neo_6party                   480          8      0.930            1
+ 4 p012neo_10culture                498          9      0.867            1
+ 5 p012neo_8waehlerisch             947          4      0.699            1
+ 6 p012neo_1probiere                780          9      0.688            1
+ 7 p012neo_3notaste                 921          5      0.680            0
+ 8 p012neo_7noeat                  1541          5      0.572            0
+ 9 p012neo_5noculture              1571          8      0.488            0
+10 p012neo_2notrust                1375          6      0.422            0</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb24"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1"></a><span class="fu">bind_rows</span>(</span>
+<span id="cb24-2"><a href="#cb24-2"></a>  q011_summary <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">block =</span> <span class="st">"Frage 11"</span>),</span>
+<span id="cb24-3"><a href="#cb24-3"></a>  q012_summary <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">block =</span> <span class="st">"Frage 12"</span>)</span>
+<span id="cb24-4"><a href="#cb24-4"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb24-5"><a href="#cb24-5"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> mean_score, <span class="at">y =</span> <span class="fu">reorder</span>(item, mean_score), <span class="at">fill =</span> block)) <span class="sc">+</span></span>
+<span id="cb24-6"><a href="#cb24-6"></a>  <span class="fu">geom_col</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb24-7"><a href="#cb24-7"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> block, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
+<span id="cb24-8"><a href="#cb24-8"></a>  <span class="fu">labs</span>(</span>
+<span id="cb24-9"><a href="#cb24-9"></a>    <span class="at">title =</span> <span class="st">"Mittlere Werte der Itembatterien zu Frage 11 und 12"</span>,</span>
+<span id="cb24-10"><a href="#cb24-10"></a>    <span class="at">x =</span> <span class="st">"Mittelwert ohne Sondercodes"</span>,</span>
+<span id="cb24-11"><a href="#cb24-11"></a>    <span class="at">y =</span> <span class="cn">NULL</span></span>
+<span id="cb24-12"><a href="#cb24-12"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="experiment-survey-explore-variables_files/figure-html/unnamed-chunk-22-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="task">
+<p><strong>12.</strong> Analysiert die Fragen <code>21</code>, <code>22</code> und <code>23</code>, also die Blöcke <code>v021pack_*</code>, <code>v022kenn_*</code> und <code>v023frei_*</code>. Identifiziert die Struktur dieser Blöcke und vergleicht, wie häufig einzelne Optionen genannt werden. Welche Visualisierungsform eignet sich, um die wichtigsten Nennungen pro Frageblock übersichtlich zu zeigen?</p>
+</div>
+<p>Alle drei Fragen sind Mehrfachnennungen mit binären Itemvariablen. Für einen Vergleich reicht es, die Zahl der positiven Nennungen pro Item zu zählen und die Items dann innerhalb jedes Blocks zu sortieren.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb25"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1"></a>binary_battery_summary <span class="ot">&lt;-</span> <span class="cf">function</span>(data, prefix, <span class="at">positive_value =</span> <span class="dv">1</span>) {</span>
+<span id="cb25-2"><a href="#cb25-2"></a>  data <span class="sc">|&gt;</span></span>
+<span id="cb25-3"><a href="#cb25-3"></a>    <span class="fu">select</span>(respondent_id, <span class="fu">starts_with</span>(prefix)) <span class="sc">|&gt;</span></span>
+<span id="cb25-4"><a href="#cb25-4"></a>    <span class="fu">pivot_longer</span>(</span>
+<span id="cb25-5"><a href="#cb25-5"></a>      <span class="at">cols =</span> <span class="sc">-</span>respondent_id,</span>
+<span id="cb25-6"><a href="#cb25-6"></a>      <span class="at">names_to =</span> <span class="st">"item"</span>,</span>
+<span id="cb25-7"><a href="#cb25-7"></a>      <span class="at">values_to =</span> <span class="st">"value"</span></span>
+<span id="cb25-8"><a href="#cb25-8"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb25-9"><a href="#cb25-9"></a>    <span class="fu">group_by</span>(item) <span class="sc">|&gt;</span></span>
+<span id="cb25-10"><a href="#cb25-10"></a>    <span class="fu">summarise</span>(</span>
+<span id="cb25-11"><a href="#cb25-11"></a>      <span class="at">n_valid =</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(value)),</span>
+<span id="cb25-12"><a href="#cb25-12"></a>      <span class="at">selected =</span> <span class="fu">sum</span>(value <span class="sc">==</span> positive_value, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb25-13"><a href="#cb25-13"></a>      <span class="at">share_selected =</span> selected <span class="sc">/</span> n_valid,</span>
+<span id="cb25-14"><a href="#cb25-14"></a>      <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb25-15"><a href="#cb25-15"></a>    ) <span class="sc">|&gt;</span></span>
+<span id="cb25-16"><a href="#cb25-16"></a>    <span class="fu">arrange</span>(<span class="fu">desc</span>(selected))</span>
+<span id="cb25-17"><a href="#cb25-17"></a>}</span>
+<span id="cb25-18"><a href="#cb25-18"></a></span>
+<span id="cb25-19"><a href="#cb25-19"></a>q021_summary <span class="ot">&lt;-</span> <span class="fu">binary_battery_summary</span>(survey, <span class="st">"v021pack_"</span>)</span>
+<span id="cb25-20"><a href="#cb25-20"></a>q022_summary <span class="ot">&lt;-</span> <span class="fu">binary_battery_summary</span>(survey, <span class="st">"v022kenn_"</span>)</span>
+<span id="cb25-21"><a href="#cb25-21"></a>q023_summary <span class="ot">&lt;-</span> <span class="fu">binary_battery_summary</span>(survey, <span class="st">"v023frei_"</span>)</span>
+<span id="cb25-22"><a href="#cb25-22"></a></span>
+<span id="cb25-23"><a href="#cb25-23"></a><span class="fu">list</span>(</span>
+<span id="cb25-24"><a href="#cb25-24"></a>  <span class="at">q021 =</span> q021_summary <span class="sc">|&gt;</span> <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">7</span>),</span>
+<span id="cb25-25"><a href="#cb25-25"></a>  <span class="at">q022 =</span> q022_summary <span class="sc">|&gt;</span> <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">7</span>),</span>
+<span id="cb25-26"><a href="#cb25-26"></a>  <span class="at">q023 =</span> q023_summary <span class="sc">|&gt;</span> <span class="fu">slice_head</span>(<span class="at">n =</span> <span class="dv">7</span>)</span>
+<span id="cb25-27"><a href="#cb25-27"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>$q021
+# A tibble: 7 × 4
+  item                   n_valid selected share_selected
+  &lt;chr&gt;                    &lt;int&gt;    &lt;int&gt;          &lt;dbl&gt;
+1 v021pack_4herkunft        2806      905          0.323
+2 v021pack_2mhd             2807      836          0.298
+3 v021pack_1zutaten         2804      833          0.297
+4 v021pack_3naehrwert       2806      827          0.295
+5 v021pack_7zusatzstoffe    2806      785          0.280
+6 v021pack_6speziell        2806      722          0.257
+7 v021pack_5allergie        2808      541          0.193
+
+$q022
+# A tibble: 7 × 4
+  item                 n_valid selected share_selected
+  &lt;chr&gt;                  &lt;int&gt;    &lt;int&gt;          &lt;dbl&gt;
+1 v022kenn_5tierwohl      2811     1264          0.450
+2 v022kenn_1bio           2811     1108          0.394
+3 v022kenn_2fair          2811     1015          0.361
+4 v022kenn_4nachhaltig    2811      935          0.333
+5 v022kenn_9nutri         2811      889          0.316
+6 v022kenn_6umwelt        2811      869          0.309
+7 v022kenn_3regio         2811      798          0.284
+
+$q023
+# A tibble: 7 × 4
+  item                    n_valid selected share_selected
+  &lt;chr&gt;                     &lt;int&gt;    &lt;int&gt;          &lt;dbl&gt;
+1 v023frei_2zusatz           2794     1714          0.613
+2 v023frei_1konservierung    2801     1710          0.610
+3 v023frei_4zucker           2796     1586          0.567
+4 v023frei_19geschmack       2793     1471          0.527
+5 v023frei_20farbstoffe      2795     1460          0.522
+6 v023frei_23palmoes         2800     1419          0.507
+7 v023frei_7gen              2795     1344          0.481</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb27"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1"></a><span class="fu">bind_rows</span>(</span>
+<span id="cb27-2"><a href="#cb27-2"></a>  q021_summary <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">block =</span> <span class="st">"Frage 21"</span>),</span>
+<span id="cb27-3"><a href="#cb27-3"></a>  q022_summary <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">block =</span> <span class="st">"Frage 22"</span>),</span>
+<span id="cb27-4"><a href="#cb27-4"></a>  q023_summary <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">block =</span> <span class="st">"Frage 23"</span>)</span>
+<span id="cb27-5"><a href="#cb27-5"></a>) <span class="sc">|&gt;</span></span>
+<span id="cb27-6"><a href="#cb27-6"></a>  <span class="fu">group_by</span>(block) <span class="sc">|&gt;</span></span>
+<span id="cb27-7"><a href="#cb27-7"></a>  <span class="fu">slice_max</span>(<span class="at">order_by =</span> selected, <span class="at">n =</span> <span class="dv">8</span>, <span class="at">with_ties =</span> <span class="cn">FALSE</span>) <span class="sc">|&gt;</span></span>
+<span id="cb27-8"><a href="#cb27-8"></a>  <span class="fu">ungroup</span>() <span class="sc">|&gt;</span></span>
+<span id="cb27-9"><a href="#cb27-9"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> selected, <span class="at">y =</span> item, <span class="at">fill =</span> block)) <span class="sc">+</span></span>
+<span id="cb27-10"><a href="#cb27-10"></a>  <span class="fu">geom_col</span>(<span class="at">show.legend =</span> <span class="cn">FALSE</span>) <span class="sc">+</span></span>
+<span id="cb27-11"><a href="#cb27-11"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> block, <span class="at">scales =</span> <span class="st">"free_y"</span>) <span class="sc">+</span></span>
+<span id="cb27-12"><a href="#cb27-12"></a>  <span class="fu">labs</span>(</span>
+<span id="cb27-13"><a href="#cb27-13"></a>    <span class="at">title =</span> <span class="st">"Top-Nennungen in den Frageblöcken 21 bis 23"</span>,</span>
+<span id="cb27-14"><a href="#cb27-14"></a>    <span class="at">x =</span> <span class="st">"Anzahl Nennungen"</span>,</span>
+<span id="cb27-15"><a href="#cb27-15"></a>    <span class="at">y =</span> <span class="cn">NULL</span></span>
+<span id="cb27-16"><a href="#cb27-16"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="experiment-survey-explore-variables_files/figure-html/unnamed-chunk-25-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="schritt-5-rangfolgen-imagebatterien-und-mediennutzung" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-5-rangfolgen-imagebatterien-und-mediennutzung">Schritt 5: Rangfolgen, Imagebatterien und Mediennutzung</h2>
+<div class="task">
+<p><strong>13.</strong> Analysiert Frage <code>26</code>, also die Blöcke <code>p026gericht1_*</code> und <code>p026gericht2_*</code>. Beschreibt zunächst, was die Struktur dieser Variablenform nahelegt. Vergleicht anschließend die Verteilungen ausgewählter Items und erstellt mindestens eine Visualisierung, die zeigt, wie unterschiedlich die Gerichte bewertet oder eingeordnet wurden.</p>
+</div>
+<p>Die beiden Blöcke sprechen für zwei parallele Bewertungs- oder Rangfolgeschemata. Ohne Fragebogen können wir die Skalenrichtung nicht sicher benennen, aber wir können die Verteilungen und Mittelwerte der Items gut vergleichen.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb28"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb28-1"><a href="#cb28-1"></a>q026_summary <span class="ot">&lt;-</span> survey <span class="sc">|&gt;</span></span>
+<span id="cb28-2"><a href="#cb28-2"></a>  <span class="fu">select</span>(</span>
+<span id="cb28-3"><a href="#cb28-3"></a>    respondent_id,</span>
+<span id="cb28-4"><a href="#cb28-4"></a>    <span class="fu">starts_with</span>(<span class="st">"p026gericht1_"</span>),</span>
+<span id="cb28-5"><a href="#cb28-5"></a>    <span class="fu">starts_with</span>(<span class="st">"p026gericht2_"</span>)</span>
+<span id="cb28-6"><a href="#cb28-6"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb28-7"><a href="#cb28-7"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb28-8"><a href="#cb28-8"></a>    <span class="at">cols =</span> <span class="sc">-</span>respondent_id,</span>
+<span id="cb28-9"><a href="#cb28-9"></a>    <span class="at">names_to =</span> <span class="st">"item"</span>,</span>
+<span id="cb28-10"><a href="#cb28-10"></a>    <span class="at">values_to =</span> <span class="st">"value"</span></span>
+<span id="cb28-11"><a href="#cb28-11"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb28-12"><a href="#cb28-12"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb28-13"><a href="#cb28-13"></a>    <span class="at">block =</span> <span class="fu">if_else</span>(<span class="fu">str_detect</span>(item, <span class="st">"^p026gericht1_"</span>), <span class="st">"gericht1"</span>, <span class="st">"gericht2"</span>),</span>
+<span id="cb28-14"><a href="#cb28-14"></a>    <span class="at">dish =</span> <span class="fu">str_remove</span>(item, <span class="st">"^p026gericht[12]_"</span>)</span>
+<span id="cb28-15"><a href="#cb28-15"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb28-16"><a href="#cb28-16"></a>  <span class="fu">group_by</span>(block, dish) <span class="sc">|&gt;</span></span>
+<span id="cb28-17"><a href="#cb28-17"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb28-18"><a href="#cb28-18"></a>    <span class="at">n_valid =</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(value)),</span>
+<span id="cb28-19"><a href="#cb28-19"></a>    <span class="at">mean_score =</span> <span class="fu">mean</span>(value, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb28-20"><a href="#cb28-20"></a>    <span class="at">median_score =</span> <span class="fu">median</span>(value, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb28-21"><a href="#cb28-21"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb28-22"><a href="#cb28-22"></a>  )</span>
+<span id="cb28-23"><a href="#cb28-23"></a></span>
+<span id="cb28-24"><a href="#cb28-24"></a>q026_summary <span class="sc">|&gt;</span> <span class="fu">arrange</span>(block, <span class="fu">desc</span>(mean_score))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 28 × 5
+   block    dish       n_valid mean_score median_score
+   &lt;chr&gt;    &lt;chr&gt;        &lt;int&gt;      &lt;dbl&gt;        &lt;dbl&gt;
+ 1 gericht1 12salat       1381       5.86            6
+ 2 gericht1 7pizza        1384       5.64            6
+ 3 gericht1 9gulasch      1383       5.28            6
+ 4 gericht1 11spargel     1378       4.98            6
+ 5 gericht1 5hamburger    1379       4.83            5
+ 6 gericht1 8fisch        1383       4.74            5
+ 7 gericht1 13muesli      1378       4.71            5
+ 8 gericht1 10braten      1382       4.56            5
+ 9 gericht1 2sushi        1383       3.72            4
+10 gericht1 3actimel      1381       3.71            4
+# ℹ 18 more rows</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb30"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1"></a>q026_summary <span class="sc">|&gt;</span></span>
+<span id="cb30-2"><a href="#cb30-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> mean_score, <span class="at">y =</span> <span class="fu">reorder</span>(dish, mean_score), <span class="at">fill =</span> block)) <span class="sc">+</span></span>
+<span id="cb30-3"><a href="#cb30-3"></a>  <span class="fu">geom_col</span>(<span class="at">position =</span> <span class="st">"dodge"</span>) <span class="sc">+</span></span>
+<span id="cb30-4"><a href="#cb30-4"></a>  <span class="fu">labs</span>(</span>
+<span id="cb30-5"><a href="#cb30-5"></a>    <span class="at">title =</span> <span class="st">"Frage 26: Vergleich der mittleren Scores pro Gericht"</span>,</span>
+<span id="cb30-6"><a href="#cb30-6"></a>    <span class="at">x =</span> <span class="st">"Mittelwert"</span>,</span>
+<span id="cb30-7"><a href="#cb30-7"></a>    <span class="at">y =</span> <span class="cn">NULL</span></span>
+<span id="cb30-8"><a href="#cb30-8"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="experiment-survey-explore-variables_files/figure-html/unnamed-chunk-28-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="task">
+<p><strong>14.</strong> Analysiert Frage <code>29</code>, also den Block <code>p029mik_*</code>. Untersucht, ob es sich um eine Itembatterie handelt, welche Antwortwerte vorkommen und wie stark die einzelnen Aussagen im Mittel ausfallen. Visualisiert das Ergebnis so, dass die wichtigsten Unterschiede zwischen den Aussagen schnell erkennbar sind.</p>
+</div>
+<p>Auch hier liegt eine klassische Batterie vor. Wieder spricht die Verteilung dafür, dass <code>-1</code> und <code>-2</code> Sondercodes sind, die für die Skalenbeschreibung nicht in den Mittelwert eingehen sollten.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb31"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1"></a>q029_summary <span class="ot">&lt;-</span> <span class="fu">likert_battery_summary</span>(survey, <span class="st">"p029mik_"</span>)</span>
+<span id="cb31-2"><a href="#cb31-2"></a></span>
+<span id="cb31-3"><a href="#cb31-3"></a>q029_summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 12 × 5
+   item               missing_special missing_na mean_score median_score
+   &lt;chr&gt;                        &lt;int&gt;      &lt;int&gt;      &lt;dbl&gt;        &lt;dbl&gt;
+ 1 p029mik_2erschwing             130          7      1.16             1
+ 2 p029mik_9kochen                155          4      1.05             1
+ 3 p029mik_3bequem                148         12      1.01             1
+ 4 p029mik_11natur                242          6      1.00             1
+ 5 p029mik_6gesund                162         14      0.983            1
+ 6 p029mik_1vertraut              202         16      0.893            1
+ 7 p029mik_4sinn                  270          9      0.887            1
+ 8 p029mik_10umwelt               330          7      0.862            1
+ 9 p029mik_8laune                 498          7      0.808            1
+10 p029mik_7gewicht               699          8      0.753            1
+11 p029mik_5image                 703         10      0.653            1
+12 p029mik_12regional             606          7      0.640            0</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb33"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1"></a>q029_summary <span class="sc">|&gt;</span></span>
+<span id="cb33-2"><a href="#cb33-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> mean_score, <span class="at">y =</span> <span class="fu">reorder</span>(item, mean_score))) <span class="sc">+</span></span>
+<span id="cb33-3"><a href="#cb33-3"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#1d91c0"</span>) <span class="sc">+</span></span>
+<span id="cb33-4"><a href="#cb33-4"></a>  <span class="fu">labs</span>(</span>
+<span id="cb33-5"><a href="#cb33-5"></a>    <span class="at">title =</span> <span class="st">"Frage 29: Mittelwerte der Aussagen"</span>,</span>
+<span id="cb33-6"><a href="#cb33-6"></a>    <span class="at">x =</span> <span class="st">"Mittelwert ohne Sondercodes"</span>,</span>
+<span id="cb33-7"><a href="#cb33-7"></a>    <span class="at">y =</span> <span class="cn">NULL</span></span>
+<span id="cb33-8"><a href="#cb33-8"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="experiment-survey-explore-variables_files/figure-html/unnamed-chunk-31-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+<div class="task">
+<p><strong>15.</strong> Analysiert Frage <code>216</code>, also den Block <code>d216medien_*</code>. Prüft zunächst den Typ dieser Variablenstruktur und beschreibt anschließend, welche Medienkanäle im Datensatz am häufigsten genannt oder genutzt werden. Wählt eine Visualisierung, die die wichtigsten Kanäle klar vergleichbar macht.</p>
+</div>
+<p>Die <code>d216medien_*</code>-Variablen sind kein reiner Ja/Nein-Block, sondern offenbar eine gestufte Nutzungs- oder Intensitätsskala. Für einen ersten Überblick reicht es, die Werteverteilungen je Item zu inspizieren und die Mittelwerte vergleichend darzustellen.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb34"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1"></a>q216_summary <span class="ot">&lt;-</span> survey <span class="sc">|&gt;</span></span>
+<span id="cb34-2"><a href="#cb34-2"></a>  <span class="fu">select</span>(respondent_id, <span class="fu">starts_with</span>(<span class="st">"d216medien_"</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb34-3"><a href="#cb34-3"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb34-4"><a href="#cb34-4"></a>    <span class="at">cols =</span> <span class="sc">-</span>respondent_id,</span>
+<span id="cb34-5"><a href="#cb34-5"></a>    <span class="at">names_to =</span> <span class="st">"item"</span>,</span>
+<span id="cb34-6"><a href="#cb34-6"></a>    <span class="at">values_to =</span> <span class="st">"value"</span></span>
+<span id="cb34-7"><a href="#cb34-7"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb34-8"><a href="#cb34-8"></a>  <span class="fu">group_by</span>(item) <span class="sc">|&gt;</span></span>
+<span id="cb34-9"><a href="#cb34-9"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb34-10"><a href="#cb34-10"></a>    <span class="at">n_valid =</span> <span class="fu">sum</span>(<span class="sc">!</span><span class="fu">is.na</span>(value)),</span>
+<span id="cb34-11"><a href="#cb34-11"></a>    <span class="at">mean_score =</span> <span class="fu">mean</span>(value, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb34-12"><a href="#cb34-12"></a>    <span class="at">median_score =</span> <span class="fu">median</span>(value, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb34-13"><a href="#cb34-13"></a>    <span class="at">.groups =</span> <span class="st">"drop"</span></span>
+<span id="cb34-14"><a href="#cb34-14"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb34-15"><a href="#cb34-15"></a>  <span class="fu">arrange</span>(<span class="fu">desc</span>(mean_score))</span>
+<span id="cb34-16"><a href="#cb34-16"></a></span>
+<span id="cb34-17"><a href="#cb34-17"></a>q216_summary</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output cell-output-stdout">
+<pre><code># A tibble: 19 × 4
+   item                      n_valid mean_score median_score
+   &lt;chr&gt;                       &lt;int&gt;      &lt;dbl&gt;        &lt;dbl&gt;
+ 1 d216medien_5radio            1356      2.90             4
+ 2 d216medien_12online          1367      2.60             3
+ 3 d216medien_1tvoef            1372      2.58             3
+ 4 d216medien_13youtube         1366      2.52             3
+ 5 d216medien_2tvprivat         1370      2.45             3
+ 6 d216medien_4tvstream         1365      2.33             3
+ 7 d216medien_19facebook        1367      2.16             3
+ 8 d216medien_6radiostream      1362      1.99             2
+ 9 d216medien_17insta           1368      1.98             2
+10 d216medien_3tvkultur         1369      1.77             2
+11 d216medien_7printlokal       1371      1.75             1
+12 d216medien_14podcats         1366      1.27             1
+13 d216medien_10printtv         1364      1.04             0
+14 d216medien_15blogs           1361      1.02             1
+15 d216medien_16gaming          1365      1.01             0
+16 d216medien_8printquali       1369      0.980            1
+17 d216medien_18tiktok          1369      0.950            0
+18 d216medien_11printspezial    1361      0.844            0
+19 d216medien_9printstyle       1369      0.621            0</code></pre>
+</div>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb36"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1"></a>q216_summary <span class="sc">|&gt;</span></span>
+<span id="cb36-2"><a href="#cb36-2"></a>  <span class="fu">slice_max</span>(<span class="at">order_by =</span> mean_score, <span class="at">n =</span> <span class="dv">12</span>) <span class="sc">|&gt;</span></span>
+<span id="cb36-3"><a href="#cb36-3"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> mean_score, <span class="at">y =</span> <span class="fu">reorder</span>(item, mean_score))) <span class="sc">+</span></span>
+<span id="cb36-4"><a href="#cb36-4"></a>  <span class="fu">geom_col</span>(<span class="at">fill =</span> <span class="st">"#41ab5d"</span>) <span class="sc">+</span></span>
+<span id="cb36-5"><a href="#cb36-5"></a>  <span class="fu">labs</span>(</span>
+<span id="cb36-6"><a href="#cb36-6"></a>    <span class="at">title =</span> <span class="st">"Frage 216: Medienkanäle mit den höchsten Mittelwerten"</span>,</span>
+<span id="cb36-7"><a href="#cb36-7"></a>    <span class="at">x =</span> <span class="st">"Mittelwert"</span>,</span>
+<span id="cb36-8"><a href="#cb36-8"></a>    <span class="at">y =</span> <span class="cn">NULL</span></span>
+<span id="cb36-9"><a href="#cb36-9"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure">
+<p><img src="experiment-survey-explore-variables_files/figure-html/unnamed-chunk-34-1.png" class="img-fluid figure-img" width="672"></p>
+</figure>
+</div>
+</div>
+</div>
+</section>
+<section id="schritt-6-reflexion" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-6-reflexion">Schritt 6: Reflexion</h2>
+<div class="task">
+<p><strong>16.</strong> Fasst zusammen, welche grundsätzlichen Variablentypen euch in diesem Datensatz begegnen. Nennt für jeden Typ mindestens ein Beispiel aus der Übung und erläutert kurz, welche Kennzahlen und Visualisierungen jeweils gut dazu passen.</p>
+</div>
+<p>Im Datensatz begegnen euch mindestens vier wichtige Formen:</p>
+<ul>
+<li>metrische Einzelvariablen, zum Beispiel <code>Q002alter</code></li>
+<li>einfache kategoriale Variablen, zum Beispiel <code>Q004geschlecht</code></li>
+<li>Mehrfachnennungen als Bündel binärer Variablen, zum Beispiel <code>v022kenn_*</code></li>
+<li>Itembatterien mit ordinaler Antwortlogik, zum Beispiel <code>p011regio_*</code></li>
+</ul>
+<p>Für metrische Variablen sind Histogramme und Lageparameter sinnvoll, für kategoriale Einzelvariablen Häufigkeitstabellen und Balkendiagramme, für Mehrfachnennungen sortierte Vergleichsdiagramme und für Itembatterien aggregierte Skalenübersichten oder itemweise Mittelwertvergleiche.</p>
+<div class="task">
+<p><strong>17.</strong> Diskutiert, warum Sondercodes wie <code>-1</code> und <code>-2</code> in Umfragedaten analytisch problematisch sind, wenn man sie unreflektiert wie normale Werte behandelt. Was würdet ihr in einer dokumentierten Analyse tun, um mit solchen Codes sauber umzugehen?</p>
+</div>
+<p>Sondercodes verzerren Kennzahlen und Visualisierungen, wenn man sie wie normale Antwortstufen behandelt. Ein Mittelwert über <code>1, 2, -1, -2</code> ist inhaltlich unsinnig. Sauber ist deshalb:</p>
+<ul>
+<li>Sondercodes explizit identifizieren</li>
+<li>in der Dokumentation benennen</li>
+<li>für Inhaltsskalen in <code>NA</code> umwandeln</li>
+<li>ihre Häufigkeit dennoch separat berichten</li>
+</ul>
+<div class="task">
+<p><strong>18.</strong> Überlegt abschließend, was euch für eine wirklich publikationsfähige Analyse dieser Variablen noch fehlt. Welche zusätzlichen Informationen aus Fragebogen, Feldbericht oder Codebook würdet ihr unbedingt anfordern, bevor ihr inhaltliche Schlussfolgerungen veröffentlicht?</p>
+</div>
+<p>Für eine veröffentlichungsfähige Analyse reichen die Rohvariablennamen nicht aus. Zentral wären insbesondere:</p>
+<ul>
+<li>der vollständige Fragebogen mit Wortlaut und Skalenankern</li>
+<li>ein Codebook mit allen Wertelabels</li>
+<li>Angaben zu Stichprobe und Feldzeit</li>
+<li>Informationen zu Filterführung, Randomisierung und abgeleiteten Variablen</li>
+<li>klare Definitionen aller Sondercodes</li>
+</ul>
+<p>Erst damit lassen sich die Ergebnisse nicht nur technisch korrekt, sondern auch inhaltlich belastbar interpretieren.</p>
+</section>
+<section id="zusatzmaterial" class="level2">
+<h2 class="anchored" data-anchor-id="zusatzmaterial">Zusatzmaterial</h2>
+<p>Zu diesem Experiment gibt es folgendes Zusatzmaterial:</p>
+<ul>
+<li><a href="experiment-survey-explore-variables.pdf">Aufgabenblatt als PDF</a></li>
+<li><a href="experiment-survey-explore-variables.qmd.txt" download="experiment-survey-explore-variables.qmd">Quarto-Notebook mit ausführbarem R-Code</a></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+        for (let i=0; i<annoteTargets.length; i++) {
+          const annoteTarget = annoteTargets[i];
+          const targetCell = annoteTarget.getAttribute("data-target-cell");
+          const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+          const contentFn = () => {
+            const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+            if (content) {
+              const tipContent = content.cloneNode(true);
+              tipContent.classList.add("code-annotation-tip-content");
+              return tipContent.outerHTML;
+            }
+          }
+          const config = {
+            allowHTML: true,
+            content: contentFn,
+            onShow: (instance) => {
+              selectCodeLines(instance.reference);
+              instance.reference.classList.add('code-annotation-active');
+              window.tippy.hideAll();
+            },
+            onHide: (instance) => {
+              unselectCodeLines();
+              instance.reference.classList.remove('code-annotation-active');
+            },
+            maxWidth: 300,
+            delay: [50, 0],
+            duration: [200, 0],
+            offset: [5, 10],
+            arrow: true,
+            appendTo: function(el) {
+              return el.parentElement.parentElement.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'quarto',
+            placement: 'right',
+            popperOptions: {
+              modifiers: [
+              {
+                name: 'flip',
+                options: {
+                  flipVariations: false, // true by default
+                  allowedAutoPlacements: ['right'],
+                  fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
+                },
+              },
+              {
+                name: 'preventOverflow',
+                options: {
+                  mainAxis: false,
+                  altAxis: false
+                }
+              }
+              ]        
+            }      
+          };
+          window.tippy(annoteTarget, config); 
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../experiments/experiment-news-rule-based-text-analysis.html" class="pagination-link" aria-label="Regelbasierte Textanalyse">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Regelbasierte Textanalyse</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../experiments/experiment-survey-viewing-grouped-variables.html" class="pagination-link" aria-label="Gruppierte Betrachtung von Variablen">
+        <span class="nav-page-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Gruppierte Betrachtung von Variablen</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

@@ -1,0 +1,72 @@
+.task {
+  background: rgba(0, 158, 227, 0.1);
+  padding: 0.8em 1em;
+  margin-bottom: 0.9em;
+  margin-top: 0.9em;
+  border: none;
+  border-radius: 0px;
+}
+
+.task > :first-child {
+  margin-top: 0;
+}
+
+.task > :last-child {
+  margin-bottom: 0;
+}
+
+.task pre,
+.task div.sourceCode,
+.task .sourceCode {
+  background: rgba(255, 255, 255, 0.45) !important;
+  background-color: rgba(255, 255, 255, 0.45) !important;
+}
+
+:not(pre) > code,
+p code,
+li code,
+td code,
+th code {
+  background: transparent !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  color: #009ee3;
+}
+
+a,
+a:visited,
+a:hover,
+a:focus,
+a:active,
+.sidebar .nav-link,
+.sidebar .nav-link:visited,
+.sidebar .nav-link:hover,
+.sidebar .nav-link:focus,
+.sidebar .nav-link.active,
+.navbar-nav .nav-link,
+.navbar-nav .nav-link:visited,
+.navbar-nav .nav-link:hover,
+.navbar-nav .nav-link:focus,
+.navbar-nav .nav-link.active,
+.sidebar nav[role="doc-toc"] ul > li > a,
+.sidebar nav[role="doc-toc"] ul > li > a:visited,
+.sidebar nav[role="doc-toc"] ul > li > a:hover,
+.sidebar nav[role="doc-toc"] ul > li > a:focus,
+.sidebar nav[role="doc-toc"] ul > li > a.active,
+#TOC a,
+#TOC a:visited,
+#TOC a:hover,
+#TOC a:focus,
+#TOC a.active,
+.toc-active {
+  color: #004f72 !important;
+}
+
+.sidebar nav[role="doc-toc"] ul > li > a.active,
+.sidebar nav[role="doc-toc"] ul > li > a.toc-active,
+.sidebar nav[role="doc-toc"] ul > li.active > a,
+#TOC a.active,
+#TOC a.toc-active,
+#TOC li.active > a {
+  border-left-color: #004f72 !important;
+}

@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.3">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Prof.&nbsp;Dr.&nbsp;Nicolas Meseth">
+
+<title>1&nbsp; Daten erkunden – Hands-On Exploratory Data Analytics</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../">
+<link href="../experiments/experiment-news-transform.html" rel="next">
+<link href="../index.html" rel="prev">
+<script src="../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../site_libs/quarto-html/popper.min.js"></script>
+<script src="../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../site_libs/quarto-html/quarto-syntax-highlighting-e44360b8a8db1e130c7792fece1c8032.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../site_libs/bootstrap/bootstrap-b8d9931f9950fed7c9eff99d2a950632.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../experiments/experiment-news-explore-structured-unstructured.html">Tagesschau</a></li><li class="breadcrumb-item"><a href="../experiments/experiment-news-explore-structured-unstructured.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Erkunden</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../">Hands-On Exploratory Data Analytics</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Preface</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Tagesschau</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../experiments/experiment-news-explore-structured-unstructured.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Erkunden</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../experiments/experiment-news-transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Transformieren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../experiments/experiment-news-visualize.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Visualisieren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../experiments/experiment-news-rule-based-text-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Regelbasierte Textanalyse</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Umfrage</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../experiments/experiment-survey-explore-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Variablen erkunden</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../experiments/experiment-survey-viewing-grouped-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">Gruppierte Betrachtung von Variablen</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Literaturverzeichnis</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#schritt-1-projekt-aufsetzen-und-daten-einlesen" id="toc-schritt-1-projekt-aufsetzen-und-daten-einlesen" class="nav-link active" data-scroll-target="#schritt-1-projekt-aufsetzen-und-daten-einlesen">Schritt 1: Projekt aufsetzen und Daten einlesen</a></li>
+  <li><a href="#schritt-2-erster-blick-auf-den-datensatz" id="toc-schritt-2-erster-blick-auf-den-datensatz" class="nav-link" data-scroll-target="#schritt-2-erster-blick-auf-den-datensatz">Schritt 2: Erster Blick auf den Datensatz</a></li>
+  <li><a href="#schritt-3-strukturierte-variablen---skalenniveaus-und-datentypen" id="toc-schritt-3-strukturierte-variablen---skalenniveaus-und-datentypen" class="nav-link" data-scroll-target="#schritt-3-strukturierte-variablen---skalenniveaus-und-datentypen">Schritt 3: Strukturierte Variablen - Skalenniveaus und Datentypen</a></li>
+  <li><a href="#schritt-4-wertebereich-und-deskriptive-statistiken" id="toc-schritt-4-wertebereich-und-deskriptive-statistiken" class="nav-link" data-scroll-target="#schritt-4-wertebereich-und-deskriptive-statistiken">Schritt 4: Wertebereich und deskriptive Statistiken</a></li>
+  <li><a href="#schritt-5-unstrukturierte-variablen---texte-erkunden" id="toc-schritt-5-unstrukturierte-variablen---texte-erkunden" class="nav-link" data-scroll-target="#schritt-5-unstrukturierte-variablen---texte-erkunden">Schritt 5: Unstrukturierte Variablen - Texte erkunden</a></li>
+  <li><a href="#schritt-6-reflexion" id="toc-schritt-6-reflexion" class="nav-link" data-scroll-target="#schritt-6-reflexion">Schritt 6: Reflexion</a></li>
+  <li><a href="#zusatzmaterial" id="toc-zusatzmaterial" class="nav-link" data-scroll-target="#zusatzmaterial">Zusatzmaterial</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../experiments/experiment-news-explore-structured-unstructured.html">Tagesschau</a></li><li class="breadcrumb-item"><a href="../experiments/experiment-news-explore-structured-unstructured.html"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Erkunden</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Daten erkunden</span></h1>
+<p class="subtitle lead">Am Beispiel der Tagesschau-Daten</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Prof.&nbsp;Dr.&nbsp;Nicolas Meseth </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Nachrichtendatensätze enthalten eine interessante Mischung: Neben klar strukturierten Variablen wie Datum, Ressort oder Wortanzahl gibt es vollständig unstrukturierte Variablen wie Artikeltexte und Überschriften. Diese Übung führt euch durch eine systematische Erkundung dieses Datensatzes von der ersten Orientierung über die Analyse einzelner Variablen bis hin zu einfachen Methoden, wie man auf unstrukturierten Text eine Struktur projiziert.</p>
+<section id="schritt-1-projekt-aufsetzen-und-daten-einlesen" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-1-projekt-aufsetzen-und-daten-einlesen">Schritt 1: Projekt aufsetzen und Daten einlesen</h2>
+<div class="task">
+<p><strong>1.</strong> Erstellt ein neues Projekt für diese Übung und öffnet es in unserer Entwicklungsumgebung Positron. Stellt sicher, dass ihr eine <em>virtuelle R-Umgebung</em> für das Projekt erstellt und aktiviert habt.</p>
+</div>
+<p>Eine virtuelle Umgebung sorgt dafür, dass alle Pakete, die ihr für dieses Projekt installiert, isoliert von anderen Projekten gespeichert werden. Das <code>renv</code>-Paket übernimmt diese Aufgabe in R.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a>renv<span class="sc">::</span><span class="fu">init</span>()</span>
+<span id="cb1-2"><a href="#cb1-2"></a>renv<span class="sc">::</span><span class="fu">status</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>2.</strong> Installiert die folgenden Pakete in eurer virtuellen Umgebung: <code>tidyverse</code>, <code>janitor</code> und <code>skimr</code>. Verwendet das Metapaket <code>pacman</code>, damit ihr die Pakete mit einem einzigen Befehl installieren und laden könnt.</p>
+</div>
+<p><code>pacman::p_load()</code> installiert fehlende Pakete bei Bedarf und lädt sie anschließend.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"pacman"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">"pacman"</span>)</span>
+<span id="cb2-2"><a href="#cb2-2"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse, janitor, skimr)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>3.</strong> Ladet den Datensatz <code>tagesschau.zip</code> auf euren Computer herunter und speichert ihn in einem Unterordner <code>data/</code> in eurem Projektverzeichnis.</p>
+</div>
+<p>Für die folgenden Aufgaben wird angenommen, dass sich die Datei unter <code>data/tagesschau.zip</code> befindet.</p>
+<div class="task">
+<p><strong>4.</strong> Erzeugt einen neuen Ordner <code>scripts/</code> in eurem Projektverzeichnis und erstellt eine neue R-Skriptdatei <code>explore_news.R</code> in diesem Ordner.</p>
+</div>
+<p>Dieser Schritt dient vor allem dazu, eure Arbeit sauber zu organisieren. Ihr könnt den Ordner manuell oder mit R anlegen.</p>
+<div class="task">
+<p><strong>5.</strong> Der Datensatz liegt als komprimierte ZIP-Datei vor. Schaut euch die Datei genauer an und prüft, wie das Format aussieht (z. B. Trennzeichen, Zeichenkodierung). Lest die Daten dann mit einer geeigneten Funktion aus <code>readr</code> ein und speichert den Code in eurer Skriptdatei.</p>
+</div>
+<p><code>read_csv()</code> kann ZIP-Dateien direkt einlesen. Beim ersten Einlesen lohnt es sich, die automatisch erkannten Spaltentypen genau anzuschauen.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a>news <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/tagesschau.zip"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="schritt-2-erster-blick-auf-den-datensatz" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-2-erster-blick-auf-den-datensatz">Schritt 2: Erster Blick auf den Datensatz</h2>
+<div class="task">
+<p><strong>6.</strong> Recherchiert den Hintergrund der Daten: Woher stammen sie, wie wurden sie erhoben, und welchen Zeitraum decken sie ab? Was bedeuten die einzelnen Variablen? Haltet eure Erkenntnisse stichpunktartig fest.</p>
+</div>
+<p>Der Tagesschau-Datensatz enthält Nachrichtenartikel der ARD-Nachrichtenredaktion. Solche Datensätze entstehen häufig durch Web-Scraping und enthalten deshalb oft leichte Unregelmäßigkeiten in Struktur und Vollständigkeit.</p>
+<div class="task">
+<p><strong>7.</strong> Verschafft euch mit R einen ersten Überblick. Nutzt dafür mindestens zwei verschiedene Funktionen (z. B. <code>glimpse()</code>, <code>skim()</code>, <code>head()</code>). Beantwortet dabei: Wie viele Zeilen und Spalten hat der Datensatz? Welche Datentypen wurden beim Einlesen automatisch zugewiesen?</p>
+</div>
+<p><code>glimpse()</code>, <code>head()</code> und <code>skim()</code> ergänzen sich gut: <code>glimpse()</code> zeigt Struktur, <code>head()</code> konkrete Beispiele, <code>skim()</code> liefert zusätzliche Übersichten zur Datenqualität.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">glimpse</span>(news)</span>
+<span id="cb4-2"><a href="#cb4-2"></a><span class="fu">head</span>(news)</span>
+<span id="cb4-3"><a href="#cb4-3"></a><span class="fu">skim</span>(news)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>8.</strong> Jede Beobachtung in einem Datensatz sollte eindeutig identifizierbar sein. Welche Variable könnte hier als eindeutiger Identifikator dienen? Überprüft eure Vermutung mit R, z. B. mithilfe von <code>n_distinct()</code> oder <code>get_dupes()</code> aus dem <code>janitor</code>-Paket. Was macht ihr, wenn keine bestehende Variable geeignet ist?</p>
+</div>
+<p>In Nachrichtendatensätzen ist die URL oft ein guter Kandidat für einen Primärschlüssel. Wenn keine vorhandene Variable eindeutig ist, könnt ihr eine laufende ID ergänzen.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">n_distinct</span>(news<span class="sc">$</span>url)</span>
+<span id="cb5-2"><a href="#cb5-2"></a><span class="fu">nrow</span>(news)</span>
+<span id="cb5-3"><a href="#cb5-3"></a>news <span class="sc">|&gt;</span> <span class="fu">get_dupes</span>(url)</span>
+<span id="cb5-4"><a href="#cb5-4"></a>news <span class="ot">&lt;-</span> news <span class="sc">|&gt;</span> <span class="fu">mutate</span>(<span class="at">id =</span> <span class="fu">row_number</span>())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="schritt-3-strukturierte-variablen---skalenniveaus-und-datentypen" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-3-strukturierte-variablen---skalenniveaus-und-datentypen">Schritt 3: Strukturierte Variablen - Skalenniveaus und Datentypen</h2>
+<p>In diesem Abschnitt konzentriert ihr euch auf die Variablen, die klare Messeigenschaften besitzen.</p>
+<div class="task">
+<p><strong>9.</strong> Betrachtet die folgenden Variablen: <code>ressort</code>, <code>tag</code>, <code>language</code>, <code>word_count</code>, <code>date_time</code>. Ordnet jeder Variable ein Skalenniveau zu (nominal, ordinal, intervall oder verhältnisskaliert). Begründet eure Entscheidung in einem kurzen Satz pro Variable.</p>
+</div>
+<p><code>ressort</code>, <code>tag</code> und <code>language</code> sind nominal, <code>word_count</code> ist verhältnisskaliert, <code>date_time</code> intervallskaliert.</p>
+<div class="task">
+<p><strong>10.</strong> Prüft, ob die von R automatisch zugewiesenen Datentypen zu den Skalenniveaus passen. Bei welchen Variablen gibt es eine Abweichung? Welche Variablen sollten als Faktor (<code>factor</code>) gespeichert werden, und warum?</p>
+</div>
+<p>Nominale Variablen werden beim Einlesen häufig als <code>character</code> gespeichert. Für Kategorien mit begrenzten Ausprägungen ist <code>factor</code> meist der passendere Typ.</p>
+<div class="task">
+<p><strong>11.</strong> Wandelt <code>ressort</code>, <code>tag</code> und <code>language</code> in Faktoren um. Nutzt dafür <code>mutate()</code> in Kombination mit <code>as_factor()</code> oder <code>factor()</code>. Schaut euch anschließend mit <code>levels()</code> an, welche Ausprägungen jeweils vorhanden sind. Wie viele Ressorts gibt es insgesamt?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1"></a>news <span class="ot">&lt;-</span> news <span class="sc">|&gt;</span></span>
+<span id="cb6-2"><a href="#cb6-2"></a>  <span class="fu">mutate</span>(</span>
+<span id="cb6-3"><a href="#cb6-3"></a>    <span class="at">ressort  =</span> <span class="fu">as_factor</span>(ressort),</span>
+<span id="cb6-4"><a href="#cb6-4"></a>    <span class="at">tag      =</span> <span class="fu">as_factor</span>(tag),</span>
+<span id="cb6-5"><a href="#cb6-5"></a>    <span class="at">language =</span> <span class="fu">as_factor</span>(language)</span>
+<span id="cb6-6"><a href="#cb6-6"></a>  )</span>
+<span id="cb6-7"><a href="#cb6-7"></a></span>
+<span id="cb6-8"><a href="#cb6-8"></a><span class="fu">levels</span>(news<span class="sc">$</span>ressort)</span>
+<span id="cb6-9"><a href="#cb6-9"></a><span class="fu">nlevels</span>(news<span class="sc">$</span>ressort)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>12.</strong> Die Variable <code>tag</code> enthält viele fehlende Werte (<code>NA</code>). Ermittelt den Anteil der fehlenden Werte in Prozent. Was könnte ein fehlender <code>tag</code>-Wert inhaltlich bedeuten? Ist er wirklich “unbekannt”, oder könnte er auch “kein Tag vergeben” bedeuten? Wie würdet ihr damit umgehen?</p>
+</div>
+<p>Fehlende Werte können entweder echte Lücken oder strukturell nicht vorhandene Angaben sein. Bei <code>tag</code> ist “kein Tag vergeben” eine plausible Interpretation.</p>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>news <span class="sc">|&gt;</span></span>
+<span id="cb7-2"><a href="#cb7-2"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb7-3"><a href="#cb7-3"></a>    <span class="at">n_fehlend =</span> <span class="fu">sum</span>(<span class="fu">is.na</span>(tag)),</span>
+<span id="cb7-4"><a href="#cb7-4"></a>    <span class="at">anteil    =</span> <span class="fu">mean</span>(<span class="fu">is.na</span>(tag)) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="schritt-4-wertebereich-und-deskriptive-statistiken" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-4-wertebereich-und-deskriptive-statistiken">Schritt 4: Wertebereich und deskriptive Statistiken</h2>
+<div class="task">
+<p><strong>13.</strong> Welchen Zeitraum deckt der Datensatz ab? Ermittelt das früheste und das späteste Datum in <code>date_time</code>. Extrahiert außerdem das Erscheinungsjahr mit <code>lubridate::year()</code> und erstellt eine neue Variable <code>year</code>. Wie hat sich die Anzahl der Artikel pro Jahr entwickelt?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1"></a>news <span class="sc">|&gt;</span></span>
+<span id="cb8-2"><a href="#cb8-2"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb8-3"><a href="#cb8-3"></a>    <span class="at">fruehestes =</span> <span class="fu">min</span>(date_time, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb8-4"><a href="#cb8-4"></a>    <span class="at">spaetestes =</span> <span class="fu">max</span>(date_time, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb8-5"><a href="#cb8-5"></a>  )</span>
+<span id="cb8-6"><a href="#cb8-6"></a></span>
+<span id="cb8-7"><a href="#cb8-7"></a>news <span class="ot">&lt;-</span> news <span class="sc">|&gt;</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> lubridate<span class="sc">::</span><span class="fu">year</span>(date_time))</span>
+<span id="cb8-9"><a href="#cb8-9"></a></span>
+<span id="cb8-10"><a href="#cb8-10"></a>news <span class="sc">|&gt;</span></span>
+<span id="cb8-11"><a href="#cb8-11"></a>  <span class="fu">count</span>(year) <span class="sc">|&gt;</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> n)) <span class="sc">+</span></span>
+<span id="cb8-13"><a href="#cb8-13"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Jahr"</span>, <span class="at">y =</span> <span class="st">"Anzahl Artikel"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>14.</strong> Berechnet für <code>word_count</code> passende deskriptive Kenngrößen. Welche Kenngrößen sind für eine verhältnisskalierte Variable sinnvoll? Berechnet Minimum, Maximum, Median, Mittelwert und Standardabweichung. Vergleicht Median und Mittelwert - was sagt euch der Unterschied beider Werte über die Verteilung?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1"></a>news <span class="sc">|&gt;</span></span>
+<span id="cb9-2"><a href="#cb9-2"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb9-3"><a href="#cb9-3"></a>    <span class="at">min    =</span> <span class="fu">min</span>(word_count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb9-4"><a href="#cb9-4"></a>    <span class="at">median =</span> <span class="fu">median</span>(word_count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb9-5"><a href="#cb9-5"></a>    <span class="at">mean   =</span> <span class="fu">mean</span>(word_count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb9-6"><a href="#cb9-6"></a>    <span class="at">max    =</span> <span class="fu">max</span>(word_count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb9-7"><a href="#cb9-7"></a>    <span class="at">sd     =</span> <span class="fu">sd</span>(word_count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb9-8"><a href="#cb9-8"></a>  )</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>15.</strong> Erstellt für <code>word_count</code> ein einfaches Histogramm mit <code>ggplot2</code>. Wählt eine sinnvolle Anzahl an Balken (<code>bins</code>). Beschreibt die Verteilung: Ist sie symmetrisch, linksschief oder rechtsschief? Gibt es Ausreißer?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1"></a>news <span class="sc">|&gt;</span></span>
+<span id="cb10-2"><a href="#cb10-2"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> word_count)) <span class="sc">+</span></span>
+<span id="cb10-3"><a href="#cb10-3"></a>  <span class="fu">geom_histogram</span>(<span class="at">bins =</span> <span class="dv">50</span>) <span class="sc">+</span></span>
+<span id="cb10-4"><a href="#cb10-4"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Wortanzahl"</span>, <span class="at">y =</span> <span class="st">"Häufigkeit"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Die Verteilung ist typischerweise rechtsschief: Viele Artikel sind relativ kurz, wenige sehr lang.</p>
+<div class="task">
+<p><strong>16.</strong> Für nominalskalierte Variablen ist der Modus die geeignete Maßzahl. Ermittelt die häufigste Ausprägung (<em>Modus</em>) für <code>ressort</code> und für <code>tag</code>. Stellt die Häufigkeitsverteilung der Ressorts anschließend als Balkendiagramm dar. Sortiert die Balken nach Häufigkeit.</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1"></a>news <span class="sc">|&gt;</span> <span class="fu">count</span>(ressort, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">slice_max</span>(n, <span class="at">n =</span> <span class="dv">1</span>)</span>
+<span id="cb11-2"><a href="#cb11-2"></a>news <span class="sc">|&gt;</span> <span class="fu">count</span>(tag, <span class="at">sort =</span> <span class="cn">TRUE</span>) <span class="sc">|&gt;</span> <span class="fu">slice_max</span>(n, <span class="at">n =</span> <span class="dv">1</span>)</span>
+<span id="cb11-3"><a href="#cb11-3"></a></span>
+<span id="cb11-4"><a href="#cb11-4"></a>news <span class="sc">|&gt;</span></span>
+<span id="cb11-5"><a href="#cb11-5"></a>  <span class="fu">count</span>(ressort) <span class="sc">|&gt;</span></span>
+<span id="cb11-6"><a href="#cb11-6"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_reorder</span>(ressort, n), <span class="at">y =</span> n)) <span class="sc">+</span></span>
+<span id="cb11-7"><a href="#cb11-7"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb11-8"><a href="#cb11-8"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb11-9"><a href="#cb11-9"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Ressort"</span>, <span class="at">y =</span> <span class="st">"Anzahl Artikel"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>17.</strong> Berechnet die mittlere Wortanzahl getrennt nach <code>ressort</code>. Welches Ressort produziert im Schnitt die längsten Artikel? Stellt das Ergebnis als horizontales Balkendiagramm dar.</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1"></a>news <span class="sc">|&gt;</span></span>
+<span id="cb12-2"><a href="#cb12-2"></a>  <span class="fu">group_by</span>(ressort) <span class="sc">|&gt;</span></span>
+<span id="cb12-3"><a href="#cb12-3"></a>  <span class="fu">summarise</span>(<span class="at">mittlere_wortanzahl =</span> <span class="fu">mean</span>(word_count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)) <span class="sc">|&gt;</span></span>
+<span id="cb12-4"><a href="#cb12-4"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> <span class="fu">fct_reorder</span>(ressort, mittlere_wortanzahl), <span class="at">y =</span> mittlere_wortanzahl)) <span class="sc">+</span></span>
+<span id="cb12-5"><a href="#cb12-5"></a>  <span class="fu">geom_col</span>() <span class="sc">+</span></span>
+<span id="cb12-6"><a href="#cb12-6"></a>  <span class="fu">coord_flip</span>() <span class="sc">+</span></span>
+<span id="cb12-7"><a href="#cb12-7"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Ressort"</span>, <span class="at">y =</span> <span class="st">"Mittlere Wortanzahl"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="schritt-5-unstrukturierte-variablen---texte-erkunden" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-5-unstrukturierte-variablen---texte-erkunden">Schritt 5: Unstrukturierte Variablen - Texte erkunden</h2>
+<div class="task">
+<p><strong>18.</strong> Betrachtet die Variablen <code>title</code>, <code>shorttext</code> und <code>text</code>. Was unterscheidet sie von den bisher analysierten Variablen? Warum lassen sich auf diese Variablen keine klassischen deskriptiven Statistiken wie Mittelwert oder Median anwenden?</p>
+</div>
+<p>Texte sind unstrukturierte Daten. Bevor man sie quantitativ analysieren kann, muss man sie in eine strukturierte Form überführen, etwa durch Zählen von Zeichen, Wörtern oder Mustern.</p>
+<div class="task">
+<p><strong>19.</strong> Eine einfache Form von Struktur ist die Länge eines Textes. Berechnet mit <code>str_length()</code> die Zeichenlänge der Variablen <code>title</code> und speichert sie als neue Variable <code>title_length</code>. Berechnet dann Minimum, Median und Maximum. Was ist der kürzeste und was der längste Titel im Datensatz?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1"></a>news <span class="ot">&lt;-</span> news <span class="sc">|&gt;</span></span>
+<span id="cb13-2"><a href="#cb13-2"></a>  <span class="fu">mutate</span>(<span class="at">title_length =</span> <span class="fu">str_length</span>(title))</span>
+<span id="cb13-3"><a href="#cb13-3"></a></span>
+<span id="cb13-4"><a href="#cb13-4"></a>news <span class="sc">|&gt;</span></span>
+<span id="cb13-5"><a href="#cb13-5"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb13-6"><a href="#cb13-6"></a>    <span class="at">min    =</span> <span class="fu">min</span>(title_length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb13-7"><a href="#cb13-7"></a>    <span class="at">median =</span> <span class="fu">median</span>(title_length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb13-8"><a href="#cb13-8"></a>    <span class="at">max    =</span> <span class="fu">max</span>(title_length, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-9"><a href="#cb13-9"></a>  )</span>
+<span id="cb13-10"><a href="#cb13-10"></a></span>
+<span id="cb13-11"><a href="#cb13-11"></a>news <span class="sc">|&gt;</span> <span class="fu">slice_min</span>(title_length) <span class="sc">|&gt;</span> <span class="fu">select</span>(title, title_length)</span>
+<span id="cb13-12"><a href="#cb13-12"></a>news <span class="sc">|&gt;</span> <span class="fu">slice_max</span>(title_length) <span class="sc">|&gt;</span> <span class="fu">select</span>(title, title_length)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>20.</strong> Nutzt <code>str_count()</code> mit einem Leerzeichen als Muster (<code>" "</code>), um die Anzahl der Wörter in <code>title</code> zu schätzen. Speichert das Ergebnis als <code>title_word_count</code>. Wie viele Wörter hat ein typischer Tagesschau-Titel im Median?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1"></a>news <span class="ot">&lt;-</span> news <span class="sc">|&gt;</span></span>
+<span id="cb14-2"><a href="#cb14-2"></a>  <span class="fu">mutate</span>(<span class="at">title_word_count =</span> <span class="fu">str_count</span>(title, <span class="st">" "</span>) <span class="sc">+</span> <span class="dv">1</span>)</span>
+<span id="cb14-3"><a href="#cb14-3"></a></span>
+<span id="cb14-4"><a href="#cb14-4"></a>news <span class="sc">|&gt;</span></span>
+<span id="cb14-5"><a href="#cb14-5"></a>  <span class="fu">summarise</span>(<span class="at">median_woerter =</span> <span class="fu">median</span>(title_word_count, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>21.</strong> Texte lassen sich auch durch das Suchen nach bestimmten Mustern (Schlüsselwörter) strukturieren. Erstellt mit <code>str_detect()</code> eine logische Variable <code>mentions_ukraine</code>, die angibt, ob der Titel das Wort “Ukraine” enthält. Wie viele Artikel erwähnen die Ukraine im Titel? In welchem Jahr gab es die meisten solchen Artikel? Wie ist die zeitliche Entwicklung?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1"></a>news <span class="ot">&lt;-</span> news <span class="sc">|&gt;</span></span>
+<span id="cb15-2"><a href="#cb15-2"></a>  <span class="fu">mutate</span>(<span class="at">mentions_ukraine =</span> <span class="fu">str_detect</span>(title, <span class="st">"Ukraine"</span>))</span>
+<span id="cb15-3"><a href="#cb15-3"></a></span>
+<span id="cb15-4"><a href="#cb15-4"></a>news <span class="sc">|&gt;</span> <span class="fu">summarise</span>(<span class="at">n_ukraine =</span> <span class="fu">sum</span>(mentions_ukraine, <span class="at">na.rm =</span> <span class="cn">TRUE</span>))</span>
+<span id="cb15-5"><a href="#cb15-5"></a></span>
+<span id="cb15-6"><a href="#cb15-6"></a>news <span class="sc">|&gt;</span></span>
+<span id="cb15-7"><a href="#cb15-7"></a>  <span class="fu">filter</span>(mentions_ukraine) <span class="sc">|&gt;</span></span>
+<span id="cb15-8"><a href="#cb15-8"></a>  <span class="fu">count</span>(year) <span class="sc">|&gt;</span></span>
+<span id="cb15-9"><a href="#cb15-9"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> n)) <span class="sc">+</span></span>
+<span id="cb15-10"><a href="#cb15-10"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb15-11"><a href="#cb15-11"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb15-12"><a href="#cb15-12"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Jahr"</span>, <span class="at">y =</span> <span class="st">"Artikel mit 'Ukraine' im Titel"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>22.</strong> Untersucht auf dieselbe Weise ein zweites Thema eurer Wahl (z. B. “Klimawandel”, “Corona”, “USA”, “Bundestagswahl”, “Iran”). Zählt die Treffer pro Jahr und stellt die zeitliche Entwicklung als Liniendiagramm dar. Wie könnt ihr beide Themen in einem Diagramm vergleichen? Welche Erkenntnisse könnt ihr daraus ziehen?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1"></a>news <span class="ot">&lt;-</span> news <span class="sc">|&gt;</span></span>
+<span id="cb16-2"><a href="#cb16-2"></a>  <span class="fu">mutate</span>(<span class="at">mentions_klimawandel =</span> <span class="fu">str_detect</span>(title, <span class="st">"Klimawandel"</span>))</span>
+<span id="cb16-3"><a href="#cb16-3"></a></span>
+<span id="cb16-4"><a href="#cb16-4"></a>news <span class="sc">|&gt;</span></span>
+<span id="cb16-5"><a href="#cb16-5"></a>  <span class="fu">group_by</span>(year) <span class="sc">|&gt;</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a>  <span class="fu">summarise</span>(</span>
+<span id="cb16-7"><a href="#cb16-7"></a>    <span class="at">Ukraine     =</span> <span class="fu">sum</span>(mentions_ukraine, <span class="at">na.rm =</span> <span class="cn">TRUE</span>),</span>
+<span id="cb16-8"><a href="#cb16-8"></a>    <span class="at">Klimawandel =</span> <span class="fu">sum</span>(mentions_klimawandel, <span class="at">na.rm =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-9"><a href="#cb16-9"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb16-10"><a href="#cb16-10"></a>  <span class="fu">pivot_longer</span>(</span>
+<span id="cb16-11"><a href="#cb16-11"></a>    <span class="at">cols =</span> <span class="fu">c</span>(Ukraine, Klimawandel),</span>
+<span id="cb16-12"><a href="#cb16-12"></a>    <span class="at">names_to =</span> <span class="st">"thema"</span>,</span>
+<span id="cb16-13"><a href="#cb16-13"></a>    <span class="at">values_to =</span> <span class="st">"n"</span></span>
+<span id="cb16-14"><a href="#cb16-14"></a>  ) <span class="sc">|&gt;</span></span>
+<span id="cb16-15"><a href="#cb16-15"></a>  <span class="fu">ggplot</span>(<span class="fu">aes</span>(<span class="at">x =</span> year, <span class="at">y =</span> n, <span class="at">color =</span> thema)) <span class="sc">+</span></span>
+<span id="cb16-16"><a href="#cb16-16"></a>  <span class="fu">geom_line</span>() <span class="sc">+</span></span>
+<span id="cb16-17"><a href="#cb16-17"></a>  <span class="fu">geom_point</span>() <span class="sc">+</span></span>
+<span id="cb16-18"><a href="#cb16-18"></a>  <span class="fu">labs</span>(<span class="at">x =</span> <span class="st">"Jahr"</span>, <span class="at">y =</span> <span class="st">"Anzahl Artikel"</span>, <span class="at">color =</span> <span class="st">"Thema"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="schritt-6-reflexion" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-6-reflexion">Schritt 6: Reflexion</h2>
+<div class="task">
+<p><strong>23.</strong> Fasst den Unterschied zwischen strukturierten und unstrukturierten Variablen in eigenen Worten zusammen. Welche Analyseschritte waren für beide Variablentypen möglich, und welche nur für strukturierte?</p>
+</div>
+<p>Strukturierte Variablen erlauben direkte mathematische Operationen und standardisierte deskriptive Statistik. Unstrukturierte Texte müssen zuerst in Merkmale übersetzt werden.</p>
+<div class="task">
+<p><strong>24.</strong> Welche Einschränkungen hat die einfache Textanalyse mit <code>str_detect()</code> im Vergleich zu einer vollwertigen inhaltsanalytischen Auswertung? Nennt mindestens zwei Probleme, die bei der Schlüsselwortsuche auftreten können.</p>
+</div>
+<p>Typische Probleme sind falsch-positive Treffer, falsch-negative Treffer und die fehlende semantische Kontextberücksichtigung.</p>
+<div class="task">
+<p><strong>25.</strong> Betrachtet die Variable <code>ressort</code>. Sie wurde beim Einlesen als <code>character</code> gespeichert, aber ihr habt sie in einen Faktor umgewandelt. Welchen praktischen Unterschied macht das bei der Analyse und Visualisierung in R?</p>
+</div>
+<p>Faktoren halten Ausprägungen explizit fest und unterstützen eine kontrollierte Reihenfolge sowie stabilere Ausgaben in Tabellen, Modellen und Grafiken.</p>
+<div class="task">
+<p><strong>26.</strong> Der Datensatz enthält Artikel aus fast zwei Jahrzehnten. Welche Probleme könnten bei einem Vergleich von Artikeln aus dem Jahr 2006 mit solchen aus dem Jahr 2024 entstehen? Denkt dabei auch an mögliche Veränderungen im Datensatz oder der Datenquelle selbst.</p>
+</div>
+<p>Über längere Zeiträume können sich Ressorts, Webseitenstrukturen, Erfassungslogiken und Datenqualität verändern. Solche Änderungen können Trends erzeugen, die nicht inhaltlich, sondern technisch bedingt sind.</p>
+</section>
+<section id="zusatzmaterial" class="level2">
+<h2 class="anchored" data-anchor-id="zusatzmaterial">Zusatzmaterial</h2>
+<p>Zu diesem Experiment gibt es folgendes Zusatzmaterial:</p>
+<ul>
+<li><a href="experiment-explore-structured-unstructured.pdf">Aufgabenblatt als PDF</a></li>
+<li><a href="experiment-explore-structured-unstructured.qmd.txt" download="experiment-explore-structured-unstructured.qmd">Quarto-Notebook mit ausführbarem R-Code</a></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+        for (let i=0; i<annoteTargets.length; i++) {
+          const annoteTarget = annoteTargets[i];
+          const targetCell = annoteTarget.getAttribute("data-target-cell");
+          const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+          const contentFn = () => {
+            const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+            if (content) {
+              const tipContent = content.cloneNode(true);
+              tipContent.classList.add("code-annotation-tip-content");
+              return tipContent.outerHTML;
+            }
+          }
+          const config = {
+            allowHTML: true,
+            content: contentFn,
+            onShow: (instance) => {
+              selectCodeLines(instance.reference);
+              instance.reference.classList.add('code-annotation-active');
+              window.tippy.hideAll();
+            },
+            onHide: (instance) => {
+              unselectCodeLines();
+              instance.reference.classList.remove('code-annotation-active');
+            },
+            maxWidth: 300,
+            delay: [50, 0],
+            duration: [200, 0],
+            offset: [5, 10],
+            arrow: true,
+            appendTo: function(el) {
+              return el.parentElement.parentElement.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'quarto',
+            placement: 'right',
+            popperOptions: {
+              modifiers: [
+              {
+                name: 'flip',
+                options: {
+                  flipVariations: false, // true by default
+                  allowedAutoPlacements: ['right'],
+                  fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
+                },
+              },
+              {
+                name: 'preventOverflow',
+                options: {
+                  mainAxis: false,
+                  altAxis: false
+                }
+              }
+              ]        
+            }      
+          };
+          window.tippy(annoteTarget, config); 
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../index.html" class="pagination-link" aria-label="Preface">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Preface</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../experiments/experiment-news-transform.html" class="pagination-link" aria-label="Transformieren">
+        <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Transformieren</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
