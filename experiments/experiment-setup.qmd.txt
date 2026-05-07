@@ -1,0 +1,27 @@
+---
+title: "Notebook für die Übung: Datenanalyseumgebung einrichten"
+subtitle: "Positron, R, Python und Quarto"
+author: "Prof. Dr. Nicolas Meseth"
+---
+
+
+Bevor es losgeht ...
+
+## Schritt 1: R installieren
+
+## Schritt 2: Python installieren
+
+## Schritt 3: Positron installieren
+
+## Schritt 4: Ein Projekt einrichten
+
+## Schritt 5: Quarto einrichten und testen
+
+## Schritt 6: Kleine Zusatzhelfer
+
+- Git
+- Erweiterungen für Positron
+- Pakete für R und Python
+- Codex und Claude Code
+
+
