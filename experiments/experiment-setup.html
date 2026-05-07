@@ -110,6 +110,35 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   }
 }</script>
 
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN" && texText && texText.data) {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
 
 <link rel="stylesheet" href="../styles.css">
 </head>
@@ -301,7 +330,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>Für Windows gibt es einen einfachen Installer unter <em>Download R for Windows → base</em>. Unter macOS ladet ihr das <code>.pkg</code>-Paket herunter. Auf Ubuntu/Debian-Linux ist R über den Paketmanager verfügbar (<code>sudo apt install r-base</code>) und automatisch im PATH.</p>
 <p>Neuere R-Versionen fügen sich unter Windows automatisch zum PATH hinzu. Falls <code>R --version</code> im Terminal dennoch nicht funktioniert, öffnet <em>RGui</em> über das Startmenü, führt <code>R.home("bin")</code> aus und tragt den angezeigten Pfad manuell in <em>Systemsteuerung → System → Erweiterte Systemeinstellungen → Umgebungsvariablen → Path</em> ein.</p>
 <div class="task">
-<p><strong>2.</strong> Überprüft die Installation: Öffnet ein Terminal (PowerShell) und gebt <code>R.exe --version</code> ein. Welche Version wird angezeigt?</p>
+<p><strong>2.</strong> Überprüft die Installation: Öffnet ein Terminal (unter Windows z. B. PowerShell) und gebt <code>R.exe --version</code> ein. Welche Version wird angezeigt?</p>
 </div>
 <p>Die Ausgabe sollte z. B. <code>R version 4.5.2 (2025-04-11)</code> zeigen. Unter Windows ist <code>R.exe</code> statt <code>R</code> wichtig: PowerShell hat <code>r</code> als Alias für den Befehl <code>Invoke-History</code> definiert, der Vorrang vor dem Programm im PATH hat. Mit der <code>.exe</code>-Extension umgeht ihr diesen Alias. Alternativ könnt ihr R über das Startmenü öffnen (<em>RGui</em>) und dort <code>R.version.string</code> in der Konsole ausführen.</p>
 </section>
@@ -313,7 +342,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 <p>Unter macOS empfiehlt sich die Installation über Homebrew: <code>brew install python</code>. Wer bereits <code>pyenv</code> oder <code>conda</code> verwendet, kann diese Umgebungsmanager weiternutzen, sollte aber sicherstellen, dass Positron die Python-Installation automatisch erkennt.</p>
 <div class="task">
-<p><strong>4.</strong> Öffnet ein Terminal und überprüft die Python-Installation mit <code>python --version</code> (unter macOS und Linux ggf. <code>python3 --version</code>). Stellt sicher, dass die angezeigte Version ≥ 3.12 ist.</p>
+<p><strong>4.</strong> Öffnet ein Terminal und überprüft die Python-Installation mit <code>python --version</code> (unter macOS und Linux ggf. <code>python3 --version</code>). Stellt sicher, dass die angezeigte Version <span class="math inline">\(\geq\)</span> 3.12 ist.</p>
 </div>
 <p>Falls nur eine ältere Version angezeigt wird oder der Befehl nicht gefunden wird, prüft, ob Python korrekt zur PATH-Variable hinzugefügt wurde. Unter Windows öffnet die Systemsteuerung und sucht nach <em>Umgebungsvariablen bearbeiten</em>.</p>
 </section>

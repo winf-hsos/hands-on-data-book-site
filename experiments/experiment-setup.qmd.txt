@@ -14,7 +14,7 @@ R ist die primäre Sprache für diesen Kurs. Sie deckt den gesamten Analyseproze
 **1.** Öffnet die Website [cran.r-project.org](https://cran.r-project.org) und ladet die aktuelle R-Version für euer Betriebssystem herunter. Führt das Installationsprogramm mit den Standardeinstellungen aus.
 
 
-**2.** Überprüft die Installation: Öffnet ein Terminal (PowerShell) und gebt `R.exe --version` ein. Welche Version wird angezeigt?
+**2.** Überprüft die Installation: Öffnet ein Terminal (unter Windows z. B. PowerShell) und gebt `R.exe --version` ein. Welche Version wird angezeigt?
 
 ```{r}
 # Verify your R installation from within R
@@ -29,7 +29,7 @@ Python verwenden wir als Ergänzung zu R, vor allem für den Zugriff auf KI-Mode
 **3.** Ladet die neueste Version von Python von [python.org](https://www.python.org) herunter. Achtet bei der Installation unter Windows darauf, die Option *Add Python to PATH* zu aktivieren. Führt das Installationsprogramm mit den Standardeinstellungen aus.
 
 
-**4.** Öffnet ein Terminal und überprüft die Python-Installation mit `python --version` (unter macOS und Linux ggf. `python3 --version`). Stellt sicher, dass die angezeigte Version ≥ 3.12 ist.
+**4.** Öffnet ein Terminal und überprüft die Python-Installation mit `python --version` (unter macOS und Linux ggf. `python3 --version`). Stellt sicher, dass die angezeigte Version $\geq$ 3.12 ist.
 
 
 ## Schritt 3: Positron installieren
@@ -62,7 +62,7 @@ Gut organisierte Projekte sind die Grundlage reproduzierbarer Analysen. Jedes Pr
 ```
 
 
-**9.** Installiert die folgenden Grundpakete für den Kurs: `tidyverse`, `janitor` und `skimr`. Verwendet das Metapaket `pacman`, das ihr zuerst installieren müsst, falls es noch nicht vorhanden ist. Überprüft nach der Installation, dass alle drei Pakete fehlerfrei geladen werden können.
+**9.** Installiert die folgenden Grundpakete für alle Kurse: `tidyverse`, `janitor` und `skimr`. Verwendet das Metapaket `pacman`, das ihr zuerst installieren müsst, falls es noch nicht vorhanden ist. Überprüft nach der Installation, dass alle drei Pakete fehlerfrei geladen werden können.
 
 ```{r}
 # Install and load the core course packages

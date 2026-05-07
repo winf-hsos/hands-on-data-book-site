@@ -25,7 +25,7 @@
     "href": "experiments/experiment-setup.html#schritt-1-r-installieren",
     "title": "Eine Datenanalyseumgebung einrichten",
     "section": "",
-    "text": "1. Öffnet die Website cran.r-project.org und ladet die aktuelle R-Version für euer Betriebssystem herunter. Führt das Installationsprogramm mit den Standardeinstellungen aus.\n\n\n\n\n2. Überprüft die Installation: Öffnet ein Terminal (PowerShell) und gebt R.exe --version ein. Welche Version wird angezeigt?",
+    "text": "1. Öffnet die Website cran.r-project.org und ladet die aktuelle R-Version für euer Betriebssystem herunter. Führt das Installationsprogramm mit den Standardeinstellungen aus.\n\n\n\n\n2. Überprüft die Installation: Öffnet ein Terminal (unter Windows z. B. PowerShell) und gebt R.exe --version ein. Welche Version wird angezeigt?",
     "crumbs": [
       "Vorbereitung",
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Umgebung einrichten</span>"
@@ -36,7 +36,7 @@
     "href": "experiments/experiment-setup.html#schritt-2-python-installieren",
     "title": "Eine Datenanalyseumgebung einrichten",
     "section": "Schritt 2: Python installieren",
-    "text": "Schritt 2: Python installieren\nPython verwenden wir als Ergänzung zu R, vor allem für den Zugriff auf KI-Modelle und Python-Bibliotheken, die keine direkte R-Entsprechung haben.\n\n3. Ladet die neueste Version von Python von python.org herunter. Achtet bei der Installation unter Windows darauf, die Option Add Python to PATH zu aktivieren. Führt das Installationsprogramm mit den Standardeinstellungen aus.\n\nUnter macOS empfiehlt sich die Installation über Homebrew: brew install python. Wer bereits pyenv oder conda verwendet, kann diese Umgebungsmanager weiternutzen, sollte aber sicherstellen, dass Positron die Python-Installation automatisch erkennt.\n\n4. Öffnet ein Terminal und überprüft die Python-Installation mit python --version (unter macOS und Linux ggf. python3 --version). Stellt sicher, dass die angezeigte Version ≥ 3.12 ist.\n\nFalls nur eine ältere Version angezeigt wird oder der Befehl nicht gefunden wird, prüft, ob Python korrekt zur PATH-Variable hinzugefügt wurde. Unter Windows öffnet die Systemsteuerung und sucht nach Umgebungsvariablen bearbeiten.",
+    "text": "Schritt 2: Python installieren\nPython verwenden wir als Ergänzung zu R, vor allem für den Zugriff auf KI-Modelle und Python-Bibliotheken, die keine direkte R-Entsprechung haben.\n\n3. Ladet die neueste Version von Python von python.org herunter. Achtet bei der Installation unter Windows darauf, die Option Add Python to PATH zu aktivieren. Führt das Installationsprogramm mit den Standardeinstellungen aus.\n\nUnter macOS empfiehlt sich die Installation über Homebrew: brew install python. Wer bereits pyenv oder conda verwendet, kann diese Umgebungsmanager weiternutzen, sollte aber sicherstellen, dass Positron die Python-Installation automatisch erkennt.\n\n4. Öffnet ein Terminal und überprüft die Python-Installation mit python --version (unter macOS und Linux ggf. python3 --version). Stellt sicher, dass die angezeigte Version \\(\\geq\\) 3.12 ist.\n\nFalls nur eine ältere Version angezeigt wird oder der Befehl nicht gefunden wird, prüft, ob Python korrekt zur PATH-Variable hinzugefügt wurde. Unter Windows öffnet die Systemsteuerung und sucht nach Umgebungsvariablen bearbeiten.",
     "crumbs": [
       "Vorbereitung",
       "<span class='chapter-number'>1</span>  <span class='chapter-title'>Umgebung einrichten</span>"
