@@ -1,0 +1,163 @@
+---
+title: "Notebook für die Übung: Gruppierte Betrachtung von Variablen"
+subtitle: "Am Beispiel der Marktforschungs-Musterstudie"
+author: "Prof. Dr. Nicolas Meseth"
+---
+
+
+```{r}
+#| include: false
+pacman::p_load(tidyverse)
+survey <- read_csv("data/mds12_schoko_milch.csv")
+```
+
+In dieser Übung betrachtet ihr Variablen nicht mehr nur einzeln, sondern in
+Gruppen. Ihr untersucht also, wie sich Häufigkeiten, Mittelwerte und
+Verteilungen verändern, wenn ihr nach Merkmalen wie Geschlecht, Bundesland oder
+Altersgruppe aufteilt. Der Schwerpunkt liegt auf `group_by()`,
+`summarize()`, `mutate()` und darauf, gruppierte Ergebnisse sinnvoll zu
+visualisieren.
+
+## Schritt 1: Erste Schritte mit Gruppierungen
+
+**1.** Erstellt ein neues R-Skript in eurem Projekt und öffnet es für die
+Bearbeitung. Ladet die notwendigen Pakete mittels `p_load` und lest den
+Datensatz der Musterstudie ein.
+
+```{r}
+# Add your solution here
+# Hint: load the required packages and read the survey dataset into an object
+```
+
+
+
+**2.** Beschäftigt euch mit den beiden Transformationen `mutate()` und
+`summarize()`. Was machen beide und was unterscheiden sie? Erklärt, was der
+Unterschied im Ergebnis zwischen den beiden folgenden Befehlen ist.
+
+```{r}
+# Add your solution here
+# Hint: focus on how many rows remain after summarize() versus mutate()
+
+# Was macht summarize?
+survey |>
+  summarize(n_observations = n())
+
+# Was macht mutate?
+survey |>
+  mutate(n_observations = n())
+```
+
+**3.** Welche Abkürzung gibt es für die obige Anwendung von `summarize()`?
+
+```{r}
+# Add your solution here
+# Hint: there is a short dplyr helper for counting rows
+```
+
+**4.** Findet heraus, welchen Effekt ein vorangestelltes `group_by()` auf die
+beiden Transformationen `mutate()` und `summarize()` haben kann. Testet das
+anhand der Variable für das Geschlecht der Probanden.
+
+```{r}
+# Add your solution here
+# Hint: compare grouped summarize() with grouped mutate() using the gender variable
+```
+
+**5.** Welche Visualisierungsform würdet ihr für die Häufigkeiten der
+Bundesländer, F3, verwenden? Wie könnt ihr die Häufigkeiten schnell visuell
+darstellen, ohne manuell gruppieren zu müssen?
+
+```{r}
+# Add your solution here
+# Hint: think about a categorical frequency plot and a ggplot shortcut
+```
+
+**6.** Erstellt eine Gruppierung nach den beiden Merkmalen "Bundesland", F3,
+und "Geschlecht", F4. Ermittelt die Häufigkeiten pro Gruppe.
+
+```{r}
+# Add your solution here
+# Hint: group by both variables before summarizing counts
+```
+
+**7.** Stellt die Häufigkeiten in den Gruppen aus Aufgabe 6 visuell dar.
+Welche Form ist dafür geeignet?
+
+```{r}
+# Add your solution here
+# Hint: compare grouped bars, dodged bars, or faceting
+```
+
+**8.** Stellt nun die *relative* Häufigkeit der Geschlechter für jedes
+Bundesland visuell dar.
+
+```{r}
+# Add your solution here
+# Hint: compute proportions within each state before plotting, or use a proportional bar chart
+```
+
+## Schritt 2: Gruppierte Analysen und Visualisierungen
+
+In diesem Abschnitt verbindet ihr gruppierte Auswertungen mit metrischen und
+ordinalen Variablen. Ziel ist es, nicht nur Häufigkeiten, sondern auch
+Mittelwerte und Verteilungen in Teilgruppen sinnvoll zu beschreiben.
+
+**9.** Wie ist die Preisbereitschaft für Milch der Marke Weihenstephan, F13, in
+den Bundesländern, F3, verteilt?
+
+```{r}
+# Add your solution here
+# Hint: combine a grouped summary with a distribution-oriented visualization
+```
+
+**10.** Wie ist die mittlere Preisbereitschaft für Milch der Marke
+Weihenstephan, F13, in den Bundesländern, F3, pro Geschlecht, F4?
+
+```{r}
+# Add your solution here
+# Hint: group by state and gender before calculating the mean
+```
+
+**11.** Unterscheidet sich die mittlere Preisbereitschaft, F13, zwischen
+Probanden, die Lebensmittel auf dem Wochenmarkt, F8, einkaufen und denen, die
+das nicht tun?
+
+```{r}
+# Add your solution here
+# Hint: build a comparison between market shoppers and non-market shoppers
+```
+
+**12.** Wie ist die mittlere Zustimmung der Probanden nach Bundesland, F3, zur
+folgenden Aussage, F11, "Ich kaufe regionale Lebensmittel, um die regionale
+Wirtschaft zu unterstützen"?
+
+```{r}
+# Add your solution here
+# Hint: compute the mean approval per state after checking the coding of the item
+```
+
+**13.** In welchem Bundesland, F3, ist die mittlere Zustimmung zur Aussage,
+F12, "Ich esse gerne Essen aus anderen Kulturen" am höchsten?
+
+```{r}
+# Add your solution here
+# Hint: summarize by state, sort descending, and inspect the top result
+```
+
+**14.** Wie ist der Preis für Milch der Marke Weihenstephan, bei dem das
+Produkt noch als günstig eingeschätzt wird, F16, über die Altersgruppen, F2,
+verteilt?
+
+```{r}
+# Add your solution here
+# Hint: compare the distribution of F16 across age groups, not only the means
+```
+
+**15.** Wie ist die mittlere Mediennutzung, F216, in den unterschiedlichen
+Altersklassen, F2, ausgeprägt?
+
+```{r}
+# Add your solution here
+# Hint: decide first which media variable or media index should be summarized
+```

@@ -1,0 +1,1487 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.3">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Prof.&nbsp;Dr.&nbsp;Nicolas Meseth">
+<meta name="description" content="An online-book with hands-on exercises to dive into the world of data.">
+
+<title>6&nbsp; LLM-gestützte Textanalyse – Hands-On Exploratory Data Analytics</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../experiments/survey/experiment-survey-explore-variables.html" rel="next">
+<link href="../../experiments/news/experiment-news-rule-based-text-analysis.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e44360b8a8db1e130c7792fece1c8032.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-b8d9931f9950fed7c9eff99d2a950632.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../experiments/news/experiment-news-explore-structured-unstructured.html">Tagesschau</a></li><li class="breadcrumb-item"><a href="../../experiments/news/experiment-news-llm.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">LLM-gestützte Textanalyse</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Hands-On Exploratory Data Analytics</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Vorwort</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Vorbereitung</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../experiments/intro/experiment-setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Umgebung einrichten</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Tagesschau</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../experiments/news/experiment-news-explore-structured-unstructured.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Erkunden</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../experiments/news/experiment-news-transform.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Transformieren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../experiments/news/experiment-news-visualize.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Visualisieren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../experiments/news/experiment-news-rule-based-text-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Regelbasierte Textanalyse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../experiments/news/experiment-news-llm.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">LLM-gestützte Textanalyse</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Umfrage</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../experiments/survey/experiment-survey-explore-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Variablen erkunden</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../experiments/survey/experiment-survey-viewing-grouped-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Gruppierte Betrachtung von Variablen</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Literaturverzeichnis</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#schritt-1-llms-einrichten-und-testen" id="toc-schritt-1-llms-einrichten-und-testen" class="nav-link active" data-scroll-target="#schritt-1-llms-einrichten-und-testen">Schritt 1: LLMs einrichten und testen</a></li>
+  <li><a href="#schritt-2-analysecorpus-aufbauen" id="toc-schritt-2-analysecorpus-aufbauen" class="nav-link" data-scroll-target="#schritt-2-analysecorpus-aufbauen">Schritt 2: Analysecorpus aufbauen</a></li>
+  <li><a href="#schritt-3-einfache-nlp-aufgaben-mit-llms" id="toc-schritt-3-einfache-nlp-aufgaben-mit-llms" class="nav-link" data-scroll-target="#schritt-3-einfache-nlp-aufgaben-mit-llms">Schritt 3: Einfache NLP-Aufgaben mit LLMs</a></li>
+  <li><a href="#schritt-4-ressort-klassifikation-und-evaluation" id="toc-schritt-4-ressort-klassifikation-und-evaluation" class="nav-link" data-scroll-target="#schritt-4-ressort-klassifikation-und-evaluation">Schritt 4: Ressort-Klassifikation und Evaluation</a></li>
+  <li><a href="#schritt-5-sentiment-analyse-im-zeitverlauf" id="toc-schritt-5-sentiment-analyse-im-zeitverlauf" class="nav-link" data-scroll-target="#schritt-5-sentiment-analyse-im-zeitverlauf">Schritt 5: Sentiment-Analyse im Zeitverlauf</a></li>
+  <li><a href="#schritt-6-wer-spricht-über-wen" id="toc-schritt-6-wer-spricht-über-wen" class="nav-link" data-scroll-target="#schritt-6-wer-spricht-über-wen">Schritt 6: Wer spricht über wen?</a></li>
+  <li><a href="#schritt-7-framing-analyse-mit-llms" id="toc-schritt-7-framing-analyse-mit-llms" class="nav-link" data-scroll-target="#schritt-7-framing-analyse-mit-llms">Schritt 7: Framing-Analyse mit LLMs</a></li>
+  <li><a href="#schritt-8-reflexion" id="toc-schritt-8-reflexion" class="nav-link" data-scroll-target="#schritt-8-reflexion">Schritt 8: Reflexion</a></li>
+  <li><a href="#zusatzmaterial" id="toc-zusatzmaterial" class="nav-link" data-scroll-target="#zusatzmaterial">Zusatzmaterial</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../experiments/news/experiment-news-explore-structured-unstructured.html">Tagesschau</a></li><li class="breadcrumb-item"><a href="../../experiments/news/experiment-news-llm.html"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">LLM-gestützte Textanalyse</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">LLM-gestützte Textanalyse</span></h1>
+<p class="subtitle lead">Am Beispiel der Tagesschau-Daten</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Prof.&nbsp;Dr.&nbsp;Nicolas Meseth </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Die regelbasierte Textanalyse hat eine entscheidende Schwäche: Ihr müsst im Voraus wissen, wonach ihr sucht. Wörterbücher müssen manuell erstellt werden, Verneinungen bleiben unsichtbar, und kontextuelles Verstehen ist kaum möglich. Große Sprachmodelle (LLMs) versprechen, genau diese Grenzen zu überwinden: Statt Muster zu suchen, lesen und interpretieren sie Text. In diesem Experiment lernt ihr, wie ihr LLMs systematisch für Textanalyseaufgaben einsetzen könnt – und wo ihre eigenen Grenzen liegen. Das Experiment baut direkt auf dem vorherigen Experiment zur regelbasierten Textanalyse auf und stellt denselben Tagesschau-Datensatz in einen neuen methodischen Kontext.</p>
+<section id="schritt-1-llms-einrichten-und-testen" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-1-llms-einrichten-und-testen">Schritt 1: LLMs einrichten und testen</h2>
+<p>Bevor ihr mit der eigentlichen Analyse beginnt, richtet ihr zwei Zugangswege ein: ein lokal laufendes Modell für datenschutzsensitive und kostenfreie Experimente sowie einen Cloud-Zugang für leistungsstärkere Modelle.</p>
+<div class="task">
+<p><strong>1.</strong> Ladet <a href="https://lmstudio.ai">LM Studio</a> herunter und installiert es. Öffnet LM Studio und ladet über die Suchfunktion ein deutschsprachig-kompetentes Modell, zum Beispiel das kleine <em>Gemma 4 E2B</em>. Öffnet nach dem Laden die Chat-Oberfläche und stellt dem Modell eine einfache Frage auf Deutsch: „Was ist die Tagesschau?”</p>
+<p>Beschreibt in zwei Sätzen: Wie kompetent wirkt das Modell? Gibt es Fehler oder Auffälligkeiten in der Antwort?</p>
+</div>
+<p>Gemma 3 4B liefert auf diese Frage eine gut strukturierte, weitgehend korrekte Antwort zur Tagesschau. Die Aufzählung der Ressorts ist jedoch oft unvollständig oder enthält veraltete Informationen, was auf die Wissenslücke nach dem Trainings-Cutoff des Modells hindeutet. Bei sehr aktuellen Ereignissen oder spezifischem Redaktionswissen versagen kleine lokale Modelle erwartungsgemäß.</p>
+<div class="task">
+<p><strong>2.</strong> Startet den lokalen Server in LM Studio über <em>Local Server → Start Server</em>. Installiert anschließend in eurem Python-Projekt die notwendigen Pakete:</p>
+<pre><code>pip install openai pandas matplotlib seaborn tqdm scikit-learn</code></pre>
+<p>Importiert alle Bibliotheken und definiert zwei Variablen: <code>MODEL_LOCAL</code> (Modellname aus LM Studio, z.B. <code>"gemma-3-4b-it"</code> – den genauen Namen findet ihr unter <em>My Models</em>) und <code>MODEL_OPENAI</code> (z.B. <code>"gpt-4o-mini"</code>).</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb2"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1"></a><span class="im">from</span> openai <span class="im">import</span> OpenAI</span>
+<span id="cb2-2"><a href="#cb2-2"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb2-3"><a href="#cb2-3"></a><span class="im">import</span> json</span>
+<span id="cb2-4"><a href="#cb2-4"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb2-5"><a href="#cb2-5"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb2-6"><a href="#cb2-6"></a><span class="im">from</span> tqdm <span class="im">import</span> tqdm</span>
+<span id="cb2-7"><a href="#cb2-7"></a><span class="im">import</span> os</span>
+<span id="cb2-8"><a href="#cb2-8"></a></span>
+<span id="cb2-9"><a href="#cb2-9"></a>MODEL_LOCAL  <span class="op">=</span> <span class="st">"gemma-3-4b-it"</span></span>
+<span id="cb2-10"><a href="#cb2-10"></a>MODEL_OPENAI <span class="op">=</span> <span class="st">"gpt-4o-mini"</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>3.</strong> Erstellt zwei Clients: einen für LM Studio und einen für die OpenAI API. LM Studio stellt eine OpenAI-kompatible API unter <code>http://localhost:1234/v1</code> bereit – ihr könnt das <code>openai</code>-Paket verwenden und lediglich <code>base_url</code> anpassen. Testet beide Verbindungen mit einer einfachen Anfrage: „Nenne mir in einem Satz, worum es bei der Tagesschau geht.” Gebt die Antworten beider Modelle aus.</p>
+<p>Hinweis: Speichert den OpenAI-API-Schlüssel als Umgebungsvariable <code>OPENAI_API_KEY</code>, anstatt ihn direkt im Code einzubetten.</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1"></a>client_local <span class="op">=</span> OpenAI(</span>
+<span id="cb3-2"><a href="#cb3-2"></a>    base_url<span class="op">=</span><span class="st">"http://localhost:1234/v1"</span>,</span>
+<span id="cb3-3"><a href="#cb3-3"></a>    api_key<span class="op">=</span><span class="st">"lm-studio"</span></span>
+<span id="cb3-4"><a href="#cb3-4"></a>)</span>
+<span id="cb3-5"><a href="#cb3-5"></a>client_openai <span class="op">=</span> OpenAI(api_key<span class="op">=</span>os.environ[<span class="st">"OPENAI_API_KEY"</span>])</span>
+<span id="cb3-6"><a href="#cb3-6"></a></span>
+<span id="cb3-7"><a href="#cb3-7"></a>test_question <span class="op">=</span> <span class="st">"Nenne mir in einem Satz, worum es bei der Tagesschau geht."</span></span>
+<span id="cb3-8"><a href="#cb3-8"></a></span>
+<span id="cb3-9"><a href="#cb3-9"></a><span class="cf">for</span> name, client, model <span class="kw">in</span> [</span>
+<span id="cb3-10"><a href="#cb3-10"></a>    (<span class="st">"Local"</span>,  client_local,  MODEL_LOCAL),</span>
+<span id="cb3-11"><a href="#cb3-11"></a>    (<span class="st">"OpenAI"</span>, client_openai, MODEL_OPENAI),</span>
+<span id="cb3-12"><a href="#cb3-12"></a>]:</span>
+<span id="cb3-13"><a href="#cb3-13"></a>    response <span class="op">=</span> client.chat.completions.create(</span>
+<span id="cb3-14"><a href="#cb3-14"></a>        model<span class="op">=</span>model,</span>
+<span id="cb3-15"><a href="#cb3-15"></a>        messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: test_question}],</span>
+<span id="cb3-16"><a href="#cb3-16"></a>        temperature<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb3-17"><a href="#cb3-17"></a>    )</span>
+<span id="cb3-18"><a href="#cb3-18"></a>    <span class="bu">print</span>(<span class="ss">f"[</span><span class="sc">{</span>name<span class="sc">}</span><span class="ss">] </span><span class="sc">{</span>response<span class="sc">.</span>choices[<span class="dv">0</span>]<span class="sc">.</span>message<span class="sc">.</span>content<span class="sc">.</span>strip()<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>4.</strong> Vergleicht lokale und Cloud-basierte LLMs anhand von vier Dimensionen. Füllt die folgende Tabelle aus und begründet eure Einschätzungen kurz:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Dimension</th>
+<th>Lokal (LM Studio)</th>
+<th>Cloud (ChatGPT)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Kosten</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Datenschutz</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Leistungsfähigkeit</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Geschwindigkeit</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Wann würdet ihr welche Variante bevorzugen?</p>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 16%">
+<col style="width: 40%">
+<col style="width: 42%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Dimension</th>
+<th>Lokal (LM Studio)</th>
+<th>Cloud (ChatGPT)</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Kosten</td>
+<td>Einmalige Hardware-Kosten, danach kostenlos</td>
+<td>Pro Token abgerechnet, kann bei großen Korpora teuer werden</td>
+</tr>
+<tr class="even">
+<td>Datenschutz</td>
+<td>Daten verlassen den Rechner nicht</td>
+<td>Daten werden an externe Server übertragen</td>
+</tr>
+<tr class="odd">
+<td>Leistungsfähigkeit</td>
+<td>Begrenzt durch verfügbare Hardware (RAM/GPU)</td>
+<td>State-of-the-Art-Modelle, deutlich leistungsstärker</td>
+</tr>
+<tr class="even">
+<td>Geschwindigkeit</td>
+<td>Langsam (CPU/RAM-limitiert ohne dedizierte GPU)</td>
+<td>Schnell und gut parallelisierbar</td>
+</tr>
+</tbody>
+</table>
+<p>Faustregel: Für Experimente, Prototypen und datenschutzsensitive Projekte → lokal. Für Produktionsanalysen mit hohen Qualitätsanforderungen und großem Maßstab → Cloud.</p>
+</section>
+<section id="schritt-2-analysecorpus-aufbauen" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-2-analysecorpus-aufbauen">Schritt 2: Analysecorpus aufbauen</h2>
+<p>LLM-Analysen sind pro API-Aufruf kostenpflichtig (Cloud) oder zeitintensiv (lokal). Statt den gesamten Tagesschau-Datensatz mit über 60.000 Artikeln zu analysieren, erstellt ihr zunächst einen repräsentativen Teilcorpus.</p>
+<div class="task">
+<p><strong>5.</strong> Ladet den Tagesschau-Datensatz in R und bereitet den Analysecorpus vor:</p>
+<ul>
+<li>Lest <code>tagesschau.zip</code> ein und ergänzt eine Spalte <code>year</code> (Erscheinungsjahr aus <code>date_time</code>).</li>
+<li>Filtert auf die sechs häufigsten Ressorts: <code>ausland</code>, <code>wirtschaft</code>, <code>inland</code>, <code>wissen</code>, <code>investigativ</code>, <code>faktenfinder</code>.</li>
+<li>Entfernt Zeilen, in denen <code>title</code> oder <code>text</code> fehlen.</li>
+</ul>
+<p>Wie viele Artikel bleiben nach dem Filtern übrig?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb4"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1"></a><span class="fu">library</span>(tidyverse)</span>
+<span id="cb4-2"><a href="#cb4-2"></a></span>
+<span id="cb4-3"><a href="#cb4-3"></a>news <span class="ot">&lt;-</span> <span class="fu">read_csv</span>(<span class="st">"data/tagesschau.zip"</span>) <span class="sc">|&gt;</span></span>
+<span id="cb4-4"><a href="#cb4-4"></a>  <span class="fu">mutate</span>(<span class="at">year =</span> lubridate<span class="sc">::</span><span class="fu">year</span>(date_time)) <span class="sc">|&gt;</span></span>
+<span id="cb4-5"><a href="#cb4-5"></a>  <span class="fu">filter</span>(</span>
+<span id="cb4-6"><a href="#cb4-6"></a>    ressort <span class="sc">%in%</span> <span class="fu">c</span>(<span class="st">"ausland"</span>, <span class="st">"wirtschaft"</span>, <span class="st">"inland"</span>, <span class="st">"wissen"</span>, <span class="st">"investigativ"</span>, <span class="st">"faktenfinder"</span>),</span>
+<span id="cb4-7"><a href="#cb4-7"></a>    <span class="sc">!</span><span class="fu">is.na</span>(title),</span>
+<span id="cb4-8"><a href="#cb4-8"></a>    <span class="sc">!</span><span class="fu">is.na</span>(text)</span>
+<span id="cb4-9"><a href="#cb4-9"></a>  )</span>
+<span id="cb4-10"><a href="#cb4-10"></a></span>
+<span id="cb4-11"><a href="#cb4-11"></a><span class="fu">nrow</span>(news)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>6.</strong> Zieht aus dem gefilterten Datensatz eine <strong>stratifizierte Zufallsstichprobe</strong>: 50 Artikel pro Jahr (Stratifizierung nach <code>year</code>). Verwendet <code>set.seed(42)</code> für Reproduzierbarkeit. Behaltet die Spalten <code>date_time</code>, <code>year</code>, <code>title</code>, <code>shorttext</code>, <code>text</code>, <code>ressort</code> und <code>url</code>. Exportiert den Korpus als <code>data/tagesschau_sample.csv</code>, damit ihr ihn anschließend in Python laden könnt.</p>
+<p>Wie viele Zeilen hat der exportierte Datensatz insgesamt? Welche Jahre sind enthalten?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb5"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1"></a><span class="fu">set.seed</span>(<span class="dv">42</span>)</span>
+<span id="cb5-2"><a href="#cb5-2"></a></span>
+<span id="cb5-3"><a href="#cb5-3"></a>corpus <span class="ot">&lt;-</span> news <span class="sc">|&gt;</span></span>
+<span id="cb5-4"><a href="#cb5-4"></a>  <span class="fu">select</span>(date_time, year, title, shorttext, text, ressort, url) <span class="sc">|&gt;</span></span>
+<span id="cb5-5"><a href="#cb5-5"></a>  <span class="fu">group_by</span>(year) <span class="sc">|&gt;</span></span>
+<span id="cb5-6"><a href="#cb5-6"></a>  <span class="fu">slice_sample</span>(<span class="at">n =</span> <span class="dv">50</span>) <span class="sc">|&gt;</span></span>
+<span id="cb5-7"><a href="#cb5-7"></a>  <span class="fu">ungroup</span>()</span>
+<span id="cb5-8"><a href="#cb5-8"></a></span>
+<span id="cb5-9"><a href="#cb5-9"></a><span class="fu">write_csv</span>(corpus, <span class="st">"data/tagesschau_sample.csv"</span>)</span>
+<span id="cb5-10"><a href="#cb5-10"></a></span>
+<span id="cb5-11"><a href="#cb5-11"></a><span class="fu">cat</span>(<span class="st">"Zeilen:"</span>, <span class="fu">nrow</span>(corpus), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span>
+<span id="cb5-12"><a href="#cb5-12"></a><span class="fu">cat</span>(<span class="st">"Jahre:"</span>, <span class="fu">paste</span>(<span class="fu">sort</span>(<span class="fu">unique</span>(corpus<span class="sc">$</span>year)), <span class="at">collapse =</span> <span class="st">", "</span>), <span class="st">"</span><span class="sc">\n</span><span class="st">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Der Datensatz enthält 50 × Anzahl der vollständigen Jahre, typischerweise etwa 1.000–1.100 Artikel. In frühen Jahren des Datensatzes können weniger als 50 Artikel pro Jahr vorhanden sein – <code>slice_sample()</code> gibt in diesem Fall alle verfügbaren zurück.</p>
+</section>
+<section id="schritt-3-einfache-nlp-aufgaben-mit-llms" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-3-einfache-nlp-aufgaben-mit-llms">Schritt 3: Einfache NLP-Aufgaben mit LLMs</h2>
+<p>Mit dem Korpus könnt ihr jetzt konkrete Analyseaufgaben durchführen. Ihr beginnt mit einfacheren Aufgaben, die ihr aus der regelbasierten Analyse kennt – um zu sehen, was LLMs besser, schlechter oder anders machen.</p>
+<div class="task">
+<p><strong>7.</strong> Ladet den Korpus in Python und schreibt zwei Hilfsfunktionen:</p>
+<ul>
+<li><code>llm_text(prompt, client, model)</code>: Schickt einen Prompt, gibt die Textantwort zurück.</li>
+<li><code>llm_json(prompt, client, model)</code>: Wie <code>llm_text</code>, aber mit <code>response_format={"type": "json_object"}</code> – gibt ein Python-Dictionary zurück.</li>
+</ul>
+<p>Beide Funktionen sollen <code>temperature=0</code> verwenden, damit die Ergebnisse möglichst reproduzierbar sind. Testet beide Funktionen mit einem kurzen Beispielaufruf.</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb6"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1"></a>df <span class="op">=</span> pd.read_csv(<span class="st">"data/tagesschau_sample.csv"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2"></a></span>
+<span id="cb6-3"><a href="#cb6-3"></a><span class="kw">def</span> llm_text(prompt, client, model):</span>
+<span id="cb6-4"><a href="#cb6-4"></a>    response <span class="op">=</span> client.chat.completions.create(</span>
+<span id="cb6-5"><a href="#cb6-5"></a>        model<span class="op">=</span>model,</span>
+<span id="cb6-6"><a href="#cb6-6"></a>        messages<span class="op">=</span>[{<span class="st">"role"</span>: <span class="st">"user"</span>, <span class="st">"content"</span>: prompt}],</span>
+<span id="cb6-7"><a href="#cb6-7"></a>        temperature<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb6-8"><a href="#cb6-8"></a>    )</span>
+<span id="cb6-9"><a href="#cb6-9"></a>    <span class="cf">return</span> response.choices[<span class="dv">0</span>].message.content.strip()</span>
+<span id="cb6-10"><a href="#cb6-10"></a></span>
+<span id="cb6-11"><a href="#cb6-11"></a><span class="kw">def</span> llm_json(prompt, client, model):</span>
+<span id="cb6-12"><a href="#cb6-12"></a>    response <span class="op">=</span> client.chat.completions.create(</span>
+<span id="cb6-13"><a href="#cb6-13"></a>        model<span class="op">=</span>model,</span>
+<span id="cb6-14"><a href="#cb6-14"></a>        messages<span class="op">=</span>[</span>
+<span id="cb6-15"><a href="#cb6-15"></a>            {<span class="st">"role"</span>: <span class="st">"system"</span>, <span class="st">"content"</span>: <span class="st">"Antworte ausschließlich mit gültigem JSON."</span>},</span>
+<span id="cb6-16"><a href="#cb6-16"></a>            {<span class="st">"role"</span>: <span class="st">"user"</span>,   <span class="st">"content"</span>: prompt}</span>
+<span id="cb6-17"><a href="#cb6-17"></a>        ],</span>
+<span id="cb6-18"><a href="#cb6-18"></a>        response_format<span class="op">=</span>{<span class="st">"type"</span>: <span class="st">"json_object"</span>},</span>
+<span id="cb6-19"><a href="#cb6-19"></a>        temperature<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb6-20"><a href="#cb6-20"></a>    )</span>
+<span id="cb6-21"><a href="#cb6-21"></a>    <span class="cf">return</span> json.loads(response.choices[<span class="dv">0</span>].message.content)</span>
+<span id="cb6-22"><a href="#cb6-22"></a></span>
+<span id="cb6-23"><a href="#cb6-23"></a><span class="co"># Test</span></span>
+<span id="cb6-24"><a href="#cb6-24"></a><span class="bu">print</span>(llm_text(<span class="st">"In einem Satz: Was ist ein LLM?"</span>, client_local, MODEL_LOCAL))</span>
+<span id="cb6-25"><a href="#cb6-25"></a><span class="bu">print</span>(llm_json(<span class="st">'Gib {"status": "ok"} zurück.'</span>, client_local, MODEL_LOCAL))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>8.</strong> Wählt fünf zufällige Artikel aus dem Korpus und lasst das lokale Modell und ChatGPT jeweils eine <strong>Zusammenfassung in zwei deutschen Sätzen</strong> erstellen. Nutzt den <code>text</code>-Wert als Eingabe, begrenzt ihn aber auf maximal 600 Zeichen (<code>text[:600]</code>), um die Promptlänge zu kontrollieren.</p>
+<p>Gebt Titel, Zusammenfassung des lokalen Modells und Zusammenfassung von ChatGPT nebeneinander aus. Wo gibt es inhaltliche Unterschiede oder Fehler?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1"></a>sample <span class="op">=</span> df.sample(<span class="dv">5</span>, random_state<span class="op">=</span><span class="dv">1</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb7-2"><a href="#cb7-2"></a></span>
+<span id="cb7-3"><a href="#cb7-3"></a><span class="cf">for</span> _, row <span class="kw">in</span> sample.iterrows():</span>
+<span id="cb7-4"><a href="#cb7-4"></a>    prompt <span class="op">=</span> <span class="ss">f"""Fasse den folgenden Nachrichtenartikel in genau zwei deutschen Sätzen zusammen.</span></span>
+<span id="cb7-5"><a href="#cb7-5"></a></span>
+<span id="cb7-6"><a href="#cb7-6"></a><span class="ss">Text: </span><span class="sc">{</span><span class="bu">str</span>(row[<span class="st">'text'</span>])[:<span class="dv">600</span>]<span class="sc">}</span><span class="ss">"""</span></span>
+<span id="cb7-7"><a href="#cb7-7"></a></span>
+<span id="cb7-8"><a href="#cb7-8"></a>    summary_local  <span class="op">=</span> llm_text(prompt, client_local,  MODEL_LOCAL)</span>
+<span id="cb7-9"><a href="#cb7-9"></a>    summary_openai <span class="op">=</span> llm_text(prompt, client_openai, MODEL_OPENAI)</span>
+<span id="cb7-10"><a href="#cb7-10"></a></span>
+<span id="cb7-11"><a href="#cb7-11"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">=== </span><span class="sc">{</span>row[<span class="st">'title'</span>][:<span class="dv">70</span>]<span class="sc">}</span><span class="ss"> ==="</span>)</span>
+<span id="cb7-12"><a href="#cb7-12"></a>    <span class="bu">print</span>(<span class="ss">f"[Lokal]  </span><span class="sc">{</span>summary_local<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb7-13"><a href="#cb7-13"></a>    <span class="bu">print</span>(<span class="ss">f"[OpenAI] </span><span class="sc">{</span>summary_openai<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>9.</strong> Wie reißerisch ist ein Nachrichtentitel? Schreibt eine Funktion <code>rate_sensational(title, client, model)</code>, die einen Artikel-Titel in eine von vier <strong>ordinalen Kategorien</strong> einordnet und den Kategorienamen als String zurückgibt:</p>
+<ul>
+<li><code>"neutral"</code> – sachliche Meldung, keine besondere Wertung</li>
+<li><code>"pointed"</code> – zugespitzte oder deutlich pointierte Formulierung</li>
+<li><code>"alarming"</code> – alarmierender oder aufwühlender Ton</li>
+<li><code>"sensational"</code> – reißerisch, provozierend, Clickbait-Charakter</li>
+</ul>
+<p>Wendet die Funktion auf 20 zufällige Artikel an. Gebt alle Titel der Kategorien <code>"alarming"</code> und <code>"sensational"</code> aus. Sind die Einstufungen plausibel?</p>
+<p>Außerdem: Warum könnten ordinale Kategorien für LLMs zuverlässiger sein als eine numerische Skala von 1 bis 5?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb8"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1"></a>SENSATIONAL_CATEGORIES <span class="op">=</span> [<span class="st">"neutral"</span>, <span class="st">"pointed"</span>, <span class="st">"alarming"</span>, <span class="st">"sensational"</span>]</span>
+<span id="cb8-2"><a href="#cb8-2"></a></span>
+<span id="cb8-3"><a href="#cb8-3"></a><span class="kw">def</span> rate_sensational(title, client, model):</span>
+<span id="cb8-4"><a href="#cb8-4"></a>    prompt <span class="op">=</span> <span class="ss">f"""Wie reißerisch ist die folgende Nachrichtenüberschrift?</span></span>
+<span id="cb8-5"><a href="#cb8-5"></a><span class="ss">Wähle genau eine der folgenden Kategorien:</span></span>
+<span id="cb8-6"><a href="#cb8-6"></a><span class="ss">- neutral: sachliche Meldung, keine besondere Wertung</span></span>
+<span id="cb8-7"><a href="#cb8-7"></a><span class="ss">- pointed: zugespitzte oder deutlich pointierte Formulierung</span></span>
+<span id="cb8-8"><a href="#cb8-8"></a><span class="ss">- alarming: alarmierender oder aufwühlender Ton</span></span>
+<span id="cb8-9"><a href="#cb8-9"></a><span class="ss">- sensational: reißerisch, provozierend, Clickbait-Charakter</span></span>
+<span id="cb8-10"><a href="#cb8-10"></a></span>
+<span id="cb8-11"><a href="#cb8-11"></a><span class="ss">Überschrift: </span><span class="sc">{</span>title<span class="sc">}</span></span>
+<span id="cb8-12"><a href="#cb8-12"></a></span>
+<span id="cb8-13"><a href="#cb8-13"></a><span class="ss">Antworte ausschließlich mit einem der vier Kategoriename (neutral / pointed / alarming / sensational)."""</span></span>
+<span id="cb8-14"><a href="#cb8-14"></a></span>
+<span id="cb8-15"><a href="#cb8-15"></a>    result <span class="op">=</span> llm_text(prompt, client, model).strip().lower()</span>
+<span id="cb8-16"><a href="#cb8-16"></a>    <span class="cf">return</span> result <span class="cf">if</span> result <span class="kw">in</span> SENSATIONAL_CATEGORIES <span class="cf">else</span> <span class="va">None</span></span>
+<span id="cb8-17"><a href="#cb8-17"></a></span>
+<span id="cb8-18"><a href="#cb8-18"></a>sample20 <span class="op">=</span> df.sample(<span class="dv">20</span>, random_state<span class="op">=</span><span class="dv">42</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb8-19"><a href="#cb8-19"></a>sample20[<span class="st">"sensational"</span>] <span class="op">=</span> sample20[<span class="st">"title"</span>].<span class="bu">apply</span>(</span>
+<span id="cb8-20"><a href="#cb8-20"></a>    <span class="kw">lambda</span> t: rate_sensational(t, client_local, MODEL_LOCAL)</span>
+<span id="cb8-21"><a href="#cb8-21"></a>)</span>
+<span id="cb8-22"><a href="#cb8-22"></a></span>
+<span id="cb8-23"><a href="#cb8-23"></a><span class="bu">print</span>(sample20[sample20[<span class="st">"sensational"</span>].isin([<span class="st">"alarming"</span>, <span class="st">"sensational"</span>])][[<span class="st">"title"</span>, <span class="st">"sensational"</span>]])</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Ordinale Kategorien sind für LLMs oft verlässlicher als Zahlen, weil Zahlen auf einer Skala keine eindeutige semantische Bedeutung tragen: Was ist der Unterschied zwischen einer „3” und einer „4”? Ein Modell muss diese Grenze selbst setzen und tut das inkonsistent. Kategorienamen hingegen beschreiben einen Zustand direkt – das Modell wählt das Wort, das am besten passt, statt eine Zahl zu kalibrieren.</p>
+<div class="task">
+<p><strong>10.</strong> Schreibt eine Funktion <code>rate_sentiment(title, text, client, model)</code>, die bewertet, ob ein Artikel eine <strong>gute oder schlechte Nachricht</strong> enthält. Verwendet eine viergliedrige Skala ohne neutrale Mittelkategorie, um das Modell zu einer Entscheidung zu zwingen:</p>
+<ul>
+<li><code>-2</code> – sehr schlechte Nachricht (Katastrophe, Tod, schwere Krise)</li>
+<li><code>-1</code> – eher schlechte Nachricht (Konflikt, Problem, Rückschlag)</li>
+<li><code>+1</code> – eher gute Nachricht (positive Entwicklung, Fortschritt)</li>
+<li><code>+2</code> – sehr gute Nachricht (Durchbruch, gelöstes Problem, Erfolg)</li>
+</ul>
+<p>Wendet die Funktion auf 30 zufällige Artikel an. Berechnet den Mittelwert pro Ressort. Welches Ressort berichtet am meisten über schlechte Nachrichten?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb9"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1"></a><span class="kw">def</span> rate_sentiment(title, text, client, model):</span>
+<span id="cb9-2"><a href="#cb9-2"></a>    prompt <span class="op">=</span> <span class="ss">f"""Ist der folgende Nachrichtenartikel eine gute oder schlechte Nachricht?</span></span>
+<span id="cb9-3"><a href="#cb9-3"></a><span class="ss">Skala (kein Mittelwert, du musst dich entscheiden):</span></span>
+<span id="cb9-4"><a href="#cb9-4"></a><span class="ss">-2 = sehr schlechte Nachricht (Katastrophe, Tod, schwere Krise)</span></span>
+<span id="cb9-5"><a href="#cb9-5"></a><span class="ss">-1 = eher schlechte Nachricht (Konflikt, Problem, Rückschlag)</span></span>
+<span id="cb9-6"><a href="#cb9-6"></a><span class="ss">+1 = eher gute Nachricht (positive Entwicklung, Fortschritt, Lösung)</span></span>
+<span id="cb9-7"><a href="#cb9-7"></a><span class="ss">+2 = sehr gute Nachricht (Durchbruch, großer Erfolg, Entwarnung)</span></span>
+<span id="cb9-8"><a href="#cb9-8"></a></span>
+<span id="cb9-9"><a href="#cb9-9"></a><span class="ss">Titel: </span><span class="sc">{</span>title<span class="sc">}</span></span>
+<span id="cb9-10"><a href="#cb9-10"></a><span class="ss">Text (Auszug): </span><span class="sc">{</span><span class="bu">str</span>(text)[:<span class="dv">300</span>]<span class="sc">}</span></span>
+<span id="cb9-11"><a href="#cb9-11"></a></span>
+<span id="cb9-12"><a href="#cb9-12"></a><span class="ss">Antworte ausschließlich mit einer der vier Zahlen: -2, -1, +1 oder +2."""</span></span>
+<span id="cb9-13"><a href="#cb9-13"></a></span>
+<span id="cb9-14"><a href="#cb9-14"></a>    result <span class="op">=</span> llm_text(prompt, client, model).strip()</span>
+<span id="cb9-15"><a href="#cb9-15"></a>    <span class="cf">try</span>:</span>
+<span id="cb9-16"><a href="#cb9-16"></a>        value <span class="op">=</span> <span class="bu">int</span>(result.replace(<span class="st">"+"</span>, <span class="st">""</span>))</span>
+<span id="cb9-17"><a href="#cb9-17"></a>        <span class="cf">return</span> value <span class="cf">if</span> value <span class="kw">in</span> (<span class="op">-</span><span class="dv">2</span>, <span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>, <span class="dv">2</span>) <span class="cf">else</span> <span class="va">None</span></span>
+<span id="cb9-18"><a href="#cb9-18"></a>    <span class="cf">except</span> <span class="pp">ValueError</span>:</span>
+<span id="cb9-19"><a href="#cb9-19"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb9-20"><a href="#cb9-20"></a></span>
+<span id="cb9-21"><a href="#cb9-21"></a>sample30 <span class="op">=</span> df.sample(<span class="dv">30</span>, random_state<span class="op">=</span><span class="dv">7</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-22"><a href="#cb9-22"></a>sample30[<span class="st">"sentiment"</span>] <span class="op">=</span> sample30.<span class="bu">apply</span>(</span>
+<span id="cb9-23"><a href="#cb9-23"></a>    <span class="kw">lambda</span> r: rate_sentiment(r[<span class="st">"title"</span>], r[<span class="st">"text"</span>], client_local, MODEL_LOCAL),</span>
+<span id="cb9-24"><a href="#cb9-24"></a>    axis<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb9-25"><a href="#cb9-25"></a>)</span>
+<span id="cb9-26"><a href="#cb9-26"></a></span>
+<span id="cb9-27"><a href="#cb9-27"></a><span class="bu">print</span>(sample30.groupby(<span class="st">"ressort"</span>)[<span class="st">"sentiment"</span>].mean().sort_values())</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Nachrichtenartikel berichten strukturell häufiger über schlechte Ereignisse als über gute – das entspricht dem klassischen Nachrichtenwert der Negativität. Die fehlende Nullkategorie zwingt das Modell zu einer inhaltlichen Entscheidung und verhindert, dass es bei ambivalenten Artikeln einfach die Mitte wählt.</p>
+</section>
+<section id="schritt-4-ressort-klassifikation-und-evaluation" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-4-ressort-klassifikation-und-evaluation">Schritt 4: Ressort-Klassifikation und Evaluation</h2>
+<p>In der regelbasierten Textanalyse habt ihr Artikel über Wörterbücher klassifiziert. Jetzt fragt ihr ein LLM: Kann es das besser – und wie viel besser?</p>
+<div class="task">
+<p><strong>11.</strong> Schreibt eine Funktion <code>predict_section(title, shorttext, client, model)</code>, die das Ressort eines Artikels vorhersagt. Das Modell soll genau eines der sechs Ressorts zurückgeben: <code>ausland</code>, <code>wirtschaft</code>, <code>inland</code>, <code>wissen</code>, <code>investigativ</code>, <code>faktenfinder</code>. Nennt im Prompt die vollständige Liste und fordert eine exakte Antwort ohne weitere Erklärung.</p>
+<p>Testet die Funktion an drei Beispielen aus dem Korpus und vergleicht Vorhersage und wahres Label.</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb10"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1"></a>SECTIONS <span class="op">=</span> [<span class="st">"ausland"</span>, <span class="st">"wirtschaft"</span>, <span class="st">"inland"</span>, <span class="st">"wissen"</span>, <span class="st">"investigativ"</span>, <span class="st">"faktenfinder"</span>]</span>
+<span id="cb10-2"><a href="#cb10-2"></a></span>
+<span id="cb10-3"><a href="#cb10-3"></a><span class="kw">def</span> predict_section(title, shorttext, client, model):</span>
+<span id="cb10-4"><a href="#cb10-4"></a>    sections_list <span class="op">=</span> <span class="st">", "</span>.join(SECTIONS)</span>
+<span id="cb10-5"><a href="#cb10-5"></a>    prompt <span class="op">=</span> <span class="ss">f"""Klassifiziere den folgenden Tagesschau-Artikel in genau ein Ressort.</span></span>
+<span id="cb10-6"><a href="#cb10-6"></a><span class="ss">Mögliche Ressorts: </span><span class="sc">{</span>sections_list<span class="sc">}</span></span>
+<span id="cb10-7"><a href="#cb10-7"></a></span>
+<span id="cb10-8"><a href="#cb10-8"></a><span class="ss">Titel: </span><span class="sc">{</span>title<span class="sc">}</span></span>
+<span id="cb10-9"><a href="#cb10-9"></a><span class="ss">Kurztext: </span><span class="sc">{</span><span class="bu">str</span>(shorttext)[:<span class="dv">200</span>]<span class="sc">}</span></span>
+<span id="cb10-10"><a href="#cb10-10"></a></span>
+<span id="cb10-11"><a href="#cb10-11"></a><span class="ss">Antworte ausschließlich mit dem Ressort-Namen, ohne weitere Erklärung."""</span></span>
+<span id="cb10-12"><a href="#cb10-12"></a></span>
+<span id="cb10-13"><a href="#cb10-13"></a>    result <span class="op">=</span> llm_text(prompt, client, model)</span>
+<span id="cb10-14"><a href="#cb10-14"></a>    result_clean <span class="op">=</span> result.strip().lower()</span>
+<span id="cb10-15"><a href="#cb10-15"></a>    <span class="cf">return</span> result_clean <span class="cf">if</span> result_clean <span class="kw">in</span> SECTIONS <span class="cf">else</span> <span class="st">"unbekannt"</span></span>
+<span id="cb10-16"><a href="#cb10-16"></a></span>
+<span id="cb10-17"><a href="#cb10-17"></a><span class="cf">for</span> _, row <span class="kw">in</span> df.sample(<span class="dv">3</span>, random_state<span class="op">=</span><span class="dv">5</span>).iterrows():</span>
+<span id="cb10-18"><a href="#cb10-18"></a>    pred <span class="op">=</span> predict_section(row[<span class="st">"title"</span>], row[<span class="st">"shorttext"</span>], client_local, MODEL_LOCAL)</span>
+<span id="cb10-19"><a href="#cb10-19"></a>    <span class="bu">print</span>(<span class="ss">f"Wahr: </span><span class="sc">{</span>row[<span class="st">'ressort'</span>]<span class="sc">:15}</span><span class="ss"> | Vorhergesagt: </span><span class="sc">{</span>pred<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb10-20"><a href="#cb10-20"></a>    <span class="bu">print</span>(<span class="ss">f"  Titel: </span><span class="sc">{</span>row[<span class="st">'title'</span>][:<span class="dv">70</span>]<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>12.</strong> Wendet die Klassifikation auf einen stratifizierten Test-Datensatz von 60 Artikeln an (10 pro Ressort). Führt die Klassifikation mit beiden Modellen durch (lokal und ChatGPT) und speichert die Ergebnisse in den Spalten <code>pred_local</code> und <code>pred_openai</code>. Berechnet anschließend die <strong>Genauigkeit</strong> (Anteil korrekt klassifizierter Artikel) für beide Modelle.</p>
+<p>Welches Modell schneidet besser ab? Ist der Unterschied größer als erwartet?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb11"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1"></a>test_df <span class="op">=</span> (</span>
+<span id="cb11-2"><a href="#cb11-2"></a>    df.groupby(<span class="st">"ressort"</span>, group_keys<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb11-3"><a href="#cb11-3"></a>    .<span class="bu">apply</span>(<span class="kw">lambda</span> g: g.sample(<span class="bu">min</span>(<span class="bu">len</span>(g), <span class="dv">10</span>), random_state<span class="op">=</span><span class="dv">42</span>))</span>
+<span id="cb11-4"><a href="#cb11-4"></a>    .reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb11-5"><a href="#cb11-5"></a>)</span>
+<span id="cb11-6"><a href="#cb11-6"></a></span>
+<span id="cb11-7"><a href="#cb11-7"></a>tqdm.pandas()</span>
+<span id="cb11-8"><a href="#cb11-8"></a></span>
+<span id="cb11-9"><a href="#cb11-9"></a>test_df[<span class="st">"pred_local"</span>] <span class="op">=</span> test_df.progress_apply(</span>
+<span id="cb11-10"><a href="#cb11-10"></a>    <span class="kw">lambda</span> r: predict_section(r[<span class="st">"title"</span>], r[<span class="st">"shorttext"</span>], client_local, MODEL_LOCAL),</span>
+<span id="cb11-11"><a href="#cb11-11"></a>    axis<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb11-12"><a href="#cb11-12"></a>)</span>
+<span id="cb11-13"><a href="#cb11-13"></a>test_df[<span class="st">"pred_openai"</span>] <span class="op">=</span> test_df.progress_apply(</span>
+<span id="cb11-14"><a href="#cb11-14"></a>    <span class="kw">lambda</span> r: predict_section(r[<span class="st">"title"</span>], r[<span class="st">"shorttext"</span>], client_openai, MODEL_OPENAI),</span>
+<span id="cb11-15"><a href="#cb11-15"></a>    axis<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb11-16"><a href="#cb11-16"></a>)</span>
+<span id="cb11-17"><a href="#cb11-17"></a></span>
+<span id="cb11-18"><a href="#cb11-18"></a>acc_local  <span class="op">=</span> (test_df[<span class="st">"ressort"</span>] <span class="op">==</span> test_df[<span class="st">"pred_local"</span>]).mean()</span>
+<span id="cb11-19"><a href="#cb11-19"></a>acc_openai <span class="op">=</span> (test_df[<span class="st">"ressort"</span>] <span class="op">==</span> test_df[<span class="st">"pred_openai"</span>]).mean()</span>
+<span id="cb11-20"><a href="#cb11-20"></a></span>
+<span id="cb11-21"><a href="#cb11-21"></a><span class="bu">print</span>(<span class="ss">f"Genauigkeit lokal:  </span><span class="sc">{</span>acc_local<span class="sc">:.1%}</span><span class="ss">"</span>)</span>
+<span id="cb11-22"><a href="#cb11-22"></a><span class="bu">print</span>(<span class="ss">f"Genauigkeit OpenAI: </span><span class="sc">{</span>acc_openai<span class="sc">:.1%}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>13.</strong> Visualisiert die Klassifikationsergebnisse als <strong>Konfusionsmatrix</strong> – je eine Heatmap für das lokale Modell und für ChatGPT. Auf der x-Achse stehen die vorhergesagten Ressorts, auf der y-Achse die wahren Ressorts.</p>
+<p>Welche Ressorts werden am häufigsten verwechselt? Lässt sich ein inhaltliches Muster erkennen?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb12"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> confusion_matrix</span>
+<span id="cb12-2"><a href="#cb12-2"></a></span>
+<span id="cb12-3"><a href="#cb12-3"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">1</span>, <span class="dv">2</span>, figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">5</span>))</span>
+<span id="cb12-4"><a href="#cb12-4"></a></span>
+<span id="cb12-5"><a href="#cb12-5"></a><span class="cf">for</span> ax, col, title <span class="kw">in</span> [</span>
+<span id="cb12-6"><a href="#cb12-6"></a>    (axes[<span class="dv">0</span>], <span class="st">"pred_local"</span>,  <span class="ss">f"Local (</span><span class="sc">{</span>MODEL_LOCAL<span class="sc">}</span><span class="ss">)"</span>),</span>
+<span id="cb12-7"><a href="#cb12-7"></a>    (axes[<span class="dv">1</span>], <span class="st">"pred_openai"</span>, <span class="ss">f"OpenAI (</span><span class="sc">{</span>MODEL_OPENAI<span class="sc">}</span><span class="ss">)"</span>),</span>
+<span id="cb12-8"><a href="#cb12-8"></a>]:</span>
+<span id="cb12-9"><a href="#cb12-9"></a>    valid <span class="op">=</span> test_df[test_df[col] <span class="op">!=</span> <span class="st">"unbekannt"</span>]</span>
+<span id="cb12-10"><a href="#cb12-10"></a>    cm <span class="op">=</span> confusion_matrix(valid[<span class="st">"ressort"</span>], valid[col], labels<span class="op">=</span>SECTIONS)</span>
+<span id="cb12-11"><a href="#cb12-11"></a>    sns.heatmap(cm, annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">"d"</span>, ax<span class="op">=</span>ax,</span>
+<span id="cb12-12"><a href="#cb12-12"></a>                xticklabels<span class="op">=</span>SECTIONS, yticklabels<span class="op">=</span>SECTIONS, cmap<span class="op">=</span><span class="st">"Blues"</span>)</span>
+<span id="cb12-13"><a href="#cb12-13"></a>    ax.set_xlabel(<span class="st">"Vorhergesagt"</span>)</span>
+<span id="cb12-14"><a href="#cb12-14"></a>    ax.set_ylabel(<span class="st">"Wahr"</span>)</span>
+<span id="cb12-15"><a href="#cb12-15"></a>    ax.set_title(title)</span>
+<span id="cb12-16"><a href="#cb12-16"></a>    ax.tick_params(axis<span class="op">=</span><span class="st">"x"</span>, rotation<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb12-17"><a href="#cb12-17"></a></span>
+<span id="cb12-18"><a href="#cb12-18"></a>plt.tight_layout()</span>
+<span id="cb12-19"><a href="#cb12-19"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Typische Verwechslungen: <code>ausland</code> und <code>inland</code> (beide berichten über politische Ereignisse auf unterschiedlichen geografischen Ebenen), <code>wirtschaft</code> und <code>inland</code> (Wirtschaftspolitik liegt im Grenzbereich beider Ressorts). <code>wissen</code> und <code>faktenfinder</code> werden seltener verwechselt, da sie inhaltlich distinktive Begriffe und Formulierungen enthalten.</p>
+<div class="task">
+<p><strong>14.</strong> Berechnet für jedes Ressort <strong>Precision</strong>, <strong>Recall</strong> und <strong>F1-Score</strong> mithilfe von <code>sklearn.metrics.classification_report</code>. Gebt den Report für beide Modelle aus.</p>
+<p>Welches Ressort ist am schwersten zu klassifizieren? Diskutiert, warum das so ist.</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb13"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> classification_report</span>
+<span id="cb13-2"><a href="#cb13-2"></a></span>
+<span id="cb13-3"><a href="#cb13-3"></a><span class="cf">for</span> col, title <span class="kw">in</span> [(<span class="st">"pred_local"</span>, <span class="st">"Local"</span>), (<span class="st">"pred_openai"</span>, <span class="st">"OpenAI"</span>)]:</span>
+<span id="cb13-4"><a href="#cb13-4"></a>    valid <span class="op">=</span> test_df[test_df[col] <span class="op">!=</span> <span class="st">"unbekannt"</span>]</span>
+<span id="cb13-5"><a href="#cb13-5"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="ch">\n</span><span class="ss">=== </span><span class="sc">{</span>title<span class="sc">}</span><span class="ss"> ==="</span>)</span>
+<span id="cb13-6"><a href="#cb13-6"></a>    <span class="bu">print</span>(classification_report(</span>
+<span id="cb13-7"><a href="#cb13-7"></a>        valid[<span class="st">"ressort"</span>], valid[col], labels<span class="op">=</span>SECTIONS, zero_division<span class="op">=</span><span class="dv">0</span></span>
+<span id="cb13-8"><a href="#cb13-8"></a>    ))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p><code>investigativ</code> und <code>faktenfinder</code> weisen häufig niedrigen Recall auf: Ihr Stil ähnelt dem von <code>inland</code>- oder <code>ausland</code>-Artikeln, wenn der Faktencheck-Charakter sich nicht explizit im Titel manifestiert. Das LLM sieht keinen strukturellen Unterschied, wenn der redaktionelle Rahmen fehlt.</p>
+</section>
+<section id="schritt-5-sentiment-analyse-im-zeitverlauf" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-5-sentiment-analyse-im-zeitverlauf">Schritt 5: Sentiment-Analyse im Zeitverlauf</h2>
+<p>Mit den Grundlagen aus Schritt 3 könnt ihr jetzt eine umfangreichere Analyse aufsetzen: Wie verändert sich die Grundstimmung der Tagesschau-Berichterstattung über Ressorts und Jahre hinweg?</p>
+<div class="task">
+<p><strong>15.</strong> Wendet die Funktion <code>rate_sentiment()</code> aus Aufgabe 10 auf den <strong>gesamten Stichprobencorpus</strong> an. Nutzt <code>tqdm.pandas()</code> und <code>progress_apply()</code>, um den Fortschritt zu verfolgen. Speichert die Ergebnisse als neue Spalte <code>sentiment</code> im DataFrame.</p>
+<p>Wie viele Werte konnten nicht geparst werden (d.h. ergaben <code>None</code>)? Was könnte der Grund dafür sein?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb14"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1"></a>tqdm.pandas()</span>
+<span id="cb14-2"><a href="#cb14-2"></a></span>
+<span id="cb14-3"><a href="#cb14-3"></a>df[<span class="st">"sentiment"</span>] <span class="op">=</span> df.progress_apply(</span>
+<span id="cb14-4"><a href="#cb14-4"></a>    <span class="kw">lambda</span> r: rate_sentiment(r[<span class="st">"title"</span>], r[<span class="st">"text"</span>], client_local, MODEL_LOCAL),</span>
+<span id="cb14-5"><a href="#cb14-5"></a>    axis<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb14-6"><a href="#cb14-6"></a>)</span>
+<span id="cb14-7"><a href="#cb14-7"></a></span>
+<span id="cb14-8"><a href="#cb14-8"></a>missing <span class="op">=</span> df[<span class="st">"sentiment"</span>].isna().<span class="bu">sum</span>()</span>
+<span id="cb14-9"><a href="#cb14-9"></a><span class="bu">print</span>(<span class="ss">f"Fehlende Werte: </span><span class="sc">{</span>missing<span class="sc">}</span><span class="ss"> von </span><span class="sc">{</span><span class="bu">len</span>(df)<span class="sc">}</span><span class="ss"> (</span><span class="sc">{</span>missing<span class="op">/</span><span class="bu">len</span>(df)<span class="sc">:.1%}</span><span class="ss">)"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Fehlende Werte entstehen, wenn das Modell eine unerwartete Ausgabe liefert, zum Beispiel eine Erklärung statt einer Zahl, oder die Zahl mit einem Vorzeichen wie „+2” formatiert. <code>temperature=0</code> reduziert solche Abweichungen, eliminiert sie aber nicht vollständig – besonders bei kleinen lokalen Modellen.</p>
+<div class="task">
+<p><strong>16.</strong> Berechnet den Durchschnittssentiment pro <strong>Ressort</strong> und <strong>Jahr</strong> für Artikel ab 2010. Speichert das Ergebnis als Pivot-Tabelle (Zeilen = Ressorts, Spalten = Jahre). Gebt die Tabelle aus.</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb15"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1"></a>pivot_sentiment <span class="op">=</span> (</span>
+<span id="cb15-2"><a href="#cb15-2"></a>    df[df[<span class="st">"year"</span>] <span class="op">&gt;=</span> <span class="dv">2010</span>]</span>
+<span id="cb15-3"><a href="#cb15-3"></a>    .dropna(subset<span class="op">=</span>[<span class="st">"sentiment"</span>])</span>
+<span id="cb15-4"><a href="#cb15-4"></a>    .groupby([<span class="st">"ressort"</span>, <span class="st">"year"</span>])[<span class="st">"sentiment"</span>]</span>
+<span id="cb15-5"><a href="#cb15-5"></a>    .mean()</span>
+<span id="cb15-6"><a href="#cb15-6"></a>    .<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb15-7"><a href="#cb15-7"></a>    .unstack()</span>
+<span id="cb15-8"><a href="#cb15-8"></a>)</span>
+<span id="cb15-9"><a href="#cb15-9"></a></span>
+<span id="cb15-10"><a href="#cb15-10"></a><span class="bu">print</span>(pivot_sentiment)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>17.</strong> Visualisiert die Pivot-Tabelle als <strong>Heatmap</strong> (x-Achse: Jahr, y-Achse: Ressort, Farbe: Durchschnittssentiment). Verwendet eine divergierende Farbskala, die negative Werte (rot) von positiven (grün) unterscheidet, mit 0 als Mittelpunkt.</p>
+<p>Was fällt auf? In welchen Jahren und Ressorts überwiegt negatives Sentiment? Lassen sich gesellschaftliche Ereignisse (z.B. Wirtschaftskrisen, Pandemie) in der Heatmap ablesen?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb16"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb16-1"><a href="#cb16-1"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">4</span>))</span>
+<span id="cb16-2"><a href="#cb16-2"></a>sns.heatmap(</span>
+<span id="cb16-3"><a href="#cb16-3"></a>    pivot_sentiment,</span>
+<span id="cb16-4"><a href="#cb16-4"></a>    cmap<span class="op">=</span><span class="st">"RdYlGn"</span>, center<span class="op">=</span><span class="dv">0</span>, vmin<span class="op">=-</span><span class="dv">2</span>, vmax<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb16-5"><a href="#cb16-5"></a>    annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">".1f"</span>, linewidths<span class="op">=</span><span class="fl">0.4</span></span>
+<span id="cb16-6"><a href="#cb16-6"></a>)</span>
+<span id="cb16-7"><a href="#cb16-7"></a>plt.title(<span class="st">"Durchschnittliches Sentiment je Ressort und Jahr"</span>)</span>
+<span id="cb16-8"><a href="#cb16-8"></a>plt.xlabel(<span class="st">"Jahr"</span>)</span>
+<span id="cb16-9"><a href="#cb16-9"></a>plt.ylabel(<span class="st">"Ressort"</span>)</span>
+<span id="cb16-10"><a href="#cb16-10"></a>plt.tight_layout()</span>
+<span id="cb16-11"><a href="#cb16-11"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Erwartbare Muster: <code>wirtschaft</code> zeigt in Krisenjahren (2009, 2020, 2022) negativere Werte; <code>wissen</code> liegt strukturell neutraler, da Wissenschaftsjournalismus weniger ereignisbezogen ist; die Covid-Jahre 2020–2021 erzeugen ressortübergreifend ein Negativsignal.</p>
+</section>
+<section id="schritt-6-wer-spricht-über-wen" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-6-wer-spricht-über-wen">Schritt 6: Wer spricht über wen?</h2>
+<p>Named-Entity-Recognition (NER) identifiziert Personen, Orte und Organisationen in Texten. Im Unterschied zur regelbasierten Erkennung mit Namenslisten versteht ein LLM den Kontext, erkennt verschiedene Schreibweisen und unterscheidet Personen mit gleichem Nachnamen.</p>
+<div class="task">
+<p><strong>18.</strong> Schreibt eine Funktion <code>extract_persons(text, client, model)</code>, die alle im Text genannten Personen als Python-Liste zurückgibt. Der Prompt soll das Modell anweisen, ausschließlich Personennamen (Vor- und Nachname) zurückzugeben – keine Orte oder Organisationen. Das Ergebnis soll ein JSON-Dictionary der Form <code>{"personen": ["Name1", "Name2"]}</code> sein.</p>
+<p>Testet die Funktion an fünf Artikeln und beurteilt die Qualität der Extraktion.</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb17"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1"></a><span class="kw">def</span> extract_persons(text, client, model):</span>
+<span id="cb17-2"><a href="#cb17-2"></a>    prompt <span class="op">=</span> <span class="ss">f"""Extrahiere alle im folgenden Text genannten Personennamen (Vor- und Nachname).</span></span>
+<span id="cb17-3"><a href="#cb17-3"></a><span class="ss">Gib ausschließlich Personen zurück, keine Orte oder Organisationen.</span></span>
+<span id="cb17-4"><a href="#cb17-4"></a><span class="ss">Format: </span><span class="ch">{{</span><span class="ss">"personen": ["Vorname Nachname", ...]</span><span class="ch">}}</span></span>
+<span id="cb17-5"><a href="#cb17-5"></a><span class="ss">Falls keine Personen genannt werden: </span><span class="ch">{{</span><span class="ss">"personen": []</span><span class="ch">}}</span></span>
+<span id="cb17-6"><a href="#cb17-6"></a></span>
+<span id="cb17-7"><a href="#cb17-7"></a><span class="ss">Text: </span><span class="sc">{</span><span class="bu">str</span>(text)[:<span class="dv">800</span>]<span class="sc">}</span><span class="ss">"""</span></span>
+<span id="cb17-8"><a href="#cb17-8"></a></span>
+<span id="cb17-9"><a href="#cb17-9"></a>    result <span class="op">=</span> llm_json(prompt, client, model)</span>
+<span id="cb17-10"><a href="#cb17-10"></a>    <span class="cf">return</span> result.get(<span class="st">"personen"</span>, [])</span>
+<span id="cb17-11"><a href="#cb17-11"></a></span>
+<span id="cb17-12"><a href="#cb17-12"></a><span class="cf">for</span> _, row <span class="kw">in</span> df.sample(<span class="dv">5</span>, random_state<span class="op">=</span><span class="dv">3</span>).iterrows():</span>
+<span id="cb17-13"><a href="#cb17-13"></a>    personen <span class="op">=</span> extract_persons(row[<span class="st">"text"</span>], client_local, MODEL_LOCAL)</span>
+<span id="cb17-14"><a href="#cb17-14"></a>    <span class="bu">print</span>(<span class="ss">f"</span><span class="sc">{</span>row[<span class="st">'title'</span>][:<span class="dv">65</span>]<span class="sc">}</span><span class="ss">"</span>)</span>
+<span id="cb17-15"><a href="#cb17-15"></a>    <span class="bu">print</span>(<span class="ss">f"  → </span><span class="sc">{</span>personen<span class="sc">}</span><span class="ch">\n</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>19.</strong> Wendet <code>extract_persons()</code> auf alle Artikel im Korpus an und bringt das Ergebnis mit <code>explode()</code> in Langform: eine Zeile pro genannter Person. Behaltet <code>year</code>, <code>ressort</code> und <code>url</code> als Kontextspalten.</p>
+<p>Erstellt eine Rangliste der 20 meistgenannten Personen im gesamten Datensatz. Wer steht an der Spitze, und entspricht das euren Erwartungen?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb18"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb18-1"><a href="#cb18-1"></a>df[<span class="st">"persons_list"</span>] <span class="op">=</span> df.progress_apply(</span>
+<span id="cb18-2"><a href="#cb18-2"></a>    <span class="kw">lambda</span> r: extract_persons(r[<span class="st">"text"</span>], client_local, MODEL_LOCAL),</span>
+<span id="cb18-3"><a href="#cb18-3"></a>    axis<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb18-4"><a href="#cb18-4"></a>)</span>
+<span id="cb18-5"><a href="#cb18-5"></a></span>
+<span id="cb18-6"><a href="#cb18-6"></a>persons_df <span class="op">=</span> (</span>
+<span id="cb18-7"><a href="#cb18-7"></a>    df[[<span class="st">"url"</span>, <span class="st">"year"</span>, <span class="st">"ressort"</span>, <span class="st">"persons_list"</span>]]</span>
+<span id="cb18-8"><a href="#cb18-8"></a>    .explode(<span class="st">"persons_list"</span>)</span>
+<span id="cb18-9"><a href="#cb18-9"></a>    .dropna(subset<span class="op">=</span>[<span class="st">"persons_list"</span>])</span>
+<span id="cb18-10"><a href="#cb18-10"></a>    .rename(columns<span class="op">=</span>{<span class="st">"persons_list"</span>: <span class="st">"person"</span>})</span>
+<span id="cb18-11"><a href="#cb18-11"></a>    .query(<span class="st">"person != ''"</span>)</span>
+<span id="cb18-12"><a href="#cb18-12"></a>    .reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb18-13"><a href="#cb18-13"></a>)</span>
+<span id="cb18-14"><a href="#cb18-14"></a></span>
+<span id="cb18-15"><a href="#cb18-15"></a><span class="bu">print</span>(persons_df[<span class="st">"person"</span>].value_counts().head(<span class="dv">20</span>))</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>20.</strong> Wählt fünf bekannte Politiker aus dem Datensatz – zum Beispiel <em>Merkel</em>, <em>Scholz</em>, <em>Merz</em>, <em>Baerbock</em> und <em>Habeck</em>. Schreibt eine Funktion <code>person_sentiment(text, person, client, model)</code>, die bewertet, wie die genannte Person in einem Artikel dargestellt wird (Skala -2 bis +2). Gibt <code>None</code> zurück, wenn die Person nicht erwähnt wird.</p>
+<p>Filtert den persons_df auf Artikel, in denen mindestens einer der fünf Politiker vorkommt, und wendet die Funktion an.</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb19"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1"></a>POLITICIANS <span class="op">=</span> [<span class="st">"Merkel"</span>, <span class="st">"Scholz"</span>, <span class="st">"Merz"</span>, <span class="st">"Baerbock"</span>, <span class="st">"Habeck"</span>]</span>
+<span id="cb19-2"><a href="#cb19-2"></a></span>
+<span id="cb19-3"><a href="#cb19-3"></a><span class="kw">def</span> person_sentiment(text, person, client, model):</span>
+<span id="cb19-4"><a href="#cb19-4"></a>    prompt <span class="op">=</span> <span class="ss">f"""Wird </span><span class="sc">{</span>person<span class="sc">}</span><span class="ss"> in diesem Text erwähnt?</span></span>
+<span id="cb19-5"><a href="#cb19-5"></a><span class="ss">Falls ja: Wie wird </span><span class="sc">{</span>person<span class="sc">}</span><span class="ss"> in diesem Artikel dargestellt?</span></span>
+<span id="cb19-6"><a href="#cb19-6"></a><span class="ss">Skala: -2 (sehr kritisch/negativ) bis +2 (sehr positiv/zustimmend), 0 = neutral/sachlich</span></span>
+<span id="cb19-7"><a href="#cb19-7"></a><span class="ss">Falls </span><span class="sc">{</span>person<span class="sc">}</span><span class="ss"> nicht erwähnt wird, antworte mit: null</span></span>
+<span id="cb19-8"><a href="#cb19-8"></a></span>
+<span id="cb19-9"><a href="#cb19-9"></a><span class="ss">Antworte ausschließlich mit einer ganzen Zahl (-2, -1, 0, 1, 2) oder dem Wort null.</span></span>
+<span id="cb19-10"><a href="#cb19-10"></a></span>
+<span id="cb19-11"><a href="#cb19-11"></a><span class="ss">Text: </span><span class="sc">{</span><span class="bu">str</span>(text)[:<span class="dv">600</span>]<span class="sc">}</span><span class="ss">"""</span></span>
+<span id="cb19-12"><a href="#cb19-12"></a></span>
+<span id="cb19-13"><a href="#cb19-13"></a>    result <span class="op">=</span> llm_text(prompt, client, model).strip().lower()</span>
+<span id="cb19-14"><a href="#cb19-14"></a>    <span class="cf">if</span> result <span class="op">==</span> <span class="st">"null"</span>:</span>
+<span id="cb19-15"><a href="#cb19-15"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb19-16"><a href="#cb19-16"></a>    <span class="cf">try</span>:</span>
+<span id="cb19-17"><a href="#cb19-17"></a>        <span class="cf">return</span> <span class="bu">int</span>(result)</span>
+<span id="cb19-18"><a href="#cb19-18"></a>    <span class="cf">except</span> <span class="pp">ValueError</span>:</span>
+<span id="cb19-19"><a href="#cb19-19"></a>        <span class="cf">return</span> <span class="va">None</span></span>
+<span id="cb19-20"><a href="#cb19-20"></a></span>
+<span id="cb19-21"><a href="#cb19-21"></a>politician_articles <span class="op">=</span> (</span>
+<span id="cb19-22"><a href="#cb19-22"></a>    persons_df[persons_df[<span class="st">"person"</span>].<span class="bu">str</span>.contains(<span class="st">"|"</span>.join(POLITICIANS), na<span class="op">=</span><span class="va">False</span>)]</span>
+<span id="cb19-23"><a href="#cb19-23"></a>    .merge(df[[<span class="st">"url"</span>, <span class="st">"text"</span>, <span class="st">"year"</span>]], on<span class="op">=</span><span class="st">"url"</span>)</span>
+<span id="cb19-24"><a href="#cb19-24"></a>    .drop_duplicates(subset<span class="op">=</span>[<span class="st">"url"</span>, <span class="st">"person"</span>])</span>
+<span id="cb19-25"><a href="#cb19-25"></a>    .copy()</span>
+<span id="cb19-26"><a href="#cb19-26"></a>)</span>
+<span id="cb19-27"><a href="#cb19-27"></a></span>
+<span id="cb19-28"><a href="#cb19-28"></a>politician_articles[<span class="st">"politician_sentiment"</span>] <span class="op">=</span> politician_articles.progress_apply(</span>
+<span id="cb19-29"><a href="#cb19-29"></a>    <span class="kw">lambda</span> r: person_sentiment(r[<span class="st">"text"</span>], r[<span class="st">"person"</span>], client_local, MODEL_LOCAL),</span>
+<span id="cb19-30"><a href="#cb19-30"></a>    axis<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb19-31"><a href="#cb19-31"></a>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>21.</strong> Aggregiert das Sentiment pro Politiker und Jahr (ab 2010) und visualisiert es als <strong>Heatmap</strong> (x-Achse: Jahr, y-Achse: Politiker, Farbe: Durchschnittssentiment). Verwendet dieselbe divergierende Farbskala wie in Aufgabe 17.</p>
+<p>Welche Muster sind erkennbar? Gibt es Jahre, in denen ein Politiker besonders negativ oder positiv dargestellt wurde?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb20"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb20-1"><a href="#cb20-1"></a>politician_pivot <span class="op">=</span> (</span>
+<span id="cb20-2"><a href="#cb20-2"></a>    politician_articles[politician_articles[<span class="st">"year"</span>] <span class="op">&gt;=</span> <span class="dv">2010</span>]</span>
+<span id="cb20-3"><a href="#cb20-3"></a>    .dropna(subset<span class="op">=</span>[<span class="st">"politician_sentiment"</span>])</span>
+<span id="cb20-4"><a href="#cb20-4"></a>    .groupby([<span class="st">"person"</span>, <span class="st">"year"</span>])[<span class="st">"politician_sentiment"</span>]</span>
+<span id="cb20-5"><a href="#cb20-5"></a>    .mean()</span>
+<span id="cb20-6"><a href="#cb20-6"></a>    .<span class="bu">round</span>(<span class="dv">2</span>)</span>
+<span id="cb20-7"><a href="#cb20-7"></a>    .unstack()</span>
+<span id="cb20-8"><a href="#cb20-8"></a>)</span>
+<span id="cb20-9"><a href="#cb20-9"></a></span>
+<span id="cb20-10"><a href="#cb20-10"></a>plt.figure(figsize<span class="op">=</span>(<span class="dv">14</span>, <span class="dv">4</span>))</span>
+<span id="cb20-11"><a href="#cb20-11"></a>sns.heatmap(</span>
+<span id="cb20-12"><a href="#cb20-12"></a>    politician_pivot,</span>
+<span id="cb20-13"><a href="#cb20-13"></a>    cmap<span class="op">=</span><span class="st">"RdYlGn"</span>, center<span class="op">=</span><span class="dv">0</span>, vmin<span class="op">=-</span><span class="dv">2</span>, vmax<span class="op">=</span><span class="dv">2</span>,</span>
+<span id="cb20-14"><a href="#cb20-14"></a>    annot<span class="op">=</span><span class="va">True</span>, fmt<span class="op">=</span><span class="st">".1f"</span>, linewidths<span class="op">=</span><span class="fl">0.4</span></span>
+<span id="cb20-15"><a href="#cb20-15"></a>)</span>
+<span id="cb20-16"><a href="#cb20-16"></a>plt.title(<span class="st">"Darstellung von Politiker:innen in der Tagesschau (LLM-Sentiment)"</span>)</span>
+<span id="cb20-17"><a href="#cb20-17"></a>plt.xlabel(<span class="st">"Jahr"</span>)</span>
+<span id="cb20-18"><a href="#cb20-18"></a>plt.ylabel(<span class="st">"Politiker:in"</span>)</span>
+<span id="cb20-19"><a href="#cb20-19"></a>plt.tight_layout()</span>
+<span id="cb20-20"><a href="#cb20-20"></a>plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<p>Achtung: Die Stichprobengröße pro Politiker und Jahr ist begrenzt. Einzelne Werte können stark durch wenige Artikel beeinflusst sein. Vorsicht bei der Überinterpretation – für belastbare Aussagen wäre ein größerer Korpus nötig.</p>
+</section>
+<section id="schritt-7-framing-analyse-mit-llms" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-7-framing-analyse-mit-llms">Schritt 7: Framing-Analyse mit LLMs</h2>
+<p>Framing beschreibt, welchen Deutungsrahmen ein Artikel einem Thema gibt. Derselbe Migrationsbericht kann als humanitäre Krise, als Sicherheitsbedrohung oder als politischer Streit gerahmt sein. LLMs können solche impliziten Rahmungen erkennen – etwas, das regelbasierte Verfahren kaum leisten können.</p>
+<div class="task">
+<p><strong>22.</strong> Filtert den Korpus auf Artikel zum Thema <strong>Migration</strong>, indem ihr prüft, ob der Titel eines der Wörter „Migration”, „Flüchtling”, „Asyl”, „Migranten” oder „Einwanderer” enthält. Wie viele solche Artikel gibt es im Stichprobencorpus?</p>
+<p>Schreibt anschließend eine Funktion <code>analyze_framing(title, text, client, model)</code>, die das dominante Framing eines Artikels klassifiziert. Verwendet mindestens fünf Kategorien: <code>humanitaer</code>, <code>sicherheitspolitisch</code>, <code>rechtlich</code>, <code>wirtschaftlich</code>, <code>politischer_streit</code>.</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb21"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1"></a>FRAMING_CATEGORIES <span class="op">=</span> [</span>
+<span id="cb21-2"><a href="#cb21-2"></a>    <span class="st">"humanitaer"</span>, <span class="st">"sicherheitspolitisch"</span>, <span class="st">"rechtlich"</span>,</span>
+<span id="cb21-3"><a href="#cb21-3"></a>    <span class="st">"wirtschaftlich"</span>, <span class="st">"politischer_streit"</span></span>
+<span id="cb21-4"><a href="#cb21-4"></a>]</span>
+<span id="cb21-5"><a href="#cb21-5"></a></span>
+<span id="cb21-6"><a href="#cb21-6"></a><span class="kw">def</span> analyze_framing(title, text, client, model):</span>
+<span id="cb21-7"><a href="#cb21-7"></a>    prompt <span class="op">=</span> <span class="ss">f"""Analysiere das Framing des Themas Migration in diesem Tagesschau-Artikel.</span></span>
+<span id="cb21-8"><a href="#cb21-8"></a><span class="ss">Wähle das dominante Framing:</span></span>
+<span id="cb21-9"><a href="#cb21-9"></a><span class="ss">- humanitaer: Menschliches Leid, Fluchterfahrungen, Hilfsbereitschaft</span></span>
+<span id="cb21-10"><a href="#cb21-10"></a><span class="ss">- sicherheitspolitisch: Grenzsicherung, Kriminalität, Bedrohung</span></span>
+<span id="cb21-11"><a href="#cb21-11"></a><span class="ss">- rechtlich: Asylverfahren, Gesetze, Bürokratie, Gerichtsurteile</span></span>
+<span id="cb21-12"><a href="#cb21-12"></a><span class="ss">- wirtschaftlich: Arbeitsmarkt, Kosten, Fachkräfte, Sozialsystem</span></span>
+<span id="cb21-13"><a href="#cb21-13"></a><span class="ss">- politischer_streit: Koalitionsstreit, Parteipositionen, Wahlkampf</span></span>
+<span id="cb21-14"><a href="#cb21-14"></a></span>
+<span id="cb21-15"><a href="#cb21-15"></a><span class="ss">Antworte als JSON: </span><span class="ch">{{</span><span class="ss">"framing": "...", "begruendung": "Ein kurzer Satz."</span><span class="ch">}}</span></span>
+<span id="cb21-16"><a href="#cb21-16"></a></span>
+<span id="cb21-17"><a href="#cb21-17"></a><span class="ss">Titel: </span><span class="sc">{</span>title<span class="sc">}</span></span>
+<span id="cb21-18"><a href="#cb21-18"></a><span class="ss">Text: </span><span class="sc">{</span><span class="bu">str</span>(text)[:<span class="dv">600</span>]<span class="sc">}</span><span class="ss">"""</span></span>
+<span id="cb21-19"><a href="#cb21-19"></a></span>
+<span id="cb21-20"><a href="#cb21-20"></a>    result <span class="op">=</span> llm_json(prompt, client, model)</span>
+<span id="cb21-21"><a href="#cb21-21"></a>    framing <span class="op">=</span> result.get(<span class="st">"framing"</span>, <span class="st">"sonstiges"</span>).lower().replace(<span class="st">" "</span>, <span class="st">"_"</span>)</span>
+<span id="cb21-22"><a href="#cb21-22"></a>    <span class="cf">return</span> framing <span class="cf">if</span> framing <span class="kw">in</span> FRAMING_CATEGORIES <span class="cf">else</span> <span class="st">"sonstiges"</span></span>
+<span id="cb21-23"><a href="#cb21-23"></a></span>
+<span id="cb21-24"><a href="#cb21-24"></a>migration_df <span class="op">=</span> df[</span>
+<span id="cb21-25"><a href="#cb21-25"></a>    df[<span class="st">"title"</span>].<span class="bu">str</span>.contains(</span>
+<span id="cb21-26"><a href="#cb21-26"></a>        <span class="st">"Migration|Flüchtling|Asyl|Migranten|Einwanderer"</span>, case<span class="op">=</span><span class="va">False</span>, na<span class="op">=</span><span class="va">False</span></span>
+<span id="cb21-27"><a href="#cb21-27"></a>    )</span>
+<span id="cb21-28"><a href="#cb21-28"></a>].copy()</span>
+<span id="cb21-29"><a href="#cb21-29"></a></span>
+<span id="cb21-30"><a href="#cb21-30"></a><span class="bu">print</span>(<span class="ss">f"Migrationsartikel im Stichprobencorpus: </span><span class="sc">{</span><span class="bu">len</span>(migration_df)<span class="sc">}</span><span class="ss">"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+<div class="task">
+<p><strong>23.</strong> Wendet <code>analyze_framing()</code> auf alle gefundenen Migrationsartikel an. Erstellt zwei Visualisierungen:</p>
+<ul>
+<li>Ein horizontales Balkendiagramm der Gesamtverteilung aller Framing-Kategorien.</li>
+<li>Ein gestapeltes Balkendiagramm der Framing-Verteilung nach Jahr (falls Artikel aus mehr als zwei Jahren vorliegen).</li>
+</ul>
+<p>Welches Framing dominiert in der Tagesschau-Berichterstattung über Migration? Hat sich das im Zeitverlauf verändert?</p>
+</div>
+<div class="cell">
+<div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb22"><pre class="sourceCode numberSource python number-lines code-with-copy"><code class="sourceCode python"><span id="cb22-1"><a href="#cb22-1"></a>migration_df[<span class="st">"framing"</span>] <span class="op">=</span> migration_df.progress_apply(</span>
+<span id="cb22-2"><a href="#cb22-2"></a>    <span class="kw">lambda</span> r: analyze_framing(r[<span class="st">"title"</span>], r[<span class="st">"text"</span>], client_local, MODEL_LOCAL),</span>
+<span id="cb22-3"><a href="#cb22-3"></a>    axis<span class="op">=</span><span class="dv">1</span></span>
+<span id="cb22-4"><a href="#cb22-4"></a>)</span>
+<span id="cb22-5"><a href="#cb22-5"></a></span>
+<span id="cb22-6"><a href="#cb22-6"></a><span class="co"># Gesamtverteilung</span></span>
+<span id="cb22-7"><a href="#cb22-7"></a>migration_df[<span class="st">"framing"</span>].value_counts().plot.barh(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">4</span>), color<span class="op">=</span><span class="st">"steelblue"</span>)</span>
+<span id="cb22-8"><a href="#cb22-8"></a>plt.title(<span class="st">"Framing von Migration in der Tagesschau (Stichprobe)"</span>)</span>
+<span id="cb22-9"><a href="#cb22-9"></a>plt.xlabel(<span class="st">"Anzahl Artikel"</span>)</span>
+<span id="cb22-10"><a href="#cb22-10"></a>plt.tight_layout()</span>
+<span id="cb22-11"><a href="#cb22-11"></a>plt.show()</span>
+<span id="cb22-12"><a href="#cb22-12"></a></span>
+<span id="cb22-13"><a href="#cb22-13"></a><span class="co"># Zeitliche Entwicklung</span></span>
+<span id="cb22-14"><a href="#cb22-14"></a><span class="cf">if</span> migration_df[<span class="st">"year"</span>].nunique() <span class="op">&gt;</span> <span class="dv">2</span>:</span>
+<span id="cb22-15"><a href="#cb22-15"></a>    pd.crosstab(migration_df[<span class="st">"year"</span>], migration_df[<span class="st">"framing"</span>]).plot.bar(</span>
+<span id="cb22-16"><a href="#cb22-16"></a>        stacked<span class="op">=</span><span class="va">True</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">5</span>), colormap<span class="op">=</span><span class="st">"tab10"</span></span>
+<span id="cb22-17"><a href="#cb22-17"></a>    )</span>
+<span id="cb22-18"><a href="#cb22-18"></a>    plt.title(<span class="st">"Framing-Entwicklung: Migration im Zeitverlauf"</span>)</span>
+<span id="cb22-19"><a href="#cb22-19"></a>    plt.xlabel(<span class="st">"Jahr"</span>)</span>
+<span id="cb22-20"><a href="#cb22-20"></a>    plt.ylabel(<span class="st">"Anzahl Artikel"</span>)</span>
+<span id="cb22-21"><a href="#cb22-21"></a>    plt.legend(bbox_to_anchor<span class="op">=</span>(<span class="fl">1.05</span>, <span class="dv">1</span>), loc<span class="op">=</span><span class="st">"upper left"</span>)</span>
+<span id="cb22-22"><a href="#cb22-22"></a>    plt.tight_layout()</span>
+<span id="cb22-23"><a href="#cb22-23"></a>    plt.show()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+</div>
+</section>
+<section id="schritt-8-reflexion" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-8-reflexion">Schritt 8: Reflexion</h2>
+<div class="task">
+<p><strong>24.</strong> Vergleicht die LLM-basierte Analyse mit der regelbasierten Analyse aus dem vorherigen Experiment entlang von vier Dimensionen. Füllt die folgende Tabelle aus und begründet eure Einschätzungen:</p>
+<table class="caption-top table">
+<thead>
+<tr class="header">
+<th>Dimension</th>
+<th>Regelbasiert</th>
+<th>LLM-basiert</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Transparenz</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Reproduzierbarkeit</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="odd">
+<td>Skalierbarkeit</td>
+<td></td>
+<td></td>
+</tr>
+<tr class="even">
+<td>Qualität</td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Für welche Aufgaben eignet sich welcher Ansatz besser?</p>
+</div>
+<table class="caption-top table">
+<colgroup>
+<col style="width: 15%">
+<col style="width: 40%">
+<col style="width: 44%">
+</colgroup>
+<thead>
+<tr class="header">
+<th>Dimension</th>
+<th>Regelbasiert</th>
+<th>LLM-basiert</th>
+</tr>
+</thead>
+<tbody>
+<tr class="odd">
+<td>Transparenz</td>
+<td>Hoch: Regeln sind explizit und nachvollziehbar</td>
+<td>Niedrig: Entscheidungen entstehen im „Black Box”</td>
+</tr>
+<tr class="even">
+<td>Reproduzierbarkeit</td>
+<td>Perfekt: gleiche Eingabe → immer gleiche Ausgabe</td>
+<td>Bedingt: <code>temperature=0</code> hilft, garantiert es aber nicht</td>
+</tr>
+<tr class="odd">
+<td>Skalierbarkeit</td>
+<td>Sehr hoch: kein API-Aufruf, kein Kostenlimit</td>
+<td>Begrenzt durch Kosten und Latenz</td>
+</tr>
+<tr class="even">
+<td>Qualität</td>
+<td>Gut bei klaren, exakten Mustern</td>
+<td>Besser bei Ambiguität, Kontext, Nuancen</td>
+</tr>
+</tbody>
+</table>
+<p>Fazit: Regelbasierte Verfahren eignen sich für schnelle, skalierbare Suche und stabile Muster (z.B. Keyword-Trends, Artikelformate). LLMs sind überlegen bei Aufgaben, die kontextuelles Verstehen erfordern: Sentiment, Framing, Zusammenfassungen, Named-Entity-Extraktion in fließendem Text.</p>
+<div class="task">
+<p><strong>25.</strong> Diskutiert die folgenden ethischen und methodischen Fragen der LLM-basierten Inhaltsanalyse:</p>
+<ul>
+<li>Können LLMs politisch voreingenommen sein? Wie würdet ihr das methodisch testen?</li>
+<li>Welche Risiken entstehen, wenn LLM-basierte Analysen in journalistische oder wissenschaftliche Entscheidungen einfließen?</li>
+<li>Wie lässt sich die Qualität einer LLM-Analyse valide messen – und was bedeutet das für eure Ergebnisse aus diesem Experiment?</li>
+</ul>
+</div>
+<p><strong>Politische Voreingenommenheit</strong>: LLMs spiegeln die Biases ihrer Trainingsdaten wider. Ein methodischer Test wäre, denselben Sachverhalt mit vertauschten politischen Akteuren zu beschreiben und zu prüfen, ob die Sentiment-Bewertungen symmetrisch bleiben – also ob das Modell dieselbe Aussage von Politikerin A gleich bewertet wie dieselbe Aussage von Politiker B.</p>
+<p><strong>Risiken</strong>: LLM-Bewertungen können subtil und systematisch verzerrt sein, ohne dass es offensichtlich ist. Werden solche Analysen unreflektiert als Grundlage für Entscheidungen genutzt – etwa im Monitoring von Medientendenzen –, werden die Verzerrungen institutionalisiert.</p>
+<p><strong>Qualitätsmessung</strong>: Goldstandard-Validierung: Eine Teilmenge der Daten wird von menschlichen Codiererinnen und Codierern manuell annotiert und mit den LLM-Ergebnissen verglichen. Cohen’s κ oder Krippendorffs α messen die Übereinstimmung zwischen Mensch und Modell. Für die Ergebnisse dieses Experiments bedeutet das: Alle Befunde sind als explorative Hypothesen zu verstehen, nicht als gesicherte Fakten.</p>
+</section>
+<section id="zusatzmaterial" class="level2">
+<h2 class="anchored" data-anchor-id="zusatzmaterial">Zusatzmaterial</h2>
+<p>Zu diesem Experiment gibt es folgendes Zusatzmaterial:</p>
+<ul>
+<li><a href="experiment-news-llm.pdf">Aufgabenblatt als PDF</a></li>
+<li><a href="experiment-news-llm.qmd.txt" download="experiment-news-llm.qmd">Quarto-Notebook mit ausführbarem Python-Code</a></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+        for (let i=0; i<annoteTargets.length; i++) {
+          const annoteTarget = annoteTargets[i];
+          const targetCell = annoteTarget.getAttribute("data-target-cell");
+          const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+          const contentFn = () => {
+            const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+            if (content) {
+              const tipContent = content.cloneNode(true);
+              tipContent.classList.add("code-annotation-tip-content");
+              return tipContent.outerHTML;
+            }
+          }
+          const config = {
+            allowHTML: true,
+            content: contentFn,
+            onShow: (instance) => {
+              selectCodeLines(instance.reference);
+              instance.reference.classList.add('code-annotation-active');
+              window.tippy.hideAll();
+            },
+            onHide: (instance) => {
+              unselectCodeLines();
+              instance.reference.classList.remove('code-annotation-active');
+            },
+            maxWidth: 300,
+            delay: [50, 0],
+            duration: [200, 0],
+            offset: [5, 10],
+            arrow: true,
+            appendTo: function(el) {
+              return el.parentElement.parentElement.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'quarto',
+            placement: 'right',
+            popperOptions: {
+              modifiers: [
+              {
+                name: 'flip',
+                options: {
+                  flipVariations: false, // true by default
+                  allowedAutoPlacements: ['right'],
+                  fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
+                },
+              },
+              {
+                name: 'preventOverflow',
+                options: {
+                  mainAxis: false,
+                  altAxis: false
+                }
+              }
+              ]        
+            }      
+          };
+          window.tippy(annoteTarget, config); 
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../experiments/news/experiment-news-rule-based-text-analysis.html" class="pagination-link" aria-label="Regelbasierte Textanalyse">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Regelbasierte Textanalyse</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../experiments/survey/experiment-survey-explore-variables.html" class="pagination-link" aria-label="Variablen erkunden">
+        <span class="nav-page-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Variablen erkunden</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>

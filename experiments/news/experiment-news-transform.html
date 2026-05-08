@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.10.3">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="author" content="Prof.&nbsp;Dr.&nbsp;Nicolas Meseth">
+<meta name="description" content="An online-book with hands-on exercises to dive into the world of data.">
+
+<title>3&nbsp; Daten transformieren – Hands-On Exploratory Data Analytics</title>
+<style>
+/* Default styles provided by pandoc.
+** See https://pandoc.org/MANUAL.html#variables-for-html for config info.
+*/
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../">
+<link href="../../experiments/news/experiment-news-visualize.html" rel="next">
+<link href="../../experiments/news/experiment-news-explore-structured-unstructured.html" rel="prev">
+<script src="../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../site_libs/quarto-html/quarto-syntax-highlighting-e44360b8a8db1e130c7792fece1c8032.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../site_libs/bootstrap/bootstrap-b8d9931f9950fed7c9eff99d2a950632.min.css" rel="stylesheet" append-hash="true" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "location": "sidebar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "start",
+  "type": "textbox",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+<link rel="stylesheet" href="../../styles.css">
+</head>
+
+<body class="nav-sidebar floating quarto-light">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../experiments/news/experiment-news-explore-structured-unstructured.html">Tagesschau</a></li><li class="breadcrumb-item"><a href="../../experiments/news/experiment-news-transform.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Transformieren</span></a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="../../">Hands-On Exploratory Data Analytics</a> 
+    </div>
+      </div>
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../index.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Vorwort</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true">
+ <span class="menu-text">Vorbereitung</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../experiments/intro/experiment-setup.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title">Umgebung einrichten</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Tagesschau</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../experiments/news/experiment-news-explore-structured-unstructured.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Erkunden</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../experiments/news/experiment-news-transform.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Transformieren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../experiments/news/experiment-news-visualize.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Visualisieren</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../experiments/news/experiment-news-rule-based-text-analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">5</span>&nbsp; <span class="chapter-title">Regelbasierte Textanalyse</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../experiments/news/experiment-news-llm.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">6</span>&nbsp; <span class="chapter-title">LLM-gestützte Textanalyse</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Umfrage</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../experiments/survey/experiment-survey-explore-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">7</span>&nbsp; <span class="chapter-title">Variablen erkunden</span></span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../experiments/survey/experiment-survey-viewing-grouped-variables.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text"><span class="chapter-number">8</span>&nbsp; <span class="chapter-title">Gruppierte Betrachtung von Variablen</span></span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../references.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Literaturverzeichnis</span></a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#schritt-1-projekt-aufsetzen-und-daten-einlesen" id="toc-schritt-1-projekt-aufsetzen-und-daten-einlesen" class="nav-link active" data-scroll-target="#schritt-1-projekt-aufsetzen-und-daten-einlesen">Schritt 1: Projekt aufsetzen und Daten einlesen</a></li>
+  <li><a href="#schritt-2-variablen-auswählen-und-zeilen-filtern" id="toc-schritt-2-variablen-auswählen-und-zeilen-filtern" class="nav-link" data-scroll-target="#schritt-2-variablen-auswählen-und-zeilen-filtern">Schritt 2: Variablen auswählen und Zeilen filtern</a></li>
+  <li><a href="#schritt-3-neue-variablen-erzeugen" id="toc-schritt-3-neue-variablen-erzeugen" class="nav-link" data-scroll-target="#schritt-3-neue-variablen-erzeugen">Schritt 3: Neue Variablen erzeugen</a></li>
+  <li><a href="#schritt-4-daten-gruppieren-und-zusammenfassen" id="toc-schritt-4-daten-gruppieren-und-zusammenfassen" class="nav-link" data-scroll-target="#schritt-4-daten-gruppieren-und-zusammenfassen">Schritt 4: Daten gruppieren und zusammenfassen</a></li>
+  <li><a href="#schritt-5-datensätze-verknüpfen-mit-joins" id="toc-schritt-5-datensätze-verknüpfen-mit-joins" class="nav-link" data-scroll-target="#schritt-5-datensätze-verknüpfen-mit-joins">Schritt 5: Datensätze verknüpfen mit Joins</a></li>
+  <li><a href="#zusatzmaterial" id="toc-zusatzmaterial" class="nav-link" data-scroll-target="#zusatzmaterial">Zusatzmaterial</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../experiments/news/experiment-news-explore-structured-unstructured.html">Tagesschau</a></li><li class="breadcrumb-item"><a href="../../experiments/news/experiment-news-transform.html"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Transformieren</span></a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Daten transformieren</span></h1>
+<p class="subtitle lead">Am Beispiel der Tagesschau-Daten</p>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    <div>
+    <div class="quarto-title-meta-heading">Author</div>
+    <div class="quarto-title-meta-contents">
+             <p>Prof.&nbsp;Dr.&nbsp;Nicolas Meseth </p>
+          </div>
+  </div>
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<p>Rohdaten sind selten analysebereit. Bevor ihr eine Visualisierung erstellt, müsst ihr auswählen, was ihr braucht, irrelevantes herausfiltern, neue Variablen ableiten, Gruppen zusammenfassen und verschiedene Tabellen verknüpfen. Genau das ist Datentransformation, und <code>dplyr</code> liefert dafür ein konsistentes, lesbares Vokabular aus wenigen, aber mächtigen Verben. In dieser Übung lernt ihr diese Verben am Tagesschau-Datensatz kennen und baut dabei Schritt für Schritt ein vollständiges Transformations-Repertoire auf.</p>
+<section id="schritt-1-projekt-aufsetzen-und-daten-einlesen" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-1-projekt-aufsetzen-und-daten-einlesen">Schritt 1: Projekt aufsetzen und Daten einlesen</h2>
+<p><em>Die Aufgaben 1 bis 4 sind für euch nur relevant, wenn ihr noch kein Projekt angelegt habt. Wenn ihr bereits ein Projekt für eine vorherige Übung erstellt habt, könnt ihr die Aufgaben 1 bis 3 sowie 5 auslassen und nur das neue R-Skript in Aufgabe 4 anlegen.</em></p>
+<div class="task">
+<p><strong>1.</strong> Erstellt ein neues Projekt für diese Übung und öffnet es in unserer Entwicklungsumgebung Positron. Stellt sicher, dass ihr eine <em>virtuelle R-Umgebung</em> für das Projekt erstellt und aktiviert habt.</p>
+</div>
+<div class="task">
+<p><strong>2.</strong> Installiert die folgenden Pakete in eurer virtuellen Umgebung: <code>tidyverse</code>, <code>janitor</code>, <code>skimr</code>, <code>ggridges</code> und <code>tidylog</code>. Verwendet das Metapaket <code>pacman</code>, damit ihr die Pakete mit einem einzigen Befehl installieren und laden könnt.</p>
+</div>
+<div class="task">
+<p><strong>3.</strong> Ladet den Datensatz <code>tagesschau.zip</code> auf euren Computer herunter und speichert ihn in einem Unterordner <code>data/</code> in eurem Projektverzeichnis.</p>
+</div>
+<div class="task">
+<p><strong>4.</strong> Erzeugt einen neuen Ordner <code>scripts/</code> in eurem Projektverzeichnis und erstellt eine neue R-Skriptdatei <code>transform_news.R</code> in diesem Ordner.</p>
+</div>
+<div class="task">
+<p><strong>5.</strong> Der Datensatz liegt als komprimierte ZIP-Datei vor. Schaut euch die Datei genauer an und prüft, wie das Format aussieht, zum Beispiel Trennzeichen und Zeichenkodierung. Lest die Daten dann mit einer geeigneten Funktion aus <code>readr</code> ein und speichert den Code in eurer Skriptdatei.</p>
+</div>
+</section>
+<section id="schritt-2-variablen-auswählen-und-zeilen-filtern" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-2-variablen-auswählen-und-zeilen-filtern">Schritt 2: Variablen auswählen und Zeilen filtern</h2>
+<p><code>select()</code>, <code>filter()</code> und <code>arrange()</code> sind die drei grundlegenden Verben, um einen Datensatz einzugrenzen: Was brauche ich? Welche Zeilen sind relevant? In welcher Reihenfolge sollen sie erscheinen? Zusammen mit <code>tidylog</code> habt ihr außerdem ein Werkzeug, das euch bei jeder Transformation transparent zeigt, was tatsächlich passiert.</p>
+<div class="task">
+<p><strong>6.</strong> Das Paket <code>tidylog</code> überwacht dplyr-Operationen still im Hintergrund und gibt nach jeder Transformation eine Meldung aus, wie viele Zeilen entfernt wurden, wie viele neue Variablen entstanden sind und wie die Gruppen aussehen. Es muss <em>nach</em> dem Laden von <code>tidyverse</code> geladen werden, damit es die <code>dplyr</code>-Funktionen korrekt überschreibt.</p>
+<p>Ladet <code>tidylog</code> mit <code>library(tidylog)</code> und führt dann probeweise folgende Befehle aus:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1"></a><span class="fu">filter</span>(news, ressort <span class="sc">==</span> <span class="st">"inland"</span>)</span>
+<span id="cb1-2"><a href="#cb1-2"></a><span class="fu">filter</span>(news, word_count <span class="sc">&gt;</span> <span class="dv">2000</span>)</span>
+<span id="cb1-3"><a href="#cb1-3"></a><span class="fu">select</span>(news, title, ressort, word_count)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<p>Was steht in den Meldungen von <code>tidylog</code>? Welche Information bekommt ihr, die dplyr allein euch nicht geben würde? In welchen Situationen ist <code>tidylog</code> besonders hilfreich?</p>
+</div>
+<div class="task">
+<p><strong>7.</strong> Der Datensatz enthält 21 Variablen, aber für viele Analysen braucht ihr davon nur einen kleinen Teil. Erstellt einen reduzierten Datensatz <code>news_slim</code>, der ausschließlich die Variablen <code>title</code>, <code>date_time</code>, <code>ressort</code>, <code>tag</code>, <code>author</code> und <code>word_count</code> enthält. Verwendet dafür <code>select()</code>. Beobachtet, was <code>tidylog</code> dabei meldet. Wie viele Zeilen hat <code>news_slim</code>?</p>
+</div>
+<div class="task">
+<p><strong>8.</strong> <code>select()</code> kann Spalten auch umbenennen, indem ihr <code>neuer_name = alter_name</code> schreibt. Das ist praktisch, wenn ihr gleichzeitig auswählt und umbenennt. Wenn ihr jedoch <em>alle</em> Spalten behalten und nur eine oder wenige umbenennen wollt, ist <code>rename()</code> die bessere Wahl.</p>
+<p>Benennt in <code>news_slim</code> die Spalte <code>word_count</code> mit <code>rename()</code> in <code>n_words</code> um und nennt das Ergebnis <code>news_renamed</code>. Wie würde dieselbe Umbenennung mit <code>select()</code> aussehen? Was müsstet ihr dabei zusätzlich angeben? Überschreibt <code>news_slim</code> <em>nicht</em>, da spätere Aufgaben den ursprünglichen Namen <code>word_count</code> erwarten.</p>
+</div>
+<div class="task">
+<p><strong>9.</strong> Filtert <code>news_slim</code> auf alle Artikel aus dem Ressort <code>"inland"</code> und speichert das Ergebnis als <code>news_inland</code>. Wie viele Inland-Artikel enthält der Datensatz? Was sagt <code>tidylog</code> dazu?</p>
+</div>
+<div class="task">
+<p><strong>10.</strong> Häufig möchtet ihr nach mehreren erlaubten Werten gleichzeitig filtern. Der Operator <code>%in%</code> prüft, ob ein Wert in einem Vektor enthalten ist, und vermeidet mehrere <code>|</code>-Bedingungen.</p>
+<p>Definiert zunächst einen Vektor <code>hauptressorts</code> mit den sechs häufigsten Ressorts: <code>"inland"</code>, <code>"ausland"</code>, <code>"wirtschaft"</code>, <code>"wissen"</code>, <code>"investigativ"</code> und <code>"faktenfinder"</code>. Filtert <code>news_slim</code> mit <code>%in%</code> auf diese Ressorts und speichert das Ergebnis als <code>news_haupt</code>. Wie viele Zeilen enthält es? Schreibt daneben, wie der äquivalente Filter mit <code>|</code> aussehen würde, und entscheidet, welche Version ihr lesbarer findet.</p>
+</div>
+<div class="task">
+<p><strong>11.</strong> Wie viele Artikel aus dem Ressort <code>"ausland"</code> wurden seit dem 1. Januar 2020 veröffentlicht <em>und</em> haben mehr als 800 Wörter? Von welchem Datum stammt der älteste dieser Artikel?</p>
+</div>
+<div class="task">
+<p><strong>12.</strong> Die Variable <code>author</code> enthält für viele Artikel keine Angabe. Ermittelt zunächst, welchen Anteil in Prozent die Artikel ohne Autorenangabe am Gesamtdatensatz ausmachen. Erstellt dann eine gefilterte Version <code>news_with_author</code>, die nur Zeilen <em>mit</em> Autorenangabe enthält.</p>
+<p>Was könnte es inhaltlich bedeuten, wenn kein Autor angegeben ist? Beobachtet, wie <code>tidylog</code> den NA-Filter beschreibt.</p>
+</div>
+<div class="task">
+<p><strong>13.</strong> Welche zehn Artikel haben die meisten Wörter? Verwendet <code>arrange()</code> mit <code>desc()</code> und <code>head()</code>, oder alternativ <code>slice_max()</code>, um die zehn längsten Artikel zu identifizieren. Gebt <code>title</code>, <code>ressort</code> und <code>word_count</code> aus. In welchen Ressorts erscheinen die besonders langen Artikel?</p>
+</div>
+</section>
+<section id="schritt-3-neue-variablen-erzeugen" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-3-neue-variablen-erzeugen">Schritt 3: Neue Variablen erzeugen</h2>
+<p>Mit <code>mutate()</code> könnt ihr bestehende Datensätze um neue, berechnete Variablen erweitern, ohne dabei andere Spalten oder die Zeilenanzahl zu verändern. In diesem Teil lernt ihr außerdem, wie ihr Datentypen anpasst, Datumsvariablen zerlegt, kategoriale Einteilungen vornehmt und mit <code>across()</code> dieselbe Transformation auf viele Spalten gleichzeitig anwendet.</p>
+<div class="task">
+<p><strong>14.</strong> Die Variable <code>date_time</code> enthält sowohl Datum als auch Uhrzeit. Für viele Analysen brauchen wir sie in Einzelteilen. Fügt dem Datensatz <code>news_slim</code> mit <code>mutate()</code> drei neue Variablen hinzu:</p>
+<ul>
+<li><code>year</code>, das Erscheinungsjahr</li>
+<li><code>month</code>, den Erscheinungsmonat als Zahl von 1 bis 12</li>
+<li><code>weekday</code>, den Wochentag als geordneter Faktor, Funktion: <code>wday(..., label = TRUE)</code></li>
+</ul>
+<p>Speichert den erweiterten Datensatz wieder als <code>news_slim</code>. Welche Wochentage sind im Datensatz vertreten, und wie heißen sie in R?</p>
+</div>
+<div class="task">
+<p><strong>15.</strong> Die Variable <code>ressort</code> wurde beim Einlesen als <code>character</code> gespeichert, ist inhaltlich aber eine nominale kategoriale Variable. Wandelt sie mit <code>mutate()</code> und <code>as_factor()</code> in einen Faktor um. Überprüft mit <code>levels()</code>, welche Ausprägungen vorhanden sind, und mit <code>nlevels()</code>, wie viele es insgesamt gibt.</p>
+<p>Macht dasselbe mit der Variable <code>tag</code>. Wie viele verschiedene Tags enthält der Datensatz? Fällt euch dabei etwas Unerwartetes auf?</p>
+</div>
+<div class="task">
+<p><strong>16.</strong> Auch aus Textvariablen können wir nützliche Kenngrößen ableiten. Erstellt mit <code>mutate()</code> und Funktionen aus <code>stringr</code> zwei neue Variablen:</p>
+<ul>
+<li><code>title_length</code>, die Zeichenanzahl des Titels</li>
+<li><code>title_word_count</code>, die geschätzte Wortanzahl des Titels, zählt dafür die Leerzeichen und addiert 1</li>
+</ul>
+<p>Berechnet für <code>title_length</code> Minimum, Median und Maximum. Was ist der kürzeste und was der längste Titel im Datensatz? Druckt die Artikel mit dem kürzesten und dem längsten Titel auf der Konsole aus.</p>
+</div>
+<div class="task">
+<p><strong>17.</strong> Die Funktion <code>transmute()</code> verhält sich wie <code>mutate()</code>, behält aber im Ergebnis nur die neu erzeugten Spalten. Erstellt mit <code>transmute()</code> einen neuen kompakten Datensatz <code>news_timeline</code>, der ausschließlich folgende Variablen enthält: <code>year</code>, <code>month</code>, <code>weekday</code>, <code>ressort</code>, <code>word_count</code> sowie <code>title_length</code> aus Aufgabe 16. Speichert diesen Datensatz für spätere Analysen.</p>
+<p>In welchen Situationen ist <code>transmute()</code> praktischer als <code>mutate()</code>? Nennt ein konkretes Beispiel.</p>
+</div>
+<div class="task">
+<p><strong>18.</strong> Metrische Variablen lassen sich sinnvoll in inhaltliche Kategorien einteilen. Erstellt mit <code>mutate()</code> und <code>case_when()</code> eine neue Variable <code>article_type</code>:</p>
+<ul>
+<li><code>"Kurzmeldung"</code>, weniger als 200 Wörter</li>
+<li><code>"Standardartikel"</code>, 200 bis unter 700 Wörter</li>
+<li><code>"Langer Artikel"</code>, 700 Wörter und mehr</li>
+</ul>
+<p>Wandelt <code>article_type</code> anschließend in einen Faktor mit inhaltlich sinnvoller Reihenfolge um. Berechnet, wie viele Artikel auf jede Kategorie entfallen, und ermittelt den Anteil in Prozent.</p>
+</div>
+<div class="task">
+<p><strong>19.</strong> <code>across()</code> erlaubt es, dieselbe Transformation auf mehrere Spalten gleichzeitig anzuwenden, ohne den Code zu wiederholen. Es funktioniert sowohl in <code>mutate()</code> als auch in <code>summarize()</code>.</p>
+<p>Löst die folgenden beiden Aufgaben mit <code>across()</code>:</p>
+<ul>
+<li>Berechnet in einem einzigen <code>summarize()</code>-Aufruf Mittelwert und Median sowohl für <code>word_count</code> als auch für <code>title_length</code>. Nutzt dafür <code>across(c(word_count, title_length), list(mean = ~mean(.x, na.rm = TRUE), median = ~median(.x, na.rm = TRUE)))</code>.</li>
+<li>Wendet in einem einzigen <code>mutate()</code>-Aufruf <code>str_trim()</code> auf alle Zeichenketten-Spalten in <code>news_slim</code> an. Nutzt dafür <code>across(where(is.character), str_trim)</code>.</li>
+</ul>
+<p>Wie viele Zeilen Code hätte jede Lösung ohne <code>across()</code> gebraucht?</p>
+</div>
+</section>
+<section id="schritt-4-daten-gruppieren-und-zusammenfassen" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-4-daten-gruppieren-und-zusammenfassen">Schritt 4: Daten gruppieren und zusammenfassen</h2>
+<p><code>group_by()</code> und <code>summarize()</code> sind das mächtigste Werkzeugpaar in <code>dplyr</code>. Mit ihnen berechnet ihr beliebige Kenngrößen für beliebige Gruppen. Wichtig ist dabei, den Unterschied zwischen <code>summarize()</code> und <code>mutate()</code> nach <code>group_by()</code> zu verstehen, sowie die Konsequenzen, die es hat, <code>ungroup()</code> zu vergessen.</p>
+<div class="task">
+<p><strong>20.</strong> Berechnet die Anzahl der Artikel pro Ressort und sortiert das Ergebnis absteigend nach Häufigkeit. Welches ist das häufigste Ressort? Welche Ressorts enthalten weniger als 100 Artikel? Notiert euch die sechs häufigsten Ressorts als <code>hauptressorts</code>-Vektor für spätere Analysen.</p>
+</div>
+<div class="task">
+<p><strong>21.</strong> Berechnet für die sechs Hauptressorts folgende Kenngrößen in einem einzigen <code>summarize()</code>-Aufruf:</p>
+<ul>
+<li>Anzahl der Artikel, <code>n</code></li>
+<li>Median der Wortanzahl, <code>median_word_count</code></li>
+<li>Mittlere Wortanzahl, gerundet auf ganze Zahlen, <code>mean_word_count</code></li>
+<li>Anteil der Artikel mit namentlichem Autor in Prozent. Ein Autor gilt als namentlich, wenn <code>author</code> weder <code>NA</code> noch <code>"tagesschau.de"</code> ist.</li>
+</ul>
+<p>Sortiert das Ergebnis absteigend nach der mittleren Wortanzahl. Welches Ressort produziert im Schnitt die längsten Artikel?</p>
+</div>
+<div class="task">
+<p><strong>22.</strong> Wie hat sich die Artikelanzahl über die Jahre entwickelt? Berechnet für jedes Jahr die Gesamtanzahl aller Artikel sowie separat die Anzahl für die drei Ressorts <code>"inland"</code>, <code>"ausland"</code> und <code>"wirtschaft"</code>.</p>
+<p>Fällt euch etwas an den Jahren 2006 und 2026 auf? Warum könnten diese Jahrgänge unvollständig sein, und wie solltet ihr das bei Interpretationen berücksichtigen?</p>
+</div>
+<div class="task">
+<p><strong>23.</strong> <code>group_by()</code> funktioniert nicht nur mit <code>summarize()</code>, sondern auch mit <code>mutate()</code>. Während <code>summarize()</code> den Datensatz auf eine Zeile pro Gruppe verdichtet, behält <code>mutate()</code> alle Originalzeilen und fügt nur eine neue Spalte hinzu.</p>
+<p>Fügt dem auf die Hauptressorts gefilterten Datensatz mit <code>group_by()</code> und <code>mutate()</code> zwei neue Variablen hinzu:</p>
+<ul>
+<li><code>ressort_median_wc</code>, der Median der Wortanzahl <em>des jeweiligen Ressorts</em></li>
+<li><code>above_median</code>, ein logischer Wert <code>TRUE</code>/<code>FALSE</code>, der angibt, ob der Artikel über dem Ressort-Median liegt</li>
+</ul>
+<p>Wie viele Artikel im Ressort <code>"inland"</code> liegen über dem eigenen Ressort-Median? Ist das überraschend?</p>
+</div>
+<div class="task">
+<p><strong>24.</strong> Nach <code>group_by() |&gt; mutate()</code> bleibt der Datensatz in R <em>weiterhin gruppiert</em>. Das kann zu unerwarteten Ergebnissen führen, wenn ihr den Datensatz danach ohne explizites <code>ungroup()</code> weiterverwendet.</p>
+<p>Zeigt diesen Effekt anhand eines konkreten Beispiels: Erstellt einen nach Ressort gruppierten Datensatz mit einer neuen Spalte <code>n_ressort = n()</code>. Ruft darauf <code>slice_max(word_count, n = 1)</code> auf, <em>ohne</em> vorher <code>ungroup()</code> zu verwenden. Was erhaltet ihr? Ruft dann <code>ungroup()</code> auf und wiederholt <code>slice_max()</code>. Was ändert sich? Wann muss man <code>ungroup()</code> explizit aufrufen?</p>
+</div>
+</section>
+<section id="schritt-5-datensätze-verknüpfen-mit-joins" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-5-datensätze-verknüpfen-mit-joins">Schritt 5: Datensätze verknüpfen mit Joins</h2>
+<p>In der Praxis liegen Informationen selten in einer einzigen Tabelle vor. <em>Joins</em> ermöglichen es, Tabellen über gemeinsame Schlüsselspalten zu verknüpfen. In diesem Teil erstellt ihr eine Metadaten-Tabelle und verknüpft sie auf verschiedene Weisen mit dem Hauptdatensatz.</p>
+<div class="task">
+<p><strong>25.</strong> Erstellt in R eine kleine Metadaten-Tabelle <code>ressort_meta</code> mit folgenden Spalten:</p>
+<ul>
+<li><code>ressort</code>, der Ressort-Schlüssel, wie er im Datensatz vorkommt, zum Beispiel <code>"inland"</code></li>
+<li><code>ressort_label</code>, ein leserfreundlicher Anzeigename, zum Beispiel <code>"Inland"</code></li>
+<li><code>themenbereich</code>, eine übergeordnete thematische Kategorie, zum Beispiel <code>"Politik"</code>, <code>"Wirtschaft"</code>, <code>"Gesellschaft"</code> oder <code>"Faktencheck"</code></li>
+</ul>
+<p>Befüllt die Tabelle mit Einträgen für mindestens die acht häufigsten Ressorts. Lasst dabei bewusst einige seltene Ressorts <em>weg</em>, das wird in den nächsten Aufgaben relevant.</p>
+</div>
+<div class="task">
+<p><strong>26.</strong> Verknüpft den auf die Hauptvariablen reduzierten Datensatz mit <code>ressort_meta</code> über einen <code>left_join()</code>, verbunden über die gemeinsame Spalte <code>ressort</code>. Was bedeutet ein <code>left_join()</code> in diesem Kontext, welche Zeilen bleiben garantiert erhalten?</p>
+<p>Prüft das Ergebnis. Für wie viele Artikel wurde kein passender Eintrag in <code>ressort_meta</code> gefunden, erkennbar an <code>NA</code> in <code>ressort_label</code>? Welche Ressorts sind das?</p>
+<p>Erstellt anschließend ein Balkendiagramm, das die Anzahl der Artikel pro <code>themenbereich</code> zeigt, sortiert nach Häufigkeit. Behandelt Artikel ohne Match als eigene Kategorie <code>"Nicht klassifiziert"</code>, Tipp: <code>replace_na()</code>, und hebt diese Kategorie farblich ab.</p>
+</div>
+<div class="task">
+<p><strong>27.</strong> Führt denselben Join als <code>inner_join()</code> durch. Was ist der Unterschied zum <code>left_join()</code> aus Aufgabe 26? Wie viele Zeilen hat das Ergebnis im Vergleich?</p>
+<p>Erstellt mit dem Ergebnis des <code>inner_join()</code> einen horizontalen Boxplot der Wortanzahl, gruppiert nach <code>themenbereich</code>, gefiltert auf <code>word_count &lt; 3000</code>, sortiert nach Median. Welcher Themenbereich produziert die längsten Artikel?</p>
+</div>
+<div class="task">
+<p><strong>28.</strong> Verwendet <code>anti_join()</code>, um herauszufinden, welche Artikel im Hauptdatensatz einen Ressort-Wert haben, der <em>nicht</em> in <code>ressort_meta</code> vorkommt. Gebt die fehlenden Ressorts mit ihrer Häufigkeit aus, sortiert nach Häufigkeit.</p>
+<p>Was ist der praktische Nutzen von <code>anti_join()</code> beim Arbeiten mit Lookup-Tabellen? Wie hängt der <code>anti_join()</code> mit dem <code>left_join()</code> zusammen? Was ist der Bezug zwischen den Zeilen, die beim <code>left_join()</code> den Wert <code>NA</code> erhalten, und dem Ergebnis des <code>anti_join()</code>?</p>
+<p>Erstellt ein Balkendiagramm der nicht gematchten Ressorts, nur solche mit mindestens 5 Artikeln, ohne <code>NA</code>. Hebt mit einer abweichenden Farbe die Ressorts hervor, die ihr für eine vollständigere Lookup-Tabelle als prioritär erachtet, zum Beispiel weil sie mehr als 100 Artikel enthalten.</p>
+</div>
+</section>
+<section id="zusatzmaterial" class="level2">
+<h2 class="anchored" data-anchor-id="zusatzmaterial">Zusatzmaterial</h2>
+<p>Zu diesem Experiment gibt es folgendes Zusatzmaterial:</p>
+<ul>
+<li><a href="experiment-news-transform.pdf">Aufgabenblatt als PDF</a></li>
+<li><a href="experiment-news-transform.qmd.txt" download="experiment-news-transform.qmd">Quarto-Notebook mit ausführbarem R-Code</a></li>
+</ul>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+      const outerScaffold = trigger.parentElement.cloneNode(true);
+      const codeEl = outerScaffold.querySelector('code');
+      for (const childEl of codeEl.children) {
+        if (isCodeAnnotation(childEl)) {
+          childEl.remove();
+        }
+      }
+      return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        const annoteTargets = window.document.querySelectorAll('.code-annotation-anchor');
+        for (let i=0; i<annoteTargets.length; i++) {
+          const annoteTarget = annoteTargets[i];
+          const targetCell = annoteTarget.getAttribute("data-target-cell");
+          const targetAnnotation = annoteTarget.getAttribute("data-target-annotation");
+          const contentFn = () => {
+            const content = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+            if (content) {
+              const tipContent = content.cloneNode(true);
+              tipContent.classList.add("code-annotation-tip-content");
+              return tipContent.outerHTML;
+            }
+          }
+          const config = {
+            allowHTML: true,
+            content: contentFn,
+            onShow: (instance) => {
+              selectCodeLines(instance.reference);
+              instance.reference.classList.add('code-annotation-active');
+              window.tippy.hideAll();
+            },
+            onHide: (instance) => {
+              unselectCodeLines();
+              instance.reference.classList.remove('code-annotation-active');
+            },
+            maxWidth: 300,
+            delay: [50, 0],
+            duration: [200, 0],
+            offset: [5, 10],
+            arrow: true,
+            appendTo: function(el) {
+              return el.parentElement.parentElement.parentElement;
+            },
+            interactive: true,
+            interactiveBorder: 10,
+            theme: 'quarto',
+            placement: 'right',
+            popperOptions: {
+              modifiers: [
+              {
+                name: 'flip',
+                options: {
+                  flipVariations: false, // true by default
+                  allowedAutoPlacements: ['right'],
+                  fallbackPlacements: ['right', 'top', 'top-start', 'top-end', 'bottom', 'bottom-start', 'bottom-end', 'left'],
+                },
+              },
+              {
+                name: 'preventOverflow',
+                options: {
+                  mainAxis: false,
+                  altAxis: false
+                }
+              }
+              ]        
+            }      
+          };
+          window.tippy(annoteTarget, config); 
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../experiments/news/experiment-news-explore-structured-unstructured.html" class="pagination-link" aria-label="Erkunden">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Erkunden</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../experiments/news/experiment-news-visualize.html" class="pagination-link" aria-label="Visualisieren">
+        <span class="nav-page-text"><span class="chapter-number">4</span>&nbsp; <span class="chapter-title">Visualisieren</span></span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+
+
+
+
+</body></html>
