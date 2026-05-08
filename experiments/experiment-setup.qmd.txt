@@ -11,7 +11,7 @@ Bevor die eigentliche Datenanalyse und Schreibarbeit beginnen kann, braucht ihr 
 
 R ist die primäre Sprache für diesen Kurs. Sie deckt den gesamten Analyseprozess ab: Daten einlesen, bereinigen, analysieren und visualisieren.
 
-**1.** Öffnet die Website [cran.r-project.org](https://cran.r-project.org) und ladet die aktuelle R-Version für euer Betriebssystem herunter. Führt das Installationsprogramm mit den Standardeinstellungen aus.
+**1.** Öffnet die Website [`cran.r-project.org`](https://cran.r-project.org) und ladet die aktuelle R-Version für euer Betriebssystem herunter. Führt das Installationsprogramm mit den Standardeinstellungen aus.
 
 
 **2.** Überprüft die Installation: Öffnet ein Terminal (unter Windows z. B. PowerShell) und gebt `R.exe --version` ein. Welche Version wird angezeigt?
@@ -26,7 +26,7 @@ R.version.string
 
 Python verwenden wir als Ergänzung zu R, vor allem für den Zugriff auf KI-Modelle und Python-Bibliotheken, die keine direkte R-Entsprechung haben.
 
-**3.** Ladet die neueste Version von Python von [python.org](https://www.python.org) herunter. Achtet bei der Installation unter Windows darauf, die Option *Add Python to PATH* zu aktivieren. Führt das Installationsprogramm mit den Standardeinstellungen aus.
+**3.** Ladet die neueste Version von Python von [`python.org`](https://www.python.org) herunter. Achtet bei der Installation unter Windows darauf, die Option *Add Python to PATH* zu aktivieren. Führt das Installationsprogramm mit den Standardeinstellungen aus.
 
 
 **4.** Öffnet ein Terminal und überprüft die Python-Installation mit `python --version` (unter macOS und Linux ggf. `python3 --version`). Stellt sicher, dass die angezeigte Version $\geq$ 3.12 ist.
@@ -107,9 +107,7 @@ Neben den Kernwerkzeugen gibt es einige Ergänzungen, die euch die tägliche Arb
 **14.** Installiert Git von `git-scm.com` (Windows) oder über Homebrew (`brew install git`, macOS). Konfiguriert anschließend euren Namen und eure Hochschul-E-Mail und überprüft mit `git --version`, dass Git gefunden wird.
 
 
-**15.** Installiert in Positron über die Extension-Seitenleiste (`Strg+Shift+X` bzw. `Cmd+Shift+X`) die Erweiterungen *GitLens* (verbesserte Git-Integration im Editor) und *Quarto* (Syntaxhervorhebung und Vorschau, falls noch nicht vorinstalliert). Sucht nach weiteren Erweiterungen, die euch sinnvoll erscheinen, und notiert, welche ihr installiert habt und warum.
-
-**16.** Aktualisiert den `renv`-Snapshot eures Projekts, um alle neu installierten Pakete in der Lock-Datei zu erfassen.
+**15.** Aktualisiert den `renv`-Snapshot eures Projekts, um alle neu installierten Pakete in der Lock-Datei zu erfassen.
 
 ```{r}
 # Update the project snapshot to record all installed packages
@@ -117,7 +115,7 @@ Neben den Kernwerkzeugen gibt es einige Ergänzungen, die euch die tägliche Arb
 ```
 
 
-**17.** Informiert euch über KI-Assistenten für die Programmierung. Im Kurs werden wir gelegentlich *Claude Code* (Anthropics CLI-Assistent, installierbar via `npm install -g @anthropic-ai/claude-code`) und *GitHub Copilot* (VS-Code-Erweiterung) verwenden. Recherchiert kurz, was die beiden Tools können, und notiert, wie sich KI-Assistenten eurer Meinung nach auf das Erlernen von Programmierung auswirken könnten — positiv wie negativ.
+**16.** Informiert euch über KI-Assistenten für die Programmierung. Im Kurs werden wir gelegentlich *Claude Code* (Anthropic), *Codex* (OpenAI) oder *GitHub Copilot* (Microsoft) as VS-Code-Erweiterung verwenden. Recherchiert kurz, was die beiden Tools können, und notiert, wie sich KI-Assistenten eurer Meinung nach auf das Erlernen von Programmierung auswirken könnten, sowohl positiv als auch negativ.
 
 ```{r}
 # Note your thoughts in comments
@@ -131,7 +129,7 @@ Neben den Kernwerkzeugen gibt es einige Ergänzungen, die euch die tägliche Arb
 
 ## Schritt 7: Reflexion
 
-**18.** Vergleicht R mit Tabellenkalkulationsprogrammen wie Microsoft Excel. Welche Aufgaben lassen sich in Excel gut erledigen? Für welche Aufgaben ist R klar im Vorteil? Nennt mindestens zwei Stärken von R gegenüber Excel und überlegt, ob es auch Szenarien gibt, in denen Excel die bessere Wahl ist.
+**17.** Vergleicht R mit Tabellenkalkulationsprogrammen wie Microsoft Excel. Welche Aufgaben lassen sich in Excel gut erledigen? Für welche Aufgaben ist R klar im Vorteil? Nennt mindestens zwei Stärken von R gegenüber Excel und überlegt, ob es auch Szenarien gibt, in denen Excel die bessere Wahl ist.
 
 ```{r}
 # Note your thoughts in comments
@@ -143,7 +141,7 @@ Neben den Kernwerkzeugen gibt es einige Ergänzungen, die euch die tägliche Arb
 ```
 
 
-**19.** Vergleicht R (mit `ggplot2`) mit Visualisierungstools wie Tableau oder Power BI. Was können diese Tools, was R nur schwer kann? Und umgekehrt: Was spricht für den Einsatz von `ggplot2`?
+**18.** Vergleicht R (mit `ggplot2`) mit Visualisierungstools wie Tableau oder Power BI. Was können diese Tools, was R nur schwer kann? Und umgekehrt: Was spricht für den Einsatz von `ggplot2`?
 
 ```{r}
 # Note your thoughts in comments
@@ -154,7 +152,7 @@ Neben den Kernwerkzeugen gibt es einige Ergänzungen, die euch die tägliche Arb
 ```
 
 
-**20.** Vergleicht Quarto mit Textverarbeitungsprogrammen wie Microsoft Word. Was sind die zentralen Unterschiede im Arbeitsablauf? Welche Vorteile bietet Quarto bei der Erstellung wissenschaftlicher oder technischer Berichte, welche Nachteile hat es?
+**19.** Vergleicht Quarto mit Textverarbeitungsprogrammen wie Microsoft Word. Was sind die zentralen Unterschiede im Arbeitsablauf? Welche Vorteile bietet Quarto bei der Erstellung wissenschaftlicher oder technischer Berichte, welche Nachteile hat es?
 
 ```{r}
 # Note your thoughts in comments
@@ -165,7 +163,7 @@ Neben den Kernwerkzeugen gibt es einige Ergänzungen, die euch die tägliche Arb
 ```
 
 
-**21.** Welche Bedeutung hat *Reproduzierbarkeit* für wissenschaftliche Analysen? Erläutert, wie die in diesem Experiment eingerichteten Werkzeuge (R, Quarto, renv, Git) gemeinsam dazu beitragen, dass Analysen reproduzierbar sind.
+**20.** Welche Bedeutung hat *Reproduzierbarkeit* für wissenschaftliche Analysen? Erläutert, wie die in diesem Experiment eingerichteten Werkzeuge (R, Quarto, renv, Git) gemeinsam dazu beitragen, dass Analysen reproduzierbar sind.
 
 ```{r}
 # Reflect on reproducibility

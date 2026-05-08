@@ -325,7 +325,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="schritt-1-r-installieren">Schritt 1: R installieren</h2>
 <p>R ist die primäre Sprache für diesen Kurs. Sie deckt den gesamten Analyseprozess ab: Daten einlesen, bereinigen, analysieren und visualisieren.</p>
 <div class="task">
-<p><strong>1.</strong> Öffnet die Website <a href="https://cran.r-project.org">cran.r-project.org</a> und ladet die aktuelle R-Version für euer Betriebssystem herunter. Führt das Installationsprogramm mit den Standardeinstellungen aus.</p>
+<p><strong>1.</strong> Öffnet die Website <a href="https://cran.r-project.org"><code>cran.r-project.org</code></a> und ladet die aktuelle R-Version für euer Betriebssystem herunter. Führt das Installationsprogramm mit den Standardeinstellungen aus.</p>
 </div>
 <p>Für Windows gibt es einen einfachen Installer unter <em>Download R for Windows → base</em>. Unter macOS ladet ihr das <code>.pkg</code>-Paket herunter. Auf Ubuntu/Debian-Linux ist R über den Paketmanager verfügbar (<code>sudo apt install r-base</code>) und automatisch im PATH.</p>
 <p>Neuere R-Versionen fügen sich unter Windows automatisch zum PATH hinzu. Falls <code>R --version</code> im Terminal dennoch nicht funktioniert, öffnet <em>RGui</em> über das Startmenü, führt <code>R.home("bin")</code> aus und tragt den angezeigten Pfad manuell in <em>Systemsteuerung → System → Erweiterte Systemeinstellungen → Umgebungsvariablen → Path</em> ein.</p>
@@ -338,7 +338,7 @@ window.Quarto = {
 <h2 class="anchored" data-anchor-id="schritt-2-python-installieren">Schritt 2: Python installieren</h2>
 <p>Python verwenden wir als Ergänzung zu R, vor allem für den Zugriff auf KI-Modelle und Python-Bibliotheken, die keine direkte R-Entsprechung haben.</p>
 <div class="task">
-<p><strong>3.</strong> Ladet die neueste Version von Python von <a href="https://www.python.org">python.org</a> herunter. Achtet bei der Installation unter Windows darauf, die Option <em>Add Python to PATH</em> zu aktivieren. Führt das Installationsprogramm mit den Standardeinstellungen aus.</p>
+<p><strong>3.</strong> Ladet die neueste Version von Python von <a href="https://www.python.org"><code>python.org</code></a> herunter. Achtet bei der Installation unter Windows darauf, die Option <em>Add Python to PATH</em> zu aktivieren. Führt das Installationsprogramm mit den Standardeinstellungen aus.</p>
 </div>
 <p>Unter macOS empfiehlt sich die Installation über Homebrew: <code>brew install python</code>. Wer bereits <code>pyenv</code> oder <code>conda</code> verwendet, kann diese Umgebungsmanager weiternutzen, sollte aber sicherstellen, dass Positron die Python-Installation automatisch erkennt.</p>
 <div class="task">
@@ -376,7 +376,7 @@ window.Quarto = {
 <span id="cb2-2"><a href="#cb2-2"></a>renv<span class="sc">::</span><span class="fu">status</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <div class="task">
-<p><strong>9.</strong> Installiert die folgenden Grundpakete für den Kurs: <code>tidyverse</code>, <code>janitor</code> und <code>skimr</code>. Verwendet das Metapaket <code>pacman</code>, das ihr zuerst installieren müsst, falls es noch nicht vorhanden ist. Überprüft nach der Installation, dass alle drei Pakete fehlerfrei geladen werden können.</p>
+<p><strong>9.</strong> Installiert die folgenden Grundpakete für alle Kurse: <code>tidyverse</code>, <code>janitor</code> und <code>skimr</code>. Verwendet das Metapaket <code>pacman</code>, das ihr zuerst installieren müsst, falls es noch nicht vorhanden ist. Überprüft nach der Installation, dass alle drei Pakete fehlerfrei geladen werden können.</p>
 </div>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb3"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1"></a><span class="cf">if</span> (<span class="sc">!</span><span class="fu">require</span>(<span class="st">"pacman"</span>, <span class="at">quietly =</span> <span class="cn">TRUE</span>)) <span class="fu">install.packages</span>(<span class="st">"pacman"</span>)</span>
@@ -440,17 +440,14 @@ git config --global user.email "euer.name@hs-osnabrueck.de"
 git --version</code></pre>
 <p>Git wird im Kurs für die Versionskontrolle eurer Analyseprojekte verwendet. Damit könnt ihr Änderungen nachverfolgen und ältere Projektzustände wiederherstellen.</p>
 <div class="task">
-<p><strong>15.</strong> Installiert in Positron über die Extension-Seitenleiste (<code>Strg+Shift+X</code> bzw. <code>Cmd+Shift+X</code>) die Erweiterungen <em>GitLens</em> (verbesserte Git-Integration im Editor) und <em>Quarto</em> (Syntaxhervorhebung und Vorschau, falls noch nicht vorinstalliert). Sucht nach weiteren Erweiterungen, die euch sinnvoll erscheinen, und notiert, welche ihr installiert habt und warum.</p>
-</div>
-<div class="task">
-<p><strong>16.</strong> Aktualisiert den <code>renv</code>-Snapshot eures Projekts, um alle neu installierten Pakete in der Lock-Datei zu erfassen.</p>
+<p><strong>15.</strong> Aktualisiert den <code>renv</code>-Snapshot eures Projekts, um alle neu installierten Pakete in der Lock-Datei zu erfassen.</p>
 </div>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>renv<span class="sc">::</span><span class="fu">snapshot</span>()</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Nach dem Snapshot enthält die <code>renv.lock</code>-Datei alle Pakete mit ihren exakten Versionen. Checkt ihr das Projekt in Git ein, können andere die Umgebung mit <code>renv::restore()</code> exakt reproduzieren.</p>
 <div class="task">
-<p><strong>17.</strong> Informiert euch über KI-Assistenten für die Programmierung. Im Kurs werden wir gelegentlich <em>Claude Code</em> (Anthropics CLI-Assistent, installierbar via <code>npm install -g @anthropic-ai/claude-code</code>) und <em>GitHub Copilot</em> (VS-Code-Erweiterung) verwenden. Recherchiert kurz, was die beiden Tools können, und notiert, wie sich KI-Assistenten eurer Meinung nach auf das Erlernen von Programmierung auswirken könnten — positiv wie negativ.</p>
+<p><strong>16.</strong> Informiert euch über KI-Assistenten für die Programmierung. Im Kurs werden wir gelegentlich <em>Claude Code</em> (Anthropic), <em>Codex</em> (OpenAI) oder <em>GitHub Copilot</em> (Microsoft) as VS-Code-Erweiterung verwenden. Recherchiert kurz, was die beiden Tools können, und notiert, wie sich KI-Assistenten eurer Meinung nach auf das Erlernen von Programmierung auswirken könnten, sowohl positiv als auch negativ.</p>
 </div>
 <p>Claude Code ermöglicht es, Programmieraufgaben im Dialog mit einem Sprachmodell zu lösen und Fehlermeldungen erklären zu lassen. GitHub Copilot schlägt Code-Ergänzungen direkt im Editor vor.</p>
 <p>KI-Assistenten können beim Einstieg helfen, indem sie Beispiele liefern und Konzepte erklären. Die Gefahr besteht darin, Code zu übernehmen, ohne ihn zu verstehen. Eine gute Faustregel: KI nutzen, um Ideen und Erklärungen zu erhalten, aber generierten Code stets selbst nachvollziehen und anpassen.</p>
@@ -458,22 +455,22 @@ git --version</code></pre>
 <section id="schritt-7-reflexion" class="level2">
 <h2 class="anchored" data-anchor-id="schritt-7-reflexion">Schritt 7: Reflexion</h2>
 <div class="task">
-<p><strong>18.</strong> Vergleicht R mit Tabellenkalkulationsprogrammen wie Microsoft Excel. Welche Aufgaben lassen sich in Excel gut erledigen? Für welche Aufgaben ist R klar im Vorteil? Nennt mindestens zwei Stärken von R gegenüber Excel und überlegt, ob es auch Szenarien gibt, in denen Excel die bessere Wahl ist.</p>
+<p><strong>17.</strong> Vergleicht R mit Tabellenkalkulationsprogrammen wie Microsoft Excel. Welche Aufgaben lassen sich in Excel gut erledigen? Für welche Aufgaben ist R klar im Vorteil? Nennt mindestens zwei Stärken von R gegenüber Excel und überlegt, ob es auch Szenarien gibt, in denen Excel die bessere Wahl ist.</p>
 </div>
 <p>R hat klare Vorteile bei großen Datensätzen (Excel ist auf ca. 1 Mio. Zeilen begrenzt), bei wiederholbaren und automatisierten Analysen und bei der Reproduzierbarkeit. Jeder Analyseschritt ist als Code dokumentiert und kann auf neue Daten angewendet werden, ohne manuell wiederholt zu werden.</p>
 <p>Excel ist hingegen intuitiv für schnelle Summen, einfache Pivot-Tabellen oder das Nachschlagen einzelner Werte und braucht keine Programmierkenntnisse. In vielen Unternehmen ist es zudem das am weitesten verbreitete Werkzeug für einfache Datenhaltung und Reporting.</p>
 <div class="task">
-<p><strong>19.</strong> Vergleicht R (mit <code>ggplot2</code>) mit Visualisierungstools wie Tableau oder Power BI. Was können diese Tools, was R nur schwer kann? Und umgekehrt: Was spricht für den Einsatz von <code>ggplot2</code>?</p>
+<p><strong>18.</strong> Vergleicht R (mit <code>ggplot2</code>) mit Visualisierungstools wie Tableau oder Power BI. Was können diese Tools, was R nur schwer kann? Und umgekehrt: Was spricht für den Einsatz von <code>ggplot2</code>?</p>
 </div>
 <p>Tableau und Power BI bieten interaktive Dashboards per Drag-and-drop, die ohne Programmierkenntnisse erstellt und von Endnutzerinnen und Endnutzern exploriert werden können.</p>
 <p>Mit <code>ggplot2</code> hat man deutlich mehr Kontrolle über Darstellung und statistische Transformation, kann Visualisierungen als Teil eines reproduzierbaren Workflows einbetten und eigene Themen und Stile konsequent durchsetzen. Zudem sind R und <code>ggplot2</code> kostenlos und Open Source, während Tableau und Power BI Lizenzkosten verursachen.</p>
 <div class="task">
-<p><strong>20.</strong> Vergleicht Quarto mit Textverarbeitungsprogrammen wie Microsoft Word. Was sind die zentralen Unterschiede im Arbeitsablauf? Welche Vorteile bietet Quarto bei der Erstellung wissenschaftlicher oder technischer Berichte, welche Nachteile hat es?</p>
+<p><strong>19.</strong> Vergleicht Quarto mit Textverarbeitungsprogrammen wie Microsoft Word. Was sind die zentralen Unterschiede im Arbeitsablauf? Welche Vorteile bietet Quarto bei der Erstellung wissenschaftlicher oder technischer Berichte, welche Nachteile hat es?</p>
 </div>
 <p>In Word schreibt man Text und fügt Ergebnisse wie Tabellen und Grafiken manuell ein. Ändert sich die Datenlage, müssen alle Elemente manuell aktualisiert werden, was fehleranfällig ist. Quarto verbindet Code und Bericht in einer Datei: Beim Rendern werden alle Ergebnisse automatisch neu berechnet.</p>
 <p>Nachteile von Quarto: Die Einstiegshürde ist höher, kollaboratives Bearbeiten mit Kommentarfunktion ist in Word intuitiver, und für rein textliche Dokumente ohne Analyseanteil bleibt Word oft die praktischere Wahl.</p>
 <div class="task">
-<p><strong>21.</strong> Welche Bedeutung hat <em>Reproduzierbarkeit</em> für wissenschaftliche Analysen? Erläutert, wie die in diesem Experiment eingerichteten Werkzeuge (R, Quarto, renv, Git) gemeinsam dazu beitragen, dass Analysen reproduzierbar sind.</p>
+<p><strong>20.</strong> Welche Bedeutung hat <em>Reproduzierbarkeit</em> für wissenschaftliche Analysen? Erläutert, wie die in diesem Experiment eingerichteten Werkzeuge (R, Quarto, renv, Git) gemeinsam dazu beitragen, dass Analysen reproduzierbar sind.</p>
 </div>
 <p>Reproduzierbarkeit bedeutet, dass eine Analyse mit denselben Daten und demselben Code zu denselben Ergebnissen führt, unabhängig davon, wer sie ausführt und wann. Das ist ein Grundprinzip wissenschaftlicher Arbeit.</p>
 <p>Die eingerichteten Werkzeuge unterstützen das auf vier Ebenen:</p>
