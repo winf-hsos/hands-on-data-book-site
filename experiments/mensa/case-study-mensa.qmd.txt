@@ -1,7 +1,7 @@
 ---
 title: "Notebook für die Fallstudie: Explorative Analyse von Speiseplänen in Deutschlands Mensen"
 subtitle: "Fallstudie im Sommersemester 2026"
-author: "- Prof. Dr. Nicolas Meseth"
+author: "- name: \"Prof. Dr. Nicolas Meseth\""
 ---
 
 
@@ -60,7 +60,7 @@ Jedes Studierendenwerk verwendet eine abweichende Struktur im Hinblick auf die S
 
 ## Aufgabenstellung
 
-### Teil 1: Zusammenführung und Bereinigung der Daten
+### Teil 1: Zusammenführung und Bereinigung
 
 Im ersten Teil dieser Fallstudie überführt ihr die Dateien der Studierendenwerke — mit Ausnahme von Brandenburg Ost, dessen Daten eine vollständig abweichende Struktur aufweisen — in eine einheitliche CSV-Datei. Dafür verwendet ihr R und die Funktionen aus dem Tidyverse. Die Zieltabelle soll die folgende Struktur haben:
 
@@ -125,7 +125,7 @@ Das Skript sollte alle Visualisierungen beim Ausführen automatisch erstellen un
 
 Auf der Basis eurer Analysen erstellt ihr ein wissenschaftliches Poster, das die wichtigsten Ergebnisse ansprechend und strukturiert präsentiert. Es sollte so klar und übersichtlich gestaltet sein, dass Betrachtende die zentralen Befunde schnell erfassen können.
 
-Erstellt das Poster mit einem Werkzeug eurer Wahl (z. B. PowerPoint, Canva, Inkscape oder Quarto) im Hochformat (Portrait, DIN A0: 841 × 1189 mm) und exportiert es als PDF-Datei. Speichert es im Projekt unter `communications/poster.pdf`. Für den Export reicht eine RGB-Farbgebung aus; CMYK ist nur bei professionellen Druckdienstleistern erforderlich. Bringt eine ausgedruckte Version im Format DIN A0 zum Präsentationstermin mit, damit ihr es im Rahmen der Poster-Galerie präsentieren könnt.
+Erstellt das Poster mit einem Werkzeug eurer Wahl (z. B. PowerPoint, Canva, Inkscape oder Quarto) im Hochformat (Portrait, DIN A0: 841 × 1189 mm) und exportiert es als PDF-Datei. Speichert es im Projekt unter `communications/poster.pdf`. Bringt eine ausgedruckte Version im Format DIN A0 zum Präsentationstermin mit, damit ihr es im Rahmen der Poster-Galerie präsentieren könnt.
 
 ## Bewertung
 
