@@ -138,7 +138,7 @@ Erstellt das Poster mit einem Werkzeug eurer Wahl (z. B. PowerPoint, Canva, Inks
 Die Fallstudie wird mit insgesamt 100 Punkten bewertet, die sich wie folgt auf die vier Teile verteilen:
 
 | Teil | Gewichtung | Schwerpunkt der Bewertung |
-|-----------------------|------------------|--------------------------------|
+|-----------------------------|-----------|-------------------------------|
 | Teil 1: Datenzusammenführung | 20 % | Vollständigkeit und Korrektheit der Zieltabelle, Codequalität |
 | Teil 2: Klassifikation | 30 % | Tiefe und Kreativität der Lösung, Nachvollziehbarkeit des Vorgehens, Reproduzierbarkeit, Abdeckung |
 | Teil 3: Explorative Analysen | 30 % | Relevanz der Analysen, Qualität der Visualisierungen |
