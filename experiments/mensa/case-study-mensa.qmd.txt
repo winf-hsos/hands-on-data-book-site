@@ -16,7 +16,7 @@ Von zentralem Interesse für das Projekt ist, wie sich die Zusammensetzung der S
 
 Bevor die eigentliche Analyse beginnen kann, müssen die Daten harmonisiert werden: Jede Mensa verwendet eigene Bezeichnungen für die Speisen, viele davon inhaltlich ähnlich oder identisch, und die Rohdaten sind über zahlreiche Excel- und CSV-Dateien mit teils unterschiedlichen Strukturen verteilt.
 
-Auf dieser Grundlage sollen im dritten Teil der Fallstudie Antworten auf die folgenden Forschungsfragen erarbeitet werden:
+Auf dieser Grundlage sollen Antworten auf die folgenden Forschungsfragen erarbeitet werden:
 
 - Wie hat sich die Zusammensetzung der Speisepläne in den Mensen über die Zeit entwickelt? Gibt es erkennbare Trends, etwa in Bezug auf die Anzahl der vegetarischen oder veganen Gerichte oder den Anteil von Gerichten mit Hülsenfrüchten?
 
@@ -26,12 +26,12 @@ Auf dieser Grundlage sollen im dritten Teil der Fallstudie Antworten auf die fol
 
 ## Informationen zum Datensatz
 
-Der Datensatz besteht aus einer Vielzahl von Excel- und CSV-Dateien, die die Speisepläne von insgesamt 27 Mensen von 11 verschiedenen Studierendenwerken in Deutschland über einen Zeitraum von mehreren Jahren enthalten. Insgesamt sind mehr als 1,1 Mio. Einträge enthalten. Der Datensatz wurde im Rahmen des Forschungsprojekts Linse erhoben und stellt Exporte aus den Warenwirtschaftssystemen der jeweiligen Studierendenwerke dar.
+Der Datensatz besteht aus einer Vielzahl von Excel- und CSV-Dateien, die die Speisepläne von insgesamt 27 Mensen von 11 verschiedenen Studierendenwerken in Deutschland über einen Zeitraum von mehreren Jahren enthalten. Insgesamt sind mehr als 1,1 Mio. Einträge enthalten.
 
 Folgende Studierendenwerke sind im Datensatz enthalten:
 
-| Studierendenwerk | Anzahl Dateien | Ordner |
-|----|----|----|
+| Studierendenwerk | Dateien | Ordner |
+|----|---|------|
 | Brandenburg Ost | 5 | `data/projekt-linse/brandenburg-ost` |
 | Chemnitz-Zwickau | 5 | `data/projekt-linse/chemnitz-zwickau` |
 | Erlangen-Nürnberg | 1 | `data/projekt-linse/erlangen-nuernberg` |
@@ -48,7 +48,7 @@ Jedes Studierendenwerk verwendet eine abweichende Struktur im Hinblick auf die S
 
 
 | Variablenname | Beschreibung |
-|---|------|
+|--|-------|
 | `Prod.Dat.` | Das Datum, an dem die Speise im Plan angeboten wurde |
 | `Prod.Art.` | Die Art der Speise, wie "Beilage", "Hauptgericht", "Dessert" usw. |
 | `Bezeichnung` | Die vom Studierendenwerk vergebene Bezeichnung der Speise |
@@ -64,7 +64,7 @@ Jedes Studierendenwerk verwendet eine abweichende Struktur im Hinblick auf die S
 Im ersten Teil dieser Fallstudie überführt ihr die Dateien der Studierendenwerke — mit Ausnahme von Brandenburg Ost, dessen Daten eine vollständig abweichende Struktur aufweisen — in eine einheitliche CSV-Datei. Dafür verwendet ihr R und die Funktionen aus dem Tidyverse. Die Zieltabelle soll die folgende Struktur haben:
 
 | Variablenname | Datentyp |Beschreibung |
-|---|-|-------|
+|---|--|------|
 | `id` | `dbl` | Eine eindeutige fortlaufende ID für jede Zeile |
 | `source_file` | `chr` | Der Name der Quelldatei, aus der die Zeile stammt |
 | `student_service` | `chr` | Das Studierendenwerk, dem die Zeile zugeordnet werden kann |
@@ -102,7 +102,7 @@ Erweitert die Zieltabelle aus Teil 1 um die folgenden Spalten, die die Klassifik
 | `meal_type` | `chr` | Die Zuordnung zum Speisentypen, etwa "Auflauf", "Bowl" oder "Pfannengericht" |
 | `code_main_protein` | `fct` | Die Zuordnung zur Hauptproteinquelle über ein Codesystem |
 
-Speichert die erweiterte Zieltabelle mit den obigen Klassifikationsspalten als `data/cafeteria_menus_classified.csv` ab.
+Speichert die erweiterte Zieltabelle mit den obigen Klassifikationsspalten als `cafeteria_menus_classified.csv` im Ordner `data/` ab.
 
 Das Klassifikationsschema inklusive der Codierung für die Proteinquelle aus dem Projekt Linse findet ihr in der Datei `classification_schema.xlsx` im Ordner `data/`.
 
@@ -167,46 +167,46 @@ Die Fallstudie wird mit insgesamt 100 Punkten bewertet, die sich wie folgt auf d
 
 -   Die Abgabe erfolgt über ein öffentliches GitHub-Repository, das alle Dateien enthält, die ihr für die Bearbeitung der Fallstudie verwendet und erstellt habt. Das Repository sollte die folgende Struktur haben. Ersetzt das `a` in `big-data-analytics-group-a` durch euren Gruppenbuchstaben:
 
-    ```
-    big-data-analytics-group-a/
-    ├── data/
-    │   ├── projekt-linse/
-    │   │   ├── brandenburg-ost/
-    │   │   ├── chemnitz-zwickau/
-    │   │   ├── erlangen-nuernberg/
-    │   │   ├── freiburg/
-    │   │   ├── mainz/
-    │   │   ├── oldenburg/
-    │   │   ├── paderborn/
-    │   │   ├── saarland/
-    │   │   ├── schleswig-holstein/
-    │   │   ├── stuttgart/
-    │   │   ├── wuppertal/
-    │   │   └── classification_schema.xlsx
-    │   ├── cafeteria_menus_consolidated_example.csv
-    │   ├── cafeteria_menus_consolidated.csv
-    │   └── cafeteria_menus_classified.csv
-    ├── communications/
-    │   ├── visualizations/
-    │   │   ├── ...
-    │   │   └── ...
-    │   └── poster.pdf
-    ├── scripts/
-    │   ├── subscripts_consolidate/
-    │   │   ├── <script_name>.R
-    │   │   └── ...
-    │   ├── subscripts_classify/
-    │   │   ├── <script_name>.R
-    │   │   ├── <script_name>.py
-    │   │   └── ...
-    │   ├── subscripts_analyze/
-    │   │   ├── <script_name>.R
-    │   │   └── ...
-    │   ├── consolidate.R
-    │   ├── classify.R
-    │   └── analyze.R
-    └── README.md
-    ```
+```text
+big-data-analytics-group-a/
+├── data/
+│   ├── projekt-linse/
+│   │   ├── brandenburg-ost/
+│   │   ├── chemnitz-zwickau/
+│   │   ├── erlangen-nuernberg/
+│   │   ├── freiburg/
+│   │   ├── mainz/
+│   │   ├── oldenburg/
+│   │   ├── paderborn/
+│   │   ├── saarland/
+│   │   ├── schleswig-holstein/
+│   │   ├── stuttgart/
+│   │   ├── wuppertal/
+│   │   └── classification_schema.xlsx
+│   ├── cafeteria_menus_consolidated_example.csv
+│   ├── cafeteria_menus_consolidated.csv
+│   └── cafeteria_menus_classified.csv
+├── communications/
+│   ├── visualizations/
+│   │   ├── ...
+│   │   └── ...
+│   └── poster.pdf
+├── scripts/
+│   ├── subscripts_consolidate/
+│   │   ├── <script_name>.R
+│   │   └── ...
+│   ├── subscripts_classify/
+│   │   ├── <script_name>.R
+│   │   ├── <script_name>.py
+│   │   └── ...
+│   ├── subscripts_analyze/
+│   │   ├── <script_name>.R
+│   │   └── ...
+│   ├── consolidate.R
+│   ├── classify.R
+│   └── analyze.R
+└── README.md
+```
 
 ### Postergalerie und Präsentation
 

@@ -24,6 +24,41 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
 </style>
 
 
@@ -292,7 +327,7 @@ ul.task-list li input[type="checkbox"] {
 <h2 class="anchored" data-anchor-id="forschungsfragen">Forschungsfragen</h2>
 <p>Von zentralem Interesse für das Projekt ist, wie sich die Zusammensetzung der Speisepläne in den Mensen über die Zeit verändert hat, insbesondere der Anteil an Hülsenfrüchten und die Hauptproteinquelle der angebotenen Speisen.</p>
 <p>Bevor die eigentliche Analyse beginnen kann, müssen die Daten harmonisiert werden: Jede Mensa verwendet eigene Bezeichnungen für die Speisen, viele davon inhaltlich ähnlich oder identisch, und die Rohdaten sind über zahlreiche Excel- und CSV-Dateien mit teils unterschiedlichen Strukturen verteilt.</p>
-<p>Auf dieser Grundlage sollen im dritten Teil der Fallstudie Antworten auf die folgenden Forschungsfragen erarbeitet werden:</p>
+<p>Auf dieser Grundlage sollen Antworten auf die folgenden Forschungsfragen erarbeitet werden:</p>
 <ul>
 <li><p>Wie hat sich die Zusammensetzung der Speisepläne in den Mensen über die Zeit entwickelt? Gibt es erkennbare Trends, etwa in Bezug auf die Anzahl der vegetarischen oder veganen Gerichte oder den Anteil von Gerichten mit Hülsenfrüchten?</p></li>
 <li><p>Gibt es Unterschiede in der Zusammensetzung der Speisepläne zwischen den verschiedenen Mensen und Studierendenwerken? Welche Faktoren könnten diese Unterschiede erklären?</p></li>
@@ -301,13 +336,13 @@ ul.task-list li input[type="checkbox"] {
 </section>
 <section id="informationen-zum-datensatz" class="level2">
 <h2 class="anchored" data-anchor-id="informationen-zum-datensatz">Informationen zum Datensatz</h2>
-<p>Der Datensatz besteht aus einer Vielzahl von Excel- und CSV-Dateien, die die Speisepläne von insgesamt 27 Mensen von 11 verschiedenen Studierendenwerken in Deutschland über einen Zeitraum von mehreren Jahren enthalten. Insgesamt sind mehr als 1,1 Mio. Einträge enthalten. Der Datensatz wurde im Rahmen des Forschungsprojekts Linse erhoben und stellt Exporte aus den Warenwirtschaftssystemen der jeweiligen Studierendenwerke dar.</p>
+<p>Der Datensatz besteht aus einer Vielzahl von Excel- und CSV-Dateien, die die Speisepläne von insgesamt 27 Mensen von 11 verschiedenen Studierendenwerken in Deutschland über einen Zeitraum von mehreren Jahren enthalten. Insgesamt sind mehr als 1,1 Mio. Einträge enthalten.</p>
 <p>Folgende Studierendenwerke sind im Datensatz enthalten:</p>
 <table class="caption-top table">
 <thead>
 <tr class="header">
 <th>Studierendenwerk</th>
-<th>Anzahl Dateien</th>
+<th>Dateien</th>
 <th>Ordner</th>
 </tr>
 </thead>
@@ -372,8 +407,8 @@ ul.task-list li input[type="checkbox"] {
 <p>Jedes Studierendenwerk verwendet eine abweichende Struktur im Hinblick auf die Spaltennamen und die enthaltenen Informationen. Manche Spalten existieren nur in bestimmten Studierendenwerken. Es gibt einige gemeinsame Kernvariablen, die in der folgenden Tabelle zusammengefasst sind. Diese sind mit Ausnahme des Studierendenwerks “Brandenburg Ost” in allen Dateien enthalten. Brandenburg Ost weist eine vollständig abweichende Dateistruktur auf, die nicht mit den übrigen Studierendenwerken kompatibel ist, und wird daher in Teil 1 nicht berücksichtigt:</p>
 <table class="caption-top table">
 <colgroup>
-<col style="width: 33%">
-<col style="width: 66%">
+<col style="width: 22%">
+<col style="width: 77%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -421,8 +456,8 @@ ul.task-list li input[type="checkbox"] {
 <table class="caption-top table">
 <colgroup>
 <col style="width: 27%">
-<col style="width: 9%">
-<col style="width: 63%">
+<col style="width: 18%">
+<col style="width: 54%">
 </colgroup>
 <thead>
 <tr class="header">
@@ -545,7 +580,7 @@ ul.task-list li input[type="checkbox"] {
 </tr>
 </tbody>
 </table>
-<p>Speichert die erweiterte Zieltabelle mit den obigen Klassifikationsspalten als <code>data/cafeteria_menus_classified.csv</code> ab.</p>
+<p>Speichert die erweiterte Zieltabelle mit den obigen Klassifikationsspalten als <code>cafeteria_menus_classified.csv</code> im Ordner <code>data/</code> ab.</p>
 <p>Das Klassifikationsschema inklusive der Codierung für die Proteinquelle aus dem Projekt Linse findet ihr in der Datei <code>classification_schema.xlsx</code> im Ordner <code>data/</code>.</p>
 </section>
 <section id="teil-3-explorative-analysen" class="level3">
@@ -629,46 +664,46 @@ ul.task-list li input[type="checkbox"] {
 <section id="abgabe" class="level3">
 <h3 class="anchored" data-anchor-id="abgabe">Abgabe</h3>
 <ul>
-<li><p>Die Abgabe erfolgt über ein öffentliches GitHub-Repository, das alle Dateien enthält, die ihr für die Bearbeitung der Fallstudie verwendet und erstellt habt. Das Repository sollte die folgende Struktur haben. Ersetzt das <code>a</code> in <code>big-data-analytics-group-a</code> durch euren Gruppenbuchstaben:</p>
-<pre><code>big-data-analytics-group-a/
-├── data/
-│   ├── projekt-linse/
-│   │   ├── brandenburg-ost/
-│   │   ├── chemnitz-zwickau/
-│   │   ├── erlangen-nuernberg/
-│   │   ├── freiburg/
-│   │   ├── mainz/
-│   │   ├── oldenburg/
-│   │   ├── paderborn/
-│   │   ├── saarland/
-│   │   ├── schleswig-holstein/
-│   │   ├── stuttgart/
-│   │   ├── wuppertal/
-│   │   └── classification_schema.xlsx
-│   ├── cafeteria_menus_consolidated_example.csv
-│   ├── cafeteria_menus_consolidated.csv
-│   └── cafeteria_menus_classified.csv
-├── communications/
-│   ├── visualizations/
-│   │   ├── ...
-│   │   └── ...
-│   └── poster.pdf
-├── scripts/
-│   ├── subscripts_consolidate/
-│   │   ├── &lt;script_name&gt;.R
-│   │   └── ...
-│   ├── subscripts_classify/
-│   │   ├── &lt;script_name&gt;.R
-│   │   ├── &lt;script_name&gt;.py
-│   │   └── ...
-│   ├── subscripts_analyze/
-│   │   ├── &lt;script_name&gt;.R
-│   │   └── ...
-│   ├── consolidate.R
-│   ├── classify.R
-│   └── analyze.R
-└── README.md</code></pre></li>
+<li>Die Abgabe erfolgt über ein öffentliches GitHub-Repository, das alle Dateien enthält, die ihr für die Bearbeitung der Fallstudie verwendet und erstellt habt. Das Repository sollte die folgende Struktur haben. Ersetzt das <code>a</code> in <code>big-data-analytics-group-a</code> durch euren Gruppenbuchstaben:</li>
 </ul>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>big-data-analytics-group-a/</span>
+<span id="cb1-2"><a href="#cb1-2"></a>├── data/</span>
+<span id="cb1-3"><a href="#cb1-3"></a>│   ├── projekt-linse/</span>
+<span id="cb1-4"><a href="#cb1-4"></a>│   │   ├── brandenburg-ost/</span>
+<span id="cb1-5"><a href="#cb1-5"></a>│   │   ├── chemnitz-zwickau/</span>
+<span id="cb1-6"><a href="#cb1-6"></a>│   │   ├── erlangen-nuernberg/</span>
+<span id="cb1-7"><a href="#cb1-7"></a>│   │   ├── freiburg/</span>
+<span id="cb1-8"><a href="#cb1-8"></a>│   │   ├── mainz/</span>
+<span id="cb1-9"><a href="#cb1-9"></a>│   │   ├── oldenburg/</span>
+<span id="cb1-10"><a href="#cb1-10"></a>│   │   ├── paderborn/</span>
+<span id="cb1-11"><a href="#cb1-11"></a>│   │   ├── saarland/</span>
+<span id="cb1-12"><a href="#cb1-12"></a>│   │   ├── schleswig-holstein/</span>
+<span id="cb1-13"><a href="#cb1-13"></a>│   │   ├── stuttgart/</span>
+<span id="cb1-14"><a href="#cb1-14"></a>│   │   ├── wuppertal/</span>
+<span id="cb1-15"><a href="#cb1-15"></a>│   │   └── classification_schema.xlsx</span>
+<span id="cb1-16"><a href="#cb1-16"></a>│   ├── cafeteria_menus_consolidated_example.csv</span>
+<span id="cb1-17"><a href="#cb1-17"></a>│   ├── cafeteria_menus_consolidated.csv</span>
+<span id="cb1-18"><a href="#cb1-18"></a>│   └── cafeteria_menus_classified.csv</span>
+<span id="cb1-19"><a href="#cb1-19"></a>├── communications/</span>
+<span id="cb1-20"><a href="#cb1-20"></a>│   ├── visualizations/</span>
+<span id="cb1-21"><a href="#cb1-21"></a>│   │   ├── ...</span>
+<span id="cb1-22"><a href="#cb1-22"></a>│   │   └── ...</span>
+<span id="cb1-23"><a href="#cb1-23"></a>│   └── poster.pdf</span>
+<span id="cb1-24"><a href="#cb1-24"></a>├── scripts/</span>
+<span id="cb1-25"><a href="#cb1-25"></a>│   ├── subscripts_consolidate/</span>
+<span id="cb1-26"><a href="#cb1-26"></a>│   │   ├── &lt;script_name&gt;.R</span>
+<span id="cb1-27"><a href="#cb1-27"></a>│   │   └── ...</span>
+<span id="cb1-28"><a href="#cb1-28"></a>│   ├── subscripts_classify/</span>
+<span id="cb1-29"><a href="#cb1-29"></a>│   │   ├── &lt;script_name&gt;.R</span>
+<span id="cb1-30"><a href="#cb1-30"></a>│   │   ├── &lt;script_name&gt;.py</span>
+<span id="cb1-31"><a href="#cb1-31"></a>│   │   └── ...</span>
+<span id="cb1-32"><a href="#cb1-32"></a>│   ├── subscripts_analyze/</span>
+<span id="cb1-33"><a href="#cb1-33"></a>│   │   ├── &lt;script_name&gt;.R</span>
+<span id="cb1-34"><a href="#cb1-34"></a>│   │   └── ...</span>
+<span id="cb1-35"><a href="#cb1-35"></a>│   ├── consolidate.R</span>
+<span id="cb1-36"><a href="#cb1-36"></a>│   ├── classify.R</span>
+<span id="cb1-37"><a href="#cb1-37"></a>│   └── analyze.R</span>
+<span id="cb1-38"><a href="#cb1-38"></a>└── README.md</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </section>
 <section id="postergalerie-und-präsentation" class="level3">
 <h3 class="anchored" data-anchor-id="postergalerie-und-präsentation">Postergalerie und Präsentation</h3>
