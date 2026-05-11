@@ -66,8 +66,8 @@ Im ersten Teil dieser Fallstudie überführt ihr die Dateien der Studierendenwer
 |---|--|------|
 | `id` | `dbl` | Eine eindeutige fortlaufende ID für jede Zeile |
 | `source_file` | `chr` | Der Name der Quelldatei, aus der die Zeile stammt |
-| `student_service` | `chr` | Das Studierendenwerk, dem die Zeile zugeordnet werden kann |
-| `cafeteria` | `chr` | Die Mensa, der die Zeile zugeordnet werden kann |
+| `student_service` | `fct` | Das Studierendenwerk, dem die Zeile zugeordnet werden kann |
+| `cafeteria` | `fct` | Die Mensa, der die Zeile zugeordnet werden kann |
 | `date` | `date` | Das Datum, an dem die Speise im Plan angeboten wurde |
 | `product_type` | `chr` | Die Art der Speise, wie "Beilage", "Hauptgericht", "Dessert" |
 | `description` | `chr` | Die vom Studierendenwerk vergebene Bezeichnung der Speise |
