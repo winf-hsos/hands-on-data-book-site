@@ -6,9 +6,9 @@ subtitle: "Fallstudie im Sommersemester 2026"
 
 ## Hintergrund
 
-Die Fallstudie steht im Kontext des [Forschungsprojekts "Linse"](https://huelsenheld.thuenen.de/), in dessen Rahmen Daten zu den Speiseplänen von Mensen an Universitäten und Hochschulen in Deutschland gesammelt wurden. Die Daten stammen aus den IT-Systemen der jeweiligen Studierendenwerke und bieten die Gelegenheit, die Entwicklung der Speisepläne über einen Zeitraum von fast einem Jahrzehnt zu analysieren. 
+Die Fallstudie steht im Kontext des [Forschungsprojekts "Linse"](https://huelsenheld.thuenen.de/), in dessen Rahmen Daten zu den Speiseplänen von Mensen an Universitäten und Hochschulen in Deutschland gesammelt wurden. Die Daten stammen aus den IT-Systemen der jeweiligen Studierendenwerke und bieten die Gelegenheit, die Entwicklung der Speisepläne über einen Zeitraum von fast einem Jahrzehnt zu analysieren.
 
-Das Projekt Linse zielt darauf ab, den Leguminosenkonsum zu steigern, und untersucht mögliche Maßnahmen insbesondere im Außer-Haus-Verzehr. Dazu zählen auch Großküchen wie die Mensen der Studierendenwerke, die täglich Tausende von Mahlzeiten zubereiten und damit erheblichen Einfluss auf die Ernährungsgewohnheiten der Studierenden nehmen können. 
+Das Projekt Linse zielt darauf ab, den Leguminosenkonsum zu steigern, und untersucht mögliche Maßnahmen insbesondere im Außer-Haus-Verzehr. Dazu zählen auch Großküchen wie die Mensen der Studierendenwerke, die täglich Tausende von Mahlzeiten zubereiten und damit erheblichen Einfluss auf die Ernährungsgewohnheiten der Studierenden nehmen können.
 
 ## Forschungsfragen
 
@@ -30,25 +30,24 @@ Der Datensatz besteht aus einer Vielzahl von Excel- und CSV-Dateien, die die Spe
 
 Folgende Studierendenwerke sind im Datensatz enthalten:
 
-| Studierendenwerk | Dateien | Ordner |
-|----|---|------|
-| Brandenburg Ost | 5 | `data/projekt-linse/brandenburg-ost` |
-| Chemnitz-Zwickau | 5 | `data/projekt-linse/chemnitz-zwickau` |
-| Erlangen-Nürnberg | 1 | `data/projekt-linse/erlangen-nuernberg` |
-| Freiburg | 1 | `data/projekt-linse/freiburg` |
-| Mainz | 1 | `data/projekt-linse/mainz` |
-| Oldenburg | 6 | `data/projekt-linse/oldenburg` |
-| Paderborn | 3 | `data/projekt-linse/paderborn` |
-| Saarland | 1 | `data/projekt-linse/saarland` |
-| Schleswig-Holstein | 1 | `data/projekt-linse/schleswig-holstein` |
-| Stuttgart | 1 | `data/projekt-linse/stuttgart` |
-| Wuppertal | 2 | `data/projekt-linse/wuppertal` |
+| Studierendenwerk   | Dateien | Ordner                                  |
+|--------------------|---------|-----------------------------------------|
+| Brandenburg Ost    | 5       | `data/projekt-linse/brandenburg-ost`    |
+| Chemnitz-Zwickau   | 5       | `data/projekt-linse/chemnitz-zwickau`   |
+| Erlangen-Nürnberg  | 1       | `data/projekt-linse/erlangen-nuernberg` |
+| Freiburg           | 1       | `data/projekt-linse/freiburg`           |
+| Mainz              | 1       | `data/projekt-linse/mainz`              |
+| Oldenburg          | 6       | `data/projekt-linse/oldenburg`          |
+| Paderborn          | 3       | `data/projekt-linse/paderborn`          |
+| Saarland           | 1       | `data/projekt-linse/saarland`           |
+| Schleswig-Holstein | 1       | `data/projekt-linse/schleswig-holstein` |
+| Stuttgart          | 1       | `data/projekt-linse/stuttgart`          |
+| Wuppertal          | 2       | `data/projekt-linse/wuppertal`          |
 
 Jedes Studierendenwerk verwendet eine abweichende Struktur im Hinblick auf die Spaltennamen und die enthaltenen Informationen. Manche Spalten existieren nur in bestimmten Studierendenwerken. Es gibt einige gemeinsame Kernvariablen, die in der folgenden Tabelle zusammengefasst sind. Diese sind mit Ausnahme des Studierendenwerks "Brandenburg Ost" in allen Dateien enthalten. Brandenburg Ost weist eine vollständig abweichende Dateistruktur auf, die nicht mit den übrigen Studierendenwerken kompatibel ist, und wird daher in Teil 1 nicht berücksichtigt:
 
-
 | Variablenname | Beschreibung |
-|--|-------|
+|------------------|------------------------------------------------------|
 | `Prod.Dat.` | Das Datum, an dem die Speise im Plan angeboten wurde |
 | `Prod.Art.` | Die Art der Speise, wie "Beilage", "Hauptgericht", "Dessert" usw. |
 | `Bezeichnung` | Die vom Studierendenwerk vergebene Bezeichnung der Speise |
@@ -62,8 +61,8 @@ Jedes Studierendenwerk verwendet eine abweichende Struktur im Hinblick auf die S
 
 Im ersten Teil dieser Fallstudie überführt ihr die Dateien der Studierendenwerke — mit Ausnahme von Brandenburg Ost, dessen Daten eine vollständig abweichende Struktur aufweisen — in eine einheitliche CSV-Datei. Dafür verwendet ihr R und die Funktionen aus dem Tidyverse. Die Zieltabelle soll die folgende Struktur haben:
 
-| Variablenname | Datentyp |Beschreibung |
-|---|--|------|
+| Variablenname | Datentyp | Beschreibung |
+|------------------|-----------------|-------------------------------------|
 | `id` | `dbl` | Eine eindeutige fortlaufende ID für jede Zeile |
 | `source_file` | `chr` | Der Name der Quelldatei, aus der die Zeile stammt |
 | `student_service` | `fct` | Das Studierendenwerk, dem die Zeile zugeordnet werden kann |
@@ -77,9 +76,11 @@ Im ersten Teil dieser Fallstudie überführt ihr die Dateien der Studierendenwer
 
 Speichert die Zieltabelle als `data/menus_consolidated.csv` ab.
 
-Erstellt für die Überführung der Daten ein R-Skript `scripts/consolidate.R`, das von oben nach unten ausführbar ist. Verwendet Kommentare, um die Schritte eurer Datenbereinigung zu erklären und zu dokumentieren. Beginnt mit dem Laden der Quelldateien, führt dann Schritt für Schritt die notwendigen Transformationen durch und speichert die fertige Zieltabelle als CSV-Datei ab. Nutzt dafür `write_csv()` aus dem `readr`-Paket. 
+Erstellt für die Überführung der Daten ein R-Skript `scripts/consolidate.R`, das von oben nach unten ausführbar ist. Verwendet Kommentare, um die Schritte eurer Datenbereinigung zu erklären und zu dokumentieren. Beginnt mit dem Laden der Quelldateien, führt dann Schritt für Schritt die notwendigen Transformationen durch und speichert die fertige Zieltabelle als CSV-Datei ab. Nutzt dafür `write_csv()` aus dem `readr`-Paket.
 
-**Hinweis:** Ein mögliches Ergebnis für den ersten Teil der Fallstudie findet ihr in der Datei `menus_consolidated_example.csv` im Ordner `data/`. Ihr könnt euch an diesem Ergebnis orientieren und bei Bedarf auch damit in Teil 2 und 3 arbeiten. Um die Punkte für den ersten Teil der Fallstudie zu bekommen, müsst ihr die Daten selbst überführen und bereinigen.
+## Hinweis
+
+Ein mögliches Ergebnis für den ersten Teil der Fallstudie findet ihr in der Datei `menus_consolidated_example.csv` im Ordner `data/`. Ihr könnt euch an diesem Ergebnis orientieren und bei Bedarf auch damit in Teil 2 und 3 arbeiten. Um die Punkte für den ersten Teil der Fallstudie zu bekommen, müsst ihr die Daten selbst überführen und bereinigen.
 
 ### Teil 2: Einheitliche Klassifikation der Speisen
 
@@ -87,12 +88,14 @@ Im zweiten Teil klassifiziert ihr die Speisen inhaltlich nach einem Klassifikati
 
 Überlegt euch ein effizientes und reproduzierbares Vorgehen, um die Speisen den Kategorien des Klassifikationsschemas zuzuordnen. Nutzt dabei sowohl die Techniken der regelbasierten Arbeit mit Texten als auch die KI-gestützte Vorgehensweise mit Sprachmodellen. Auch manuelle Schritte können hilfreich oder notwendig sein.
 
+Es ist wichtig, dass ihr die Genauigkeit euer Klassifikation anschließend bewerten und einordnen könnt. Denkt bei der Entwicklung eures Vorgehens also auch daran, wie er das Ergebnis evaluieren könnt.
+
 Eure Verarbeitungsschritte müssen gut dokumentiert, reproduzierbar und nachvollziehbar sein. Erstellt deshalb ein zentrales R-Skript `scripts/classify.R`, von dem aus alle relevanten Schritte ausgeführt werden. Wenn ihr auf Sprachmodelle zurückgreift, ruft die Python-Funktionen über das `reticulate`-Paket und die Funktion `source_python()` auf, damit die gesamte Verarbeitung von einem Skript gesteuert wird. Bei komplexen Schritten mit R könnt ihr den Code in Sub-Skripte auslagern, die aus dem zentralen Skript mittels `source()` aufgerufen werden. Stellt sicher, dass die Skripte fehlerfrei von oben nach unten ausführbar sind und alle Dateiverweise relativ angegeben werden.
 
 Erweitert die Zieltabelle aus Teil 1 um die folgenden Spalten, die die Klassifikation der Speisen enthalten:
 
-| Neue Variable | Datentyp |Beschreibung |
-|---|-|-------|
+| Neue Variable | Datentyp | Beschreibung |
+|----------------|---------------|-----------------------------------------|
 | `group_level_1` | `fct` | Die Zuordnung zur Ernährungsform "omnivor", "vegetarisch" oder "vegan" |
 | `group_level_2` | `fct` | Die Zuordnung zur Kategorie auf erster Ebene, etwa "Rotes Fleisch", "Geflügel" oder "Milchprodukte" |
 | `group_level_3` | `fct` | Die Zuordnung zur Kategorie auf zweiter Ebene, etwa "Rind", "Schwein", "Käse" oder "Joghurt" |
@@ -101,6 +104,10 @@ Erweitert die Zieltabelle aus Teil 1 um die folgenden Spalten, die die Klassifik
 Speichert die erweiterte Zieltabelle mit den obigen Klassifikationsspalten als `menus_classified.csv` im Ordner `data/` ab.
 
 Das Klassifikationsschema inklusive der Codierung für die Proteinquelle aus dem Projekt Linse findet ihr in der Datei `classification_schema.xlsx` im Ordner `data/`.
+
+## Hinweis
+
+Zieht eine reproduzierbare, zufällige Stichprobe für die Entwicklung eures Vorgehens für die Klassifikation. Für die Evaluation bietet es sich an, die Stichprobe einmal manuell zu klassifizieren und etwa in einer Excel-Datei zu speichern. Damit hättet ihr eine Grundlage für die Evaluation, die dann natürlich automatisch durchgeführt werden sollte.
 
 ### Teil 3: Explorative Analysen
 
@@ -127,7 +134,7 @@ Erstellt das Poster mit einem Werkzeug eurer Wahl (z. B. PowerPoint, Canva, Inks
 Die Fallstudie wird mit insgesamt 100 Punkten bewertet, die sich wie folgt auf die vier Teile verteilen:
 
 | Teil | Gewichtung | Schwerpunkt der Bewertung |
-|---|-|----|
+|------------------------|----------------|---------------------------------|
 | Teil 1: Datenzusammenführung | 20 % | Vollständigkeit und Korrektheit der Zieltabelle, Codequalität |
 | Teil 2: Klassifikation | 30 % | Tiefe und Kreativität der Lösung, Nachvollziehbarkeit des Vorgehens, Reproduzierbarkeit, Abdeckung |
 | Teil 3: Explorative Analysen | 30 % | Relevanz der Analysen, Qualität der Visualisierungen |
@@ -135,82 +142,81 @@ Die Fallstudie wird mit insgesamt 100 Punkten bewertet, die sich wie folgt auf d
 
 Übergreifend gelten in allen Teilen folgende Kriterien:
 
--   **Reproduzierbarkeit**: Die Skripte laufen ohne Anpassungen auf einem anderen Rechner durch.
--   **Codequalität**: Lesbarer, einheitlich formatierter Code ohne überflüssige Reste oder Kommentare.
--   **Dokumentation**: Annahmen und Designentscheidungen sind im Code oder in der `README.md` nachvollziehbar festgehalten.
+- **Reproduzierbarkeit**: Die Skripte laufen ohne Anpassungen auf einem anderen Rechner durch.
+- **Codequalität**: Lesbarer, einheitlich formatierter Code ohne überflüssige Reste oder Kommentare.
+- **Dokumentation**: Annahmen und Designentscheidungen sind im Code oder in der `README.md` nachvollziehbar festgehalten.
 
 ## Hinweise zur Fallstudie
 
 ### Bearbeitung
 
--   Beantwortet die Forschungsfragen mithilfe von geeigneten Visualisierungen. Verzichtet auf tabellarische Darstellungen und nutzt sie nur als Ergänzung.
+- Beantwortet die Forschungsfragen mithilfe von geeigneten Visualisierungen. Verzichtet auf tabellarische Darstellungen und nutzt sie nur als Ergänzung.
 
--   Führt die explorative Datenanalyse ausschließlich mit R durch. Für sämtliche Datentransformationen und Visualisierungen verwendet ihr Funktionen aus dem Tidyverse.
+- Führt die explorative Datenanalyse ausschließlich mit R durch. Für sämtliche Datentransformationen und Visualisierungen verwendet ihr Funktionen aus dem Tidyverse.
 
--   Die explorative Datenanalyse lebt von eurer Kreativität und Ausdauer. Gebt euch nicht mit der ersten Analyse zufrieden, die ihr erstellt. Probiert mehrere Ansätze aus. Wenn ihr ein interessantes Muster entdeckt, geht dem tiefer auf den Grund. Obwohl alle Teams die gleichen Aufgaben haben, wird es viele verschiedene Lösungswege geben.
+- Die explorative Datenanalyse lebt von eurer Kreativität und Ausdauer. Gebt euch nicht mit der ersten Analyse zufrieden, die ihr erstellt. Probiert mehrere Ansätze aus. Wenn ihr ein interessantes Muster entdeckt, geht dem tiefer auf den Grund. Obwohl alle Teams die gleichen Aufgaben haben, wird es viele verschiedene Lösungswege geben.
 
--   Wenn ihr bei einer Aufgabe nicht sicher seid, wie sie gemeint ist, oder euch Informationen fehlen, trefft sinnvolle Annahmen und dokumentiert sie. Nutzt die Fragetermine, um Unklarheiten zu beseitigen.
+- Wenn ihr bei einer Aufgabe nicht sicher seid, wie sie gemeint ist, oder euch Informationen fehlen, trefft sinnvolle Annahmen und dokumentiert sie. Nutzt die Fragetermine, um Unklarheiten zu beseitigen.
 
--   Lesbarer Code ist besser als schwer verständlicher Code. Verwendet den Pipe-Operator, verteilt lange Ausdrücke auf mehrere Zeilen, rückt den Code ein und fügt Kommentare hinzu, wo es angebracht ist. Entfernt Codereste, die nicht mehr benötigt werden, um die Übersicht zu verbessern.
+- Lesbarer Code ist besser als schwer verständlicher Code. Verwendet den Pipe-Operator, verteilt lange Ausdrücke auf mehrere Zeilen, rückt den Code ein und fügt Kommentare hinzu, wo es angebracht ist. Entfernt Codereste, die nicht mehr benötigt werden, um die Übersicht zu verbessern.
 
--   Reproduzierbarkeit ist in der Wissenschaft von großer Bedeutung. Stellt sicher, dass eure R-Skripte *ohne zusätzlichen Aufwand* auf einem anderen Computer ausgeführt werden können. Vermeidet also unbedingt absolute Pfadangaben und haltet euch strikt an die Projektstruktur (s. unten).
+- Reproduzierbarkeit ist in der Wissenschaft von großer Bedeutung. Stellt sicher, dass eure R-Skripte *ohne zusätzlichen Aufwand* auf einem anderen Computer ausgeführt werden können. Vermeidet also unbedingt absolute Pfadangaben und haltet euch strikt an die Projektstruktur (s. unten).
 
--   Es ist in Ordnung, sich bei der Analyse inspirieren zu lassen. Auch die Übernahme von Ideen oder Code anderer, inklusive der Einsatz von KI, ist erlaubt, solange der verwendete Code verstanden und erklärt werden kann und die Quelle als Kommentar angegeben wird.
+- Es ist in Ordnung, sich bei der Analyse inspirieren zu lassen. Auch die Übernahme von Ideen oder Code anderer, inklusive der Einsatz von KI, ist erlaubt, solange der verwendete Code verstanden und erklärt werden kann und die Quelle als Kommentar angegeben wird.
 
--   Make it work, make it nice! Erst die Funktion, dann die Ästhetik! Verliert euch nicht in Details wie Achsenformatierung oder Farbpaletten, bevor ihr die korrekte Datenbasis erstellt und die geeignete Visualisierungsform gewählt habt. Eine unpassende Visualisierung, selbst wenn sie optisch ansprechend ist, wird euch nicht helfen. Denkt umgekehrt! Auf eurem Poster sollte aber alles glänzen.
+- Make it work, make it nice! Erst die Funktion, dann die Ästhetik! Verliert euch nicht in Details wie Achsenformatierung oder Farbpaletten, bevor ihr die korrekte Datenbasis erstellt und die geeignete Visualisierungsform gewählt habt. Eine unpassende Visualisierung, selbst wenn sie optisch ansprechend ist, wird euch nicht helfen. Denkt umgekehrt! Auf eurem Poster sollte aber alles glänzen.
 
 ### Abgabe
 
--   Die Abgabe erfolgt über ein öffentliches GitHub-Repository, das alle Dateien enthält, die ihr für die Bearbeitung der Fallstudie verwendet und erstellt habt. Das Repository sollte die folgende Struktur haben. Ersetzt das `a` in `big-data-analytics-group-a` durch euren Gruppenbuchstaben:
+- Die Abgabe erfolgt über ein öffentliches GitHub-Repository, das alle Dateien enthält, die ihr für die Bearbeitung der Fallstudie verwendet und erstellt habt. Das Repository sollte die folgende Struktur haben. Ersetzt das `a` in `big-data-analytics-group-a` durch euren Gruppenbuchstaben:
 
-    ```text
-    big-data-analytics-group-a/
-    ├── data/
-    │   ├── projekt-linse/
-    │   │   ├── brandenburg-ost/
-    │   │   ├── chemnitz-zwickau/
-    │   │   ├── erlangen-nuernberg/
-    │   │   ├── freiburg/
-    │   │   ├── mainz/
-    │   │   ├── oldenburg/
-    │   │   ├── paderborn/
-    │   │   ├── saarland/
-    │   │   ├── schleswig-holstein/
-    │   │   ├── stuttgart/
-    │   │   ├── wuppertal/
-    │   │   └── classification_schema.xlsx
-    │   ├── menus_consolidated_example.csv
-    │   ├── menus_consolidated.csv
-    │   └── menus_classified.csv
-    ├── communications/
-    │   ├── visualizations/
-    │   │   ├── ...
-    │   │   └── ...
-    │   └── poster.pdf
-    ├── scripts/
-    │   ├── subscripts_consolidate/
-    │   │   ├── <script_name>.R
-    │   │   └── ...
-    │   ├── subscripts_classify/
-    │   │   ├── <script_name>.R
-    │   │   ├── <script_name>.py
-    │   │   └── ...
-    │   ├── subscripts_analyze/
-    │   │   ├── <script_name>.R
-    │   │   └── ...
-    │   ├── consolidate.R
-    │   ├── classify.R
-    │   └── analyze.R
-    └── README.md
-    ```
+  ``` text
+  big-data-analytics-group-a/
+  ├── data/
+  │   ├── projekt-linse/
+  │   │   ├── brandenburg-ost/
+  │   │   ├── chemnitz-zwickau/
+  │   │   ├── erlangen-nuernberg/
+  │   │   ├── freiburg/
+  │   │   ├── mainz/
+  │   │   ├── oldenburg/
+  │   │   ├── paderborn/
+  │   │   ├── saarland/
+  │   │   ├── schleswig-holstein/
+  │   │   ├── stuttgart/
+  │   │   ├── wuppertal/
+  │   │   └── classification_schema.xlsx
+  │   ├── menus_consolidated_example.csv
+  │   ├── menus_consolidated.csv
+  │   └── menus_classified.csv
+  ├── communications/
+  │   ├── visualizations/
+  │   │   ├── ...
+  │   │   └── ...
+  │   └── poster.pdf
+  ├── scripts/
+  │   ├── subscripts_consolidate/
+  │   │   ├── <script_name>.R
+  │   │   └── ...
+  │   ├── subscripts_classify/
+  │   │   ├── <script_name>.R
+  │   │   ├── <script_name>.py
+  │   │   └── ...
+  │   ├── subscripts_analyze/
+  │   │   ├── <script_name>.R
+  │   │   └── ...
+  │   ├── consolidate.R
+  │   ├── classify.R
+  │   └── analyze.R
+  └── README.md
+  ```
 
 ### Postergalerie und Präsentation
 
--   Im Rahmen der Postergalerie präsentiert jede Gruppe ihr Poster in 10 Minuten. Während der Präsentation sollte jedes Gruppenmitglied ungefähr den gleichen Sprechanteil haben.
+- Im Rahmen der Postergalerie präsentiert jede Gruppe ihr Poster in 10 Minuten. Während der Präsentation sollte jedes Gruppenmitglied ungefähr den gleichen Sprechanteil haben.
 
--   Im Anschluss an die Präsentation findet eine Frage- und Diskussionsrunde statt. Stellt sicher, dass jedes Gruppenmitglied auf mögliche Fragen vorbereitet ist. Das gilt auch für das Erläutern bestimmter Schritte eurer Analyse, die vielleicht nicht auf dem Poster dargestellt sind.
+- Im Anschluss an die Präsentation findet eine Frage- und Diskussionsrunde statt. Stellt sicher, dass jedes Gruppenmitglied auf mögliche Fragen vorbereitet ist. Das gilt auch für das Erläutern bestimmter Schritte eurer Analyse, die vielleicht nicht auf dem Poster dargestellt sind.
 
--   Das Poster im PDF-Format müsst ihr nicht zeitgleich mit den anderen Ergebnissen einreichen. Ihr müsst es aber bis spätestens 21 Uhr am Abend vor der Postergalerie in euer GitHub-Repository eingecheckt haben.
-
+- Das Poster im PDF-Format müsst ihr nicht zeitgleich mit den anderen Ergebnissen einreichen. Ihr müsst es aber bis spätestens 21 Uhr am Abend vor der Postergalerie in euer GitHub-Repository eingecheckt haben.
 
 Viel Spaß und Erfolg bei der Bearbeitung der Fallstudie!
