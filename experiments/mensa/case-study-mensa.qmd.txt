@@ -1,7 +1,6 @@
 ---
 title: "Notebook für die Fallstudie: Explorative Analyse von Speiseplänen in Deutschlands Mensen"
 subtitle: "Fallstudie im Sommersemester 2026"
-author: "- name: \"Prof. Dr. Nicolas Meseth\""
 ---
 
 
