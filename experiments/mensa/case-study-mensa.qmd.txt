@@ -107,9 +107,11 @@ Speichert die erweiterte Zieltabelle mit den obigen Klassifikationsspalten als `
 
 Das Klassifikationsschema inklusive der Codierung für die Proteinquelle aus dem Projekt Linse findet ihr in der Datei `classification_schema.xlsx` im Ordner `data/`.
 
+::: callout-tip
 ## Hinweis
 
 Zieht eine reproduzierbare, zufällige Stichprobe für die Entwicklung eures Vorgehens für die Klassifikation. Für die Evaluation bietet es sich an, die Stichprobe einmal manuell zu klassifizieren und etwa in einer Excel-Datei zu speichern. Damit hättet ihr eine Grundlage für die Evaluation, die dann natürlich automatisch durchgeführt werden sollte.
+:::
 
 ### Teil 3: Explorative Analysen
 
