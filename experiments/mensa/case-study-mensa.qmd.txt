@@ -69,7 +69,7 @@ Im ersten Teil dieser Fallstudie überführt ihr die Dateien der Studierendenwer
 | `cafeteria` | `fct` | Die Mensa, der die Zeile zugeordnet werden kann |
 | `date` | `date` | Das Datum, an dem die Speise im Plan angeboten wurde |
 | `product_type` | `chr` | Die Art der Speise, wie "Beilage", "Hauptgericht", "Dessert" |
-| `description` | `chr` | Die vom Studierendenwerk vergebene Bezeichnung der Speise |
+| `product_name` | `chr` | Die vom Studierendenwerk vergebene Bezeichnung der Speise |
 | `production_location` | `chr` | Der Ort, an dem die Speise zubereitet wird |
 | `actual_output` | `dbl` | Die Anzahl der Portionen, die tatsächlich ausgegeben wurden |
 | `menu_text` | `chr` | Der Text, der auf der Speisekarte erscheint |
@@ -139,8 +139,8 @@ Die Fallstudie wird mit insgesamt 100 Punkten bewertet, die sich wie folgt auf d
 
 | Teil | Gewichtung | Schwerpunkt der Bewertung |
 |-----------------------------|-----------|-------------------------------|
-| Teil 1: Datenzusammenführung | 20 % | Vollständigkeit und Korrektheit der Zieltabelle, Codequalität |
-| Teil 2: Klassifikation | 30 % | Tiefe und Kreativität der Lösung, Nachvollziehbarkeit des Vorgehens, Reproduzierbarkeit, Abdeckung |
+| Teil 1: Datenzusammenführung | 10 % | Vollständigkeit und Korrektheit der Zieltabelle, Codequalität |
+| Teil 2: Klassifikation | 40 % | Tiefe und Kreativität der Lösung, Nachvollziehbarkeit des Vorgehens, Reproduzierbarkeit, Abdeckung |
 | Teil 3: Explorative Analysen | 30 % | Relevanz der Analysen, Qualität der Visualisierungen |
 | Teil 4: Poster und Präsentation | 20 % | Gestaltung, Verständlichkeit, Präsentation und Diskussionsfähigkeit |
 
