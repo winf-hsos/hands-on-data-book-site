@@ -53,7 +53,6 @@ Jedes Studierendenwerk verwendet eine abweichende Struktur im Hinblick auf die S
 | `Prod.Art.` | Die Art der Speise, wie "Beilage", "Hauptgericht", "Dessert" usw. |
 | `Bezeichnung` | Die vom Studierendenwerk vergebene Bezeichnung der Speise |
 | `Produktionsort` | Der Ort, an dem die Speise zubereitet wird |
-| `Sollmenge` | Die geplante Menge der Speise, die zubereitet werden soll |
 | `Ausgabe` | Die Anzahl der Portionen, die tatsächlich ausgegeben wurden |
 | `Ausgabetext` | Der Text, der auf der Speisekarte erscheint, ggf. mit Zusatzangaben |
 
@@ -73,7 +72,6 @@ Im ersten Teil dieser Fallstudie überführt ihr die Dateien der Studierendenwer
 | `product_type` | `chr` | Die Art der Speise, wie "Beilage", "Hauptgericht", "Dessert" |
 | `description` | `chr` | Die vom Studierendenwerk vergebene Bezeichnung der Speise |
 | `production_location` | `chr` | Der Ort, an dem die Speise zubereitet wird |
-| `planned_quantity` | `dbl` | Die geplante Menge der Speise, die zubereitet werden soll |
 | `actual_output` | `dbl` | Die Anzahl der Portionen, die tatsächlich ausgegeben wurden |
 | `menu_text` | `chr` | Der Text, der auf der Speisekarte erscheint |
 
@@ -96,10 +94,8 @@ Erweitert die Zieltabelle aus Teil 1 um die folgenden Spalten, die die Klassifik
 | Neue Variable | Datentyp |Beschreibung |
 |---|-|-------|
 | `group_level_1` | `fct` | Die Zuordnung zur Ernährungsform "omnivor", "vegetarisch" oder "vegan" |
-| `group_level_2` | `chr` | Die Zuordnung zur Kategorie auf erster Ebene, etwa "Rotes Fleisch", "Geflügel" oder "Milchprodukte" |
-| `group_level_3` | `chr` | Die Zuordnung zur Kategorie auf zweiter Ebene, etwa "Rind", "Schwein", "Käse" oder "Joghurt" |
-| `group_level_4` | `chr` | Die Zuordnung zur Kategorie auf dritter Ebene, etwa "Grillkäse", "Schmelzkäse" oder "Tofu" |
-| `meal_type` | `chr` | Die Zuordnung zum Speisentypen, etwa "Auflauf", "Bowl" oder "Pfannengericht" |
+| `group_level_2` | `fct` | Die Zuordnung zur Kategorie auf erster Ebene, etwa "Rotes Fleisch", "Geflügel" oder "Milchprodukte" |
+| `group_level_3` | `fct` | Die Zuordnung zur Kategorie auf zweiter Ebene, etwa "Rind", "Schwein", "Käse" oder "Joghurt" |
 | `code_main_protein` | `fct` | Die Zuordnung zur Hauptproteinquelle über ein Codesystem |
 
 Speichert die erweiterte Zieltabelle mit den obigen Klassifikationsspalten als `cafeteria_menus_classified.csv` im Ordner `data/` ab.
@@ -167,46 +163,46 @@ Die Fallstudie wird mit insgesamt 100 Punkten bewertet, die sich wie folgt auf d
 
 -   Die Abgabe erfolgt über ein öffentliches GitHub-Repository, das alle Dateien enthält, die ihr für die Bearbeitung der Fallstudie verwendet und erstellt habt. Das Repository sollte die folgende Struktur haben. Ersetzt das `a` in `big-data-analytics-group-a` durch euren Gruppenbuchstaben:
 
-```text
-big-data-analytics-group-a/
-├── data/
-│   ├── projekt-linse/
-│   │   ├── brandenburg-ost/
-│   │   ├── chemnitz-zwickau/
-│   │   ├── erlangen-nuernberg/
-│   │   ├── freiburg/
-│   │   ├── mainz/
-│   │   ├── oldenburg/
-│   │   ├── paderborn/
-│   │   ├── saarland/
-│   │   ├── schleswig-holstein/
-│   │   ├── stuttgart/
-│   │   ├── wuppertal/
-│   │   └── classification_schema.xlsx
-│   ├── cafeteria_menus_consolidated_example.csv
-│   ├── cafeteria_menus_consolidated.csv
-│   └── cafeteria_menus_classified.csv
-├── communications/
-│   ├── visualizations/
-│   │   ├── ...
-│   │   └── ...
-│   └── poster.pdf
-├── scripts/
-│   ├── subscripts_consolidate/
-│   │   ├── <script_name>.R
-│   │   └── ...
-│   ├── subscripts_classify/
-│   │   ├── <script_name>.R
-│   │   ├── <script_name>.py
-│   │   └── ...
-│   ├── subscripts_analyze/
-│   │   ├── <script_name>.R
-│   │   └── ...
-│   ├── consolidate.R
-│   ├── classify.R
-│   └── analyze.R
-└── README.md
-```
+    ```text
+    big-data-analytics-group-a/
+    ├── data/
+    │   ├── projekt-linse/
+    │   │   ├── brandenburg-ost/
+    │   │   ├── chemnitz-zwickau/
+    │   │   ├── erlangen-nuernberg/
+    │   │   ├── freiburg/
+    │   │   ├── mainz/
+    │   │   ├── oldenburg/
+    │   │   ├── paderborn/
+    │   │   ├── saarland/
+    │   │   ├── schleswig-holstein/
+    │   │   ├── stuttgart/
+    │   │   ├── wuppertal/
+    │   │   └── classification_schema.xlsx
+    │   ├── cafeteria_menus_consolidated_example.csv
+    │   ├── cafeteria_menus_consolidated.csv
+    │   └── cafeteria_menus_classified.csv
+    ├── communications/
+    │   ├── visualizations/
+    │   │   ├── ...
+    │   │   └── ...
+    │   └── poster.pdf
+    ├── scripts/
+    │   ├── subscripts_consolidate/
+    │   │   ├── <script_name>.R
+    │   │   └── ...
+    │   ├── subscripts_classify/
+    │   │   ├── <script_name>.R
+    │   │   ├── <script_name>.py
+    │   │   └── ...
+    │   ├── subscripts_analyze/
+    │   │   ├── <script_name>.R
+    │   │   └── ...
+    │   ├── consolidate.R
+    │   ├── classify.R
+    │   └── analyze.R
+    └── README.md
+    ```
 
 ### Postergalerie und Präsentation
 
