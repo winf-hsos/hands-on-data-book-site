@@ -18,11 +18,10 @@ Bevor die eigentliche Analyse beginnen kann, müssen die Daten harmonisiert werd
 
 Auf dieser Grundlage sollen Antworten auf die folgenden Forschungsfragen erarbeitet werden:
 
-- Wie hat sich die Zusammensetzung der Speisepläne in den Mensen über die Zeit entwickelt? Gibt es erkennbare Trends, etwa in Bezug auf die Anzahl der vegetarischen oder veganen Gerichte oder den Anteil von Gerichten mit Hülsenfrüchten?
+- Wie hat sich die Zusammensetzung der Speisepläne in den Mensen über die Zeit entwickelt? Gibt es erkennbare Trends, etwa in Bezug auf die Anzahl der vegetarischen oder veganen Gerichte oder den Anteil von Gerichten mit Hülsenfrüchten? Gibt es Unterschiede zwischen den Mensen und Studierendenwerken?
 
-- Gibt es Unterschiede in der Zusammensetzung der Speisepläne zwischen den verschiedenen Mensen und Studierendenwerken? Welche Faktoren könnten diese Unterschiede erklären?
+- Was sind die wichtigsten Proteinquellen und deren Anteile in den angebotenen Gerichten? Wie ist die Entwicklung über die Zeit? Gibt es hier Unterschiede zwischen den Mensen und Studierendenwerken?
 
-- Wie ist die Proteinquelle in den angebotenen Gerichten verteilt? Wie ist die Entwicklung über die Zeit? Gibt es hier Unterschiede zwischen den Mensen und Studierendenwerken?
 
 ## Informationen zum Datensatz
 
@@ -86,11 +85,19 @@ Ein mögliches Ergebnis für den ersten Teil der Fallstudie findet ihr in der Da
 
 ### Teil 2: Einheitliche Klassifikation der Speisen
 
-Im zweiten Teil klassifiziert ihr die Speisen inhaltlich nach einem Klassifikationsschema, das das Projekt Linse entwickelt hat. Ordnet jede Speise diesem Schema zu, damit die Daten im dritten Teil gezielt analysiert werden können.
+Im zweiten Teil klassifiziert ihr die Speisen inhaltlich nach einem Klassifikationsschema, das das Projekt Linse entwickelt hat. Dabei sollt ihr für eine Speise wie folgt vorgehen:
 
-Überlegt euch ein effizientes und reproduzierbares Vorgehen, um die Speisen den Kategorien des Klassifikationsschemas zuzuordnen. Nutzt dabei sowohl die Techniken der regelbasierten Arbeit mit Texten als auch die KI-gestützte Vorgehensweise mit Sprachmodellen. Auch manuelle Schritte können hilfreich oder notwendig sein.
+1. Prüft, ob eine Speise aus einer oder mehreren Komponenten besteht und teilt sie gegebenenfalls in mehrer Zeilen, eine pro Komponente, auf. Zum Beispiel könnte ein Gericht "Kalbsschnitzel mit Kartoffeln und Champignonrahmsauce" in drei Zeilen aufgeteilt werden, eine für "Kalbschnitzel", eine für "Kartoffeln" und eine für "Champignonrahmsauce".
 
-Es ist wichtig, dass ihr die Genauigkeit euer Klassifikation anschließend bewerten und einordnen könnt. Denkt bei der Entwicklung eures Vorgehens also auch daran, wie er das Ergebnis evaluieren könnt.
+2. Entscheidet für jede Komponente, wie groß der Anteil an der gesamten Speise ist. Verwendet dafür eine einfache qualitative Skala mit den Werten "hoch" (Hauptkomponente), "mitttel" (z.B. Beilage) und "gering" (etwa im Falle einer Sauce). In dem obigen Beispiel könnte das "Kalbschnitzel" als "hoch", die "Kartoffeln" als "mittel" und die "Champignonrahmsauce" als "gering" eingestuft werden.
+
+3. Ordnet im dritten Schritt jeder Komponente eine Klasse aus dem Klassifikationsschema zu. Das Schema ist hierarchisch aufgebaut und besteht aus drei Ebenen, die von der Ernährungsform über die Lebensmittelkategorie bis zur zur konkreten Lebensmittelgruppe reichen. Zum Beispiel könnte die Komponente "Kalbschnitzel" der Ernährungsform "omnivor", der Kategorie "Rotes Fleisch" und der Lebensmittelgruppe "Kalb" zugeordnet werden.
+
+Mit der Zuordnung zu einer Lebensmittlgruppe ist auch die Zuordnung zu einer Hauptproteinquelle verbunden, die über ein Codesystem definiert ist. Auf der Grundlage der in Schritt 2ermittelten ungefähren Anteile jeder Komponente könnt ihr in der Analyse die Proteinzusammensetzung der Speisepläne analysieren und die Entwicklung über die Zeit verfolgen.
+
+Überlegt euch ein effizientes und reproduzierbares Vorgehen, um die Speisen in Komponenten zu trennen und diese den Kategorien des Klassifikationsschemas zuzuordnen. Nutzt dabei sowohl die Techniken der regelbasierten Arbeit mit Texten als auch die KI-gestützte Vorgehensweise mit Sprachmodellen. Auch manuelle Schritte können hilfreich oder notwendig sein.
+
+Es ist wichtig, dass ihr die Genauigkeit euer Komponententrennung und Klassifikation anschließend bewerten und einordnen könnt. Denkt bei der Entwicklung eures Vorgehens also auch daran, wie er das Ergebnis evaluieren könnt.
 
 Eure Verarbeitungsschritte müssen gut dokumentiert, reproduzierbar und nachvollziehbar sein. Erstellt deshalb ein zentrales R-Skript `scripts/classify.R`, von dem aus alle relevanten Schritte ausgeführt werden. Wenn ihr auf Sprachmodelle zurückgreift, ruft die Python-Funktionen über das `reticulate`-Paket und die Funktion `source_python()` auf, damit die gesamte Verarbeitung von einem Skript gesteuert wird. Bei komplexen Schritten mit R könnt ihr den Code in Sub-Skripte auslagern, die aus dem zentralen Skript mittels `source()` aufgerufen werden. Stellt sicher, dass die Skripte fehlerfrei von oben nach unten ausführbar sind und alle Dateiverweise relativ angegeben werden.
 
@@ -105,7 +112,7 @@ Erweitert die Zieltabelle aus Teil 1 um die folgenden Spalten, die die Klassifik
 
 Speichert die erweiterte Zieltabelle mit den obigen Klassifikationsspalten als `menus_classified.csv` im Ordner `data/` ab.
 
-Das Klassifikationsschema inklusive der Codierung für die Proteinquelle aus dem Projekt Linse findet ihr in der Datei `classification_schema.xlsx` im Ordner `data/`.
+Das Klassifikationsschema für die Lebensmittelgruppen inklusive der Codierung für die Proteinquelle aus dem Projekt Linse findet ihr in der Datei `classification_schema.xlsx` im Ordner `data/projekt-linse`.
 
 ::: callout-tip
 ## Hinweis
@@ -117,11 +124,9 @@ Zieht eine reproduzierbare, zufällige Stichprobe für die Entwicklung eures Vor
 
 Im dritten Teil der Fallstudie erntet ihr die Früchte der aufwendigen Vorarbeit. Auf der Basis der zusammengeführten, harmonisierten und klassifizierten Daten beantwortet ihr die folgenden Forschungsfragen mit geeigneten Analysen:
 
-- Wie hat sich die Zusammensetzung der Speisepläne in den Mensen über die Zeit entwickelt? Gibt es erkennbare Trends, etwa in Bezug auf die Anzahl der vegetarischen oder veganen Gerichte oder den Anteil von Gerichten mit Hülsenfrüchten?
+- Wie hat sich die Zusammensetzung der Speisepläne in den Mensen über die Zeit entwickelt? Gibt es erkennbare Trends, etwa in Bezug auf die Anzahl der vegetarischen oder veganen Gerichte oder den Anteil von Gerichten mit Hülsenfrüchten? Gibt es Unterschiede zwischen den Mensen und Studierendenwerken?
 
-- Gibt es Unterschiede in der Zusammensetzung der Speisepläne zwischen den verschiedenen Mensen und Studierendenwerken? Welche Faktoren könnten diese Unterschiede erklären?
-
-- Wie ist die Proteinquelle in den angebotenen Gerichten verteilt? Wie ist die Entwicklung über die Zeit? Gibt es hier Unterschiede zwischen den Mensen und Studierendenwerken?
+- Was sind die wichtigsten Proteinquellen und deren Anteile in den angebotenen Gerichten? Wie ist die Entwicklung über die Zeit? Gibt es hier Unterschiede zwischen den Mensen und Studierendenwerken?
 
 Erstellt ein R-Skript `scripts/analyze.R`, in dem ihr sämtliche Analysen durchführt und die Visualisierungen erstellt, die ihr später auf eurem Poster verwendet. Ihr könnt die Analysen auf mehrere Skripte aufteilen, die im zentralen Skript mithilfe von `source()` eingebunden werden.
 
@@ -189,8 +194,8 @@ Die Fallstudie wird mit insgesamt 100 Punkten bewertet, die sich wie folgt auf d
   │   │   ├── schleswig-holstein/
   │   │   ├── stuttgart/
   │   │   ├── wuppertal/
-  │   │   └── classification_schema.xlsx
-  │   ├── menus_consolidated_example.csv
+  │   │   ├── classification_schema.xlsx
+  │   │   └── menus_consolidated_example.csv
   │   ├── menus_consolidated.csv
   │   └── menus_classified.csv
   ├── communications/
