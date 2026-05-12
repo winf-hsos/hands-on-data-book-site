@@ -89,9 +89,9 @@ Im zweiten Teil klassifiziert ihr die Speisen inhaltlich nach einem Klassifikati
 
 1. Prüft, ob einer Speise eine oder mehrerer Lebensmittelklassen aus dem Klassifikationsschema zugeordnet werden können. Die Zuordnung geschieht dabei auf Basis der ersichtlichen Komponenten im Speisentext als auch auf den angenommen Zutaten in einer Komponente. 
 
-  Beispiel 1: Ein Gericht "Kalbsschnitzel mit Kartoffeln und Champignonrahmsauce" besteht aus den drei Komponenten "Kalbschnitzel", "Kartoffeln" und "Champignonrahmsauce". Eure Klassifikation sollte entsprechend diesem Gericht die Klassen "Rotes Fleisch", "Knollen / stärkehaltige Gemüse" und "Gemüse" (für die Pilze) sowie "Milchprodukte" (für den Rahm) zuordnen.
+    Beispiel 1: Ein Gericht "Kalbsschnitzel mit Kartoffeln und Champignonrahmsauce" besteht aus den drei Komponenten "Kalbschnitzel", "Kartoffeln" und "Champignonrahmsauce". Eure Klassifikation sollte entsprechend diesem Gericht die Klassen "Rotes Fleisch", "Knollen / stärkehaltige Gemüse" und "Gemüse" (für die Pilze) sowie "Milchprodukte" (für den Rahm) zuordnen.
 
-  Beispiel 2: Ein Gericht "Flammkuchen Griechischer Art" könnte den Lebensmittelklassen "Weizen" (für den Teig), "Milchprodukte" (für den Käse) und "Gemüse" (für die Tomaten) zugeordnet werden.
+    Beispiel 2: Ein Gericht "Flammkuchen Griechischer Art" könnte den Lebensmittelklassen "Weizen" (für den Teig), "Milchprodukte" (für den Käse) und "Gemüse" (für die Tomaten) zugeordnet werden.
 
 2. Entscheidet für jede enthaltene Lebensmittelklasse, wie groß der Anteil an der gesamten Speise ist. Verwendet dafür eine einfache qualitative Skala mit den Werten "hoch", "mitttel" und "gering".
 
