@@ -87,17 +87,19 @@ Ein mögliches Ergebnis für den ersten Teil der Fallstudie findet ihr in der Da
 
 Im zweiten Teil klassifiziert ihr die Speisen inhaltlich nach einem Klassifikationsschema, das das Projekt Linse entwickelt hat. Dabei sollt ihr für eine Speise wie folgt vorgehen:
 
-1. Prüft, ob eine Speise aus einer oder mehreren Komponenten besteht und teilt sie gegebenenfalls in mehrer Zeilen, eine pro Komponente, auf. Zum Beispiel könnte ein Gericht "Kalbsschnitzel mit Kartoffeln und Champignonrahmsauce" in drei Zeilen aufgeteilt werden, eine für "Kalbschnitzel", eine für "Kartoffeln" und eine für "Champignonrahmsauce".
+1. Prüft, ob einer Speise eine oder mehrerer Lebensmittelklassen aus dem Klassifikationsschema zugeordnet werden können. Die Zuordnung geschieht dabei auf Basis der ersichtlichen Komponenten im Speisentext als auch auf den angenommen Zutaten in einer Komponente. 
 
-2. Entscheidet für jede Komponente, wie groß der Anteil an der gesamten Speise ist. Verwendet dafür eine einfache qualitative Skala mit den Werten "hoch" (Hauptkomponente), "mitttel" (z.B. Beilage) und "gering" (etwa im Falle einer Sauce). In dem obigen Beispiel könnte das "Kalbschnitzel" als "hoch", die "Kartoffeln" als "mittel" und die "Champignonrahmsauce" als "gering" eingestuft werden.
+  Beispiel 1: Ein Gericht "Kalbsschnitzel mit Kartoffeln und Champignonrahmsauce" besteht aus den drei Komponenten "Kalbschnitzel", "Kartoffeln" und "Champignonrahmsauce". Eure Klassifikation sollte entsprechend diesem Gericht die Klassen "Rotes Fleisch", "Knollen / stärkehaltige Gemüse" und "Gemüse" (für die Pilze) sowie "Milchprodukte" (für den Rahm) zuordnen.
 
-3. Ordnet im dritten Schritt jeder Komponente eine Klasse aus dem Klassifikationsschema zu. Das Schema ist hierarchisch aufgebaut und besteht aus drei Ebenen, die von der Ernährungsform über die Lebensmittelkategorie bis zur zur konkreten Lebensmittelgruppe reichen. Zum Beispiel könnte die Komponente "Kalbschnitzel" der Ernährungsform "omnivor", der Kategorie "Rotes Fleisch" und der Lebensmittelgruppe "Kalb" zugeordnet werden.
+  Beispiel 2: Ein Gericht "Flammkuchen Griechischer Art" könnte den Lebensmittelklassen "Weizen" (für den Teig), "Milchprodukte" (für den Käse) und "Gemüse" (für die Tomaten) zugeordnet werden.
 
-Mit der Zuordnung zu einer Lebensmittlgruppe ist auch die Zuordnung zu einer Hauptproteinquelle verbunden, die über ein Codesystem definiert ist. Auf der Grundlage der in Schritt 2ermittelten ungefähren Anteile jeder Komponente könnt ihr in der Analyse die Proteinzusammensetzung der Speisepläne analysieren und die Entwicklung über die Zeit verfolgen.
+2. Entscheidet für jede enthaltene Lebensmittelklasse, wie groß der Anteil an der gesamten Speise ist. Verwendet dafür eine einfache qualitative Skala mit den Werten "hoch", "mitttel" und "gering".
 
-Überlegt euch ein effizientes und reproduzierbares Vorgehen, um die Speisen in Komponenten zu trennen und diese den Kategorien des Klassifikationsschemas zuzuordnen. Nutzt dabei sowohl die Techniken der regelbasierten Arbeit mit Texten als auch die KI-gestützte Vorgehensweise mit Sprachmodellen. Auch manuelle Schritte können hilfreich oder notwendig sein.
+Mit der Zuordnung zu einer Lebensmittlklasse ist auch die Zuordnung zu einer Hauptproteinquelle verbunden, die über ein Codesystem definiert ist. Auf der Grundlage der in Schritt 2 ermittelten ungefähren Anteile jeder Klasse könnt ihr später die Proteinzusammensetzung der Speisepläne analysieren und die Entwicklung über die Zeit verfolgen.
 
-Es ist wichtig, dass ihr die Genauigkeit euer Komponententrennung und Klassifikation anschließend bewerten und einordnen könnt. Denkt bei der Entwicklung eures Vorgehens also auch daran, wie er das Ergebnis evaluieren könnt.
+Überlegt euch ein effizientes und reproduzierbares Vorgehen, um die Speisen zu Lebensmittelklassen aus dem Klassifikationsschemas zuzuordnen. Nutzt dabei sowohl die Techniken der regelbasierten Arbeit mit Texten, speziell für die Vorverarbeitung, als auch die KI-gestützte Vorgehensweise mit Sprachmodellen. Auch manuelle Schritte können hilfreich oder notwendig sein.
+
+Es ist wichtig, dass ihr die Genauigkeit eurer Klassifikation bewerten und einordnen könnt. Denkt bei der Entwicklung eures Vorgehens also auch daran, wie er das Ergebnis evaluieren könnt und entscheidet auf dieser Basis, ob eine Veränderung eures Vorgehens das Ergebnis verbessert oder verschlechtert hat.
 
 Eure Verarbeitungsschritte müssen gut dokumentiert, reproduzierbar und nachvollziehbar sein. Erstellt deshalb ein zentrales R-Skript `scripts/classify.R`, von dem aus alle relevanten Schritte ausgeführt werden. Wenn ihr auf Sprachmodelle zurückgreift, ruft die Python-Funktionen über das `reticulate`-Paket und die Funktion `source_python()` auf, damit die gesamte Verarbeitung von einem Skript gesteuert wird. Bei komplexen Schritten mit R könnt ihr den Code in Sub-Skripte auslagern, die aus dem zentralen Skript mittels `source()` aufgerufen werden. Stellt sicher, dass die Skripte fehlerfrei von oben nach unten ausführbar sind und alle Dateiverweise relativ angegeben werden.
 
@@ -106,8 +108,7 @@ Erweitert die Zieltabelle aus Teil 1 um die folgenden Spalten, die die Klassifik
 | Neue Variable | Datentyp | Beschreibung |
 |-----------------|-----------------|---------------------------------------|
 | `group_level_1` | `fct` | Die Zuordnung zur Ernährungsform "omnivor", "vegetarisch" oder "vegan" |
-| `group_level_2` | `fct` | Die Zuordnung zur Kategorie auf erster Ebene, etwa "Rotes Fleisch", "Geflügel" oder "Milchprodukte" |
-| `group_level_3` | `fct` | Die Zuordnung zur Kategorie auf zweiter Ebene, etwa "Rind", "Schwein", "Käse" oder "Joghurt" |
+| `group_level_2` | `fct` | Die Zuordnung zur Lebensmittelklasse, etwa "Rotes Fleisch", "Geflügel" oder "Milchprodukte" |
 | `code_main_protein` | `fct` | Die Zuordnung zur Hauptproteinquelle über ein Codesystem |
 
 Speichert die erweiterte Zieltabelle mit den obigen Klassifikationsspalten als `menus_classified.csv` im Ordner `data/` ab.
@@ -115,9 +116,15 @@ Speichert die erweiterte Zieltabelle mit den obigen Klassifikationsspalten als `
 Das Klassifikationsschema für die Lebensmittelgruppen inklusive der Codierung für die Proteinquelle aus dem Projekt Linse findet ihr in der Datei `classification_schema.xlsx` im Ordner `data/projekt-linse`.
 
 ::: callout-tip
-## Hinweis
+## Hinweis: Entwickelt mit einer Stichprobe
 
 Zieht eine reproduzierbare, zufällige Stichprobe für die Entwicklung eures Vorgehens für die Klassifikation. Für die Evaluation bietet es sich an, die Stichprobe einmal manuell zu klassifizieren und etwa in einer Excel-Datei zu speichern. Damit hättet ihr eine Grundlage für die Evaluation, die dann natürlich automatisch durchgeführt werden sollte.
+:::
+
+::: callout-tip
+## Hinweis: Gute Vorverarbeitung reduziert den Aufwand
+
+Bei der Enteilung eines Gerichts in Lebensmittelklassen werden euch Sprachmodelle helfen können. Dabei ist es nicht notwendig, alle 1,1 Mio. Einträge durch ein LLM klassifizieren zu lassen. Über eine gute, regelbasierte Vorverarbeitung könnt ihr die Anzahl der Einträge, die ihr an ein LLM übergeben müsst, erheblich reduzieren.
 :::
 
 ### Teil 3: Explorative Analysen

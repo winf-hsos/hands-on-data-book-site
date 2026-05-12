@@ -539,13 +539,16 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="teil-2-einheitliche-klassifikation-der-speisen">Teil 2: Einheitliche Klassifikation der Speisen</h3>
 <p>Im zweiten Teil klassifiziert ihr die Speisen inhaltlich nach einem Klassifikationsschema, das das Projekt Linse entwickelt hat. Dabei sollt ihr für eine Speise wie folgt vorgehen:</p>
 <ol type="1">
-<li><p>Prüft, ob eine Speise aus einer oder mehreren Komponenten besteht und teilt sie gegebenenfalls in mehrer Zeilen, eine pro Komponente, auf. Zum Beispiel könnte ein Gericht “Kalbsschnitzel mit Kartoffeln und Champignonrahmsauce” in drei Zeilen aufgeteilt werden, eine für “Kalbschnitzel”, eine für “Kartoffeln” und eine für “Champignonrahmsauce”.</p></li>
-<li><p>Entscheidet für jede Komponente, wie groß der Anteil an der gesamten Speise ist. Verwendet dafür eine einfache qualitative Skala mit den Werten “hoch” (Hauptkomponente), “mitttel” (z.B. Beilage) und “gering” (etwa im Falle einer Sauce). In dem obigen Beispiel könnte das “Kalbschnitzel” als “hoch”, die “Kartoffeln” als “mittel” und die “Champignonrahmsauce” als “gering” eingestuft werden.</p></li>
-<li><p>Ordnet im dritten Schritt jeder Komponente eine Klasse aus dem Klassifikationsschema zu. Das Schema ist hierarchisch aufgebaut und besteht aus drei Ebenen, die von der Ernährungsform über die Lebensmittelkategorie bis zur zur konkreten Lebensmittelgruppe reichen. Zum Beispiel könnte die Komponente “Kalbschnitzel” der Ernährungsform “omnivor”, der Kategorie “Rotes Fleisch” und der Lebensmittelgruppe “Kalb” zugeordnet werden.</p></li>
+<li>Prüft, ob einer Speise eine oder mehrerer Lebensmittelklassen aus dem Klassifikationsschema zugeordnet werden können. Die Zuordnung geschieht dabei auf Basis der ersichtlichen Komponenten im Speisentext als auch auf den angenommen Zutaten in einer Komponente.</li>
 </ol>
-<p>Mit der Zuordnung zu einer Lebensmittlgruppe ist auch die Zuordnung zu einer Hauptproteinquelle verbunden, die über ein Codesystem definiert ist. Auf der Grundlage der in Schritt 2ermittelten ungefähren Anteile jeder Komponente könnt ihr in der Analyse die Proteinzusammensetzung der Speisepläne analysieren und die Entwicklung über die Zeit verfolgen.</p>
-<p>Überlegt euch ein effizientes und reproduzierbares Vorgehen, um die Speisen in Komponenten zu trennen und diese den Kategorien des Klassifikationsschemas zuzuordnen. Nutzt dabei sowohl die Techniken der regelbasierten Arbeit mit Texten als auch die KI-gestützte Vorgehensweise mit Sprachmodellen. Auch manuelle Schritte können hilfreich oder notwendig sein.</p>
-<p>Es ist wichtig, dass ihr die Genauigkeit euer Komponententrennung und Klassifikation anschließend bewerten und einordnen könnt. Denkt bei der Entwicklung eures Vorgehens also auch daran, wie er das Ergebnis evaluieren könnt.</p>
+<p>Beispiel 1: Ein Gericht “Kalbsschnitzel mit Kartoffeln und Champignonrahmsauce” besteht aus den drei Komponenten “Kalbschnitzel”, “Kartoffeln” und “Champignonrahmsauce”. Eure Klassifikation sollte entsprechend diesem Gericht die Klassen “Rotes Fleisch”, “Knollen / stärkehaltige Gemüse” und “Gemüse” (für die Pilze) sowie “Milchprodukte” (für den Rahm) zuordnen.</p>
+<p>Beispiel 2: Ein Gericht “Flammkuchen Griechischer Art” könnte den Lebensmittelklassen “Weizen” (für den Teig), “Milchprodukte” (für den Käse) und “Gemüse” (für die Tomaten) zugeordnet werden.</p>
+<ol start="2" type="1">
+<li>Entscheidet für jede enthaltene Lebensmittelklasse, wie groß der Anteil an der gesamten Speise ist. Verwendet dafür eine einfache qualitative Skala mit den Werten “hoch”, “mitttel” und “gering”.</li>
+</ol>
+<p>Mit der Zuordnung zu einer Lebensmittlklasse ist auch die Zuordnung zu einer Hauptproteinquelle verbunden, die über ein Codesystem definiert ist. Auf der Grundlage der in Schritt 2 ermittelten ungefähren Anteile jeder Klasse könnt ihr später die Proteinzusammensetzung der Speisepläne analysieren und die Entwicklung über die Zeit verfolgen.</p>
+<p>Überlegt euch ein effizientes und reproduzierbares Vorgehen, um die Speisen zu Lebensmittelklassen aus dem Klassifikationsschemas zuzuordnen. Nutzt dabei sowohl die Techniken der regelbasierten Arbeit mit Texten, speziell für die Vorverarbeitung, als auch die KI-gestützte Vorgehensweise mit Sprachmodellen. Auch manuelle Schritte können hilfreich oder notwendig sein.</p>
+<p>Es ist wichtig, dass ihr die Genauigkeit eurer Klassifikation bewerten und einordnen könnt. Denkt bei der Entwicklung eures Vorgehens also auch daran, wie er das Ergebnis evaluieren könnt und entscheidet auf dieser Basis, ob eine Veränderung eures Vorgehens das Ergebnis verbessert oder verschlechtert hat.</p>
 <p>Eure Verarbeitungsschritte müssen gut dokumentiert, reproduzierbar und nachvollziehbar sein. Erstellt deshalb ein zentrales R-Skript <code>scripts/classify.R</code>, von dem aus alle relevanten Schritte ausgeführt werden. Wenn ihr auf Sprachmodelle zurückgreift, ruft die Python-Funktionen über das <code>reticulate</code>-Paket und die Funktion <code>source_python()</code> auf, damit die gesamte Verarbeitung von einem Skript gesteuert wird. Bei komplexen Schritten mit R könnt ihr den Code in Sub-Skripte auslagern, die aus dem zentralen Skript mittels <code>source()</code> aufgerufen werden. Stellt sicher, dass die Skripte fehlerfrei von oben nach unten ausführbar sind und alle Dateiverweise relativ angegeben werden.</p>
 <p>Erweitert die Zieltabelle aus Teil 1 um die folgenden Spalten, die die Klassifikation der Speisen enthalten:</p>
 <table class="caption-top table">
@@ -570,14 +573,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <tr class="even">
 <td><code>group_level_2</code></td>
 <td><code>fct</code></td>
-<td>Die Zuordnung zur Kategorie auf erster Ebene, etwa “Rotes Fleisch”, “Geflügel” oder “Milchprodukte”</td>
+<td>Die Zuordnung zur Lebensmittelklasse, etwa “Rotes Fleisch”, “Geflügel” oder “Milchprodukte”</td>
 </tr>
 <tr class="odd">
-<td><code>group_level_3</code></td>
-<td><code>fct</code></td>
-<td>Die Zuordnung zur Kategorie auf zweiter Ebene, etwa “Rind”, “Schwein”, “Käse” oder “Joghurt”</td>
-</tr>
-<tr class="even">
 <td><code>code_main_protein</code></td>
 <td><code>fct</code></td>
 <td>Die Zuordnung zur Hauptproteinquelle über ein Codesystem</td>
@@ -592,11 +590,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tipp</span>Hinweis
+<span class="screen-reader-only">Tipp</span>Hinweis: Entwickelt mit einer Stichprobe
 </div>
 </div>
 <div class="callout-body-container callout-body">
 <p>Zieht eine reproduzierbare, zufällige Stichprobe für die Entwicklung eures Vorgehens für die Klassifikation. Für die Evaluation bietet es sich an, die Stichprobe einmal manuell zu klassifizieren und etwa in einer Excel-Datei zu speichern. Damit hättet ihr eine Grundlage für die Evaluation, die dann natürlich automatisch durchgeführt werden sollte.</p>
+</div>
+</div>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+<span class="screen-reader-only">Tipp</span>Hinweis: Gute Vorverarbeitung reduziert den Aufwand
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>Bei der Enteilung eines Gerichts in Lebensmittelklassen werden euch Sprachmodelle helfen können. Dabei ist es nicht notwendig, alle 1,1 Mio. Einträge durch ein LLM klassifizieren zu lassen. Über eine gute, regelbasierte Vorverarbeitung könnt ihr die Anzahl der Einträge, die ihr an ein LLM übergeben müsst, erheblich reduzieren.</p>
 </div>
 </div>
 </section>
