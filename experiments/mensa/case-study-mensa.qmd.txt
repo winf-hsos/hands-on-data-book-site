@@ -80,7 +80,7 @@ Erstellt für die Überführung der Daten ein R-Skript `scripts/consolidate.R`, 
 ::: callout-tip
 ## Hinweis
 
-Ein mögliches Ergebnis für den ersten Teil der Fallstudie findet ihr in der Datei `menus_consolidated_example.csv` im Ordner `data/`. Ihr könnt euch an diesem Ergebnis orientieren und bei Bedarf auch damit in Teil 2 und 3 arbeiten. Um die Punkte für den ersten Teil der Fallstudie zu bekommen, müsst ihr die Daten selbst überführen und bereinigen.
+Ein mögliches Ergebnis für den ersten Teil der Fallstudie findet ihr in der Datei `menus_consolidated.csv` im Ordner `data/`. Ihr könnt euch an diesem Ergebnis orientieren und damit in den folgenden Aufgaben arbeiten.
 :::
 
 ### Teil 2: Einheitliche Klassifikation der Speisen
@@ -151,8 +151,8 @@ Die Fallstudie wird mit insgesamt 100 Punkten bewertet, die sich wie folgt auf d
 
 | Teil | Gewichtung | Schwerpunkt der Bewertung |
 |-----------------------------|-----------|-------------------------------|
-| Teil 1: Datenzusammenführung | 10 % | Vollständigkeit und Korrektheit der Zieltabelle, Codequalität |
-| Teil 2: Klassifikation | 40 % | Tiefe und Kreativität der Lösung, Nachvollziehbarkeit des Vorgehens, Reproduzierbarkeit, Abdeckung |
+| Teil 1: Datenzusammenführung | 0 % | Vollständigkeit und Korrektheit der Zieltabelle, Codequalität |
+| Teil 2: Klassifikation | 50 % | Tiefe und Kreativität der Lösung, Nachvollziehbarkeit des Vorgehens, Reproduzierbarkeit, Abdeckung |
 | Teil 3: Explorative Analysen | 30 % | Relevanz der Analysen, Qualität der Visualisierungen |
 | Teil 4: Poster und Präsentation | 20 % | Gestaltung, Verständlichkeit, Präsentation und Diskussionsfähigkeit |
 
