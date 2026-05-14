@@ -335,7 +335,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="informationen-zum-datensatz" class="level2">
 <h2 class="anchored" data-anchor-id="informationen-zum-datensatz">Informationen zum Datensatz</h2>
-<p>Der Datensatz besteht aus einer Vielzahl von Excel- und CSV-Dateien, die die Speisepläne von insgesamt 27 Mensen von 11 verschiedenen Studierendenwerken in Deutschland über einen Zeitraum von mehreren Jahren enthalten. Insgesamt sind mehr als 1,1 Mio. Einträge enthalten.</p>
+<p>Der Datensatz besteht aus einer Vielzahl von Excel- und CSV-Dateien, die die Speisepläne von insgesamt 31 Mensen von 13 verschiedenen Studierendenwerken in Deutschland über einen Zeitraum von mehreren Jahren enthalten. Insgesamt sind mehr als 1,3 Mio. Einträge enthalten.</p>
 <p>Folgende Studierendenwerke sind im Datensatz enthalten:</p>
 <table class="caption-top table">
 <colgroup>
@@ -372,14 +372,24 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <td><code>data/projekt-linse/freiburg</code></td>
 </tr>
 <tr class="odd">
+<td>Kassel</td>
+<td>1</td>
+<td><code>data/projekt-linse/kassel</code></td>
+</tr>
+<tr class="even">
 <td>Mainz</td>
 <td>1</td>
 <td><code>data/projekt-linse/mainz</code></td>
 </tr>
-<tr class="even">
+<tr class="odd">
 <td>Oldenburg</td>
 <td>6</td>
 <td><code>data/projekt-linse/oldenburg</code></td>
+</tr>
+<tr class="even">
+<td>Osnabrück</td>
+<td>3</td>
+<td><code>data/projekt-linse/osnabrueck</code></td>
 </tr>
 <tr class="odd">
 <td>Paderborn</td>
@@ -531,7 +541,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </div>
 <div class="callout-body-container callout-body">
-<p>Ein mögliches Ergebnis für den ersten Teil der Fallstudie findet ihr in der Datei <code>menus_consolidated.csv</code> im Ordner <code>data/</code>. Ihr könnt euch an diesem Ergebnis orientieren und damit in den folgenden Aufgaben arbeiten.</p>
+<p>Ein mögliches Ergebnis für den ersten Teil der Fallstudie findet ihr in der Datei <code>menus_consolidated.csv</code> im Ordner <code>data/</code>. Ihr könnt euch an diesem Ergebnis orientieren und damit in den folgenden Aufgaben arbeiten. Diesen Teil der Fallstudie müsst ihr somit nicht bearbeiten.</p>
 </div>
 </div>
 </section>
@@ -539,10 +549,10 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h3 class="anchored" data-anchor-id="teil-2-einheitliche-klassifikation-der-speisen">Teil 2: Einheitliche Klassifikation der Speisen</h3>
 <p>Im zweiten Teil klassifiziert ihr die Speisen inhaltlich nach einem Klassifikationsschema, das das Projekt Linse entwickelt hat. Dabei sollt ihr für eine Speise wie folgt vorgehen:</p>
 <ol type="1">
-<li><p>Prüft, ob einer Speise eine oder mehrerer Lebensmittelklassen aus dem Klassifikationsschema zugeordnet werden können. Die Zuordnung geschieht dabei auf Basis der ersichtlichen Komponenten im Speisentext als auch auf den angenommen Zutaten in einer Komponente.</p>
+<li><p>Prüft, ob einer Speise eine oder mehrerer Lebensmittelklassen aus dem Klassifikationsschema zugeordnet werden können. Die Zuordnung geschieht auf Basis der (angenommenen) Hauptzutaten einer Speise. Diese können aus dem Speisentext explizit ersichtlich sein, es kann aber auch notwendig sein, sie durch Wissen über die typischen Rezepte eines Gerichts abzuleiten.</p>
 <p>Beispiel 1: Ein Gericht “Kalbsschnitzel mit Kartoffeln und Champignonrahmsauce” besteht aus den drei Komponenten “Kalbschnitzel”, “Kartoffeln” und “Champignonrahmsauce”. Eure Klassifikation sollte entsprechend diesem Gericht die Klassen “Rotes Fleisch”, “Knollen / stärkehaltige Gemüse” und “Gemüse” (für die Pilze) sowie “Milchprodukte” (für den Rahm) zuordnen.</p>
-<p>Beispiel 2: Ein Gericht “Flammkuchen Griechischer Art” könnte den Lebensmittelklassen “Weizen” (für den Teig), “Milchprodukte” (für den Käse) und “Gemüse” (für die Tomaten) zugeordnet werden.</p></li>
-<li><p>Entscheidet für jede enthaltene Lebensmittelklasse, wie groß der Anteil an der gesamten Speise ist. Verwendet dafür eine einfache qualitative Skala mit den Werten “hoch”, “mitttel” und “gering”.</p></li>
+<p>Beispiel 2: Ein Gericht “Flammkuchen Griechischer Art” könnte den Lebensmittelklassen “Weizen” (für den Teig), “Milchprodukte” (für den Käse) und “Gemüse” (für die Tomaten) zugeordnet werden. Keine der Komponenten steht explizit im Speisentext.</p></li>
+<li><p>Entscheidet für jede enthaltene Lebensmittelklasse, wie groß der Anteil an der gesamten Speise ist. Verwendet dafür eine einfache qualitative Skala.</p></li>
 </ol>
 <p>Mit der Zuordnung zu einer Lebensmittlklasse ist auch die Zuordnung zu einer Hauptproteinquelle verbunden, die über ein Codesystem definiert ist. Auf der Grundlage der in Schritt 2 ermittelten ungefähren Anteile jeder Klasse könnt ihr später die Proteinzusammensetzung der Speisepläne analysieren und die Entwicklung über die Zeit verfolgen.</p>
 <p>Überlegt euch ein effizientes und reproduzierbares Vorgehen, um die Speisen zu Lebensmittelklassen aus dem Klassifikationsschemas zuzuordnen. Nutzt dabei sowohl die Techniken der regelbasierten Arbeit mit Texten, speziell für die Vorverarbeitung, als auch die KI-gestützte Vorgehensweise mit Sprachmodellen. Auch manuelle Schritte können hilfreich oder notwendig sein.</p>
@@ -588,7 +598,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <i class="callout-icon"></i>
 </div>
 <div class="callout-title-container flex-fill">
-<span class="screen-reader-only">Tipp</span>Hinweis: Entwickelt mit einer Stichprobe
+<span class="screen-reader-only">Tipp</span>Hinweis: Entwickelt zunächst mit einer Stichprobe
 </div>
 </div>
 <div class="callout-body-container callout-body">
@@ -615,8 +625,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li><p>Wie hat sich die Zusammensetzung der Speisepläne in den Mensen über die Zeit entwickelt? Gibt es erkennbare Trends, etwa in Bezug auf die Anzahl der vegetarischen oder veganen Gerichte oder den Anteil von Gerichten mit Hülsenfrüchten? Gibt es Unterschiede zwischen den Mensen und Studierendenwerken?</p></li>
 <li><p>Was sind die wichtigsten Proteinquellen und deren Anteile in den angebotenen Gerichten? Wie ist die Entwicklung über die Zeit? Gibt es hier Unterschiede zwischen den Mensen und Studierendenwerken?</p></li>
+<li><p>Welche Schlüsse lassen sich zu der Beliebtheit der Speisen mit unterschiedlichen Proteinquellen ziehen? Gibt es hier Unterschiede zwischen den Mensen und Studierendenwerken?</p></li>
 </ul>
-<p>Erstellt ein R-Skript <code>scripts/analyze.R</code>, in dem ihr sämtliche Analysen durchführt und die Visualisierungen erstellt, die ihr später auf eurem Poster verwendet. Ihr könnt die Analysen auf mehrere Skripte aufteilen, die im zentralen Skript mithilfe von <code>source()</code> eingebunden werden.</p>
+<p>Erstellt ein oder mehrere R-Skripte <code>scripts/analyze.R</code> bzw. <code>scripts/subscripts_analyze/</code>, in denen ihr sämtliche Analysen durchführt und die Visualisierungen erstellt, die ihr später auf eurem Poster verwendet. Ihr könnt die Analysen auf mehrere Skripte aufteilen, die im zentralen Skript mithilfe von <code>source()</code> eingebunden werden.</p>
 <p>Das Skript sollte alle Visualisierungen beim Ausführen automatisch erstellen und im Ordner <code>communications/visualizations/</code> abspeichern. Verwendet für die Visualisierungen ausschließlich Funktionen aus dem <code>ggplot2</code>-Paket (und entsprechend Erweiterungspakete wie z. B. <code>ggridges</code>) und gestaltet sie so, dass sie auf einem wissenschaftlichen Poster präsentiert werden können. Achtet dabei auf eine einheitliche Auswahl der Farben, die Formatierung der Achsen und die Lesbarkeit der Beschriftungen.</p>
 </section>
 <section id="teil-4-erstellung-eines-wissenschaftlichen-posters" class="level3">
@@ -689,45 +700,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="abgabe" class="level3">
 <h3 class="anchored" data-anchor-id="abgabe">Abgabe</h3>
 <ul>
-<li><p>Die Abgabe erfolgt über ein öffentliches GitHub-Repository, das alle Dateien enthält, die ihr für die Bearbeitung der Fallstudie verwendet und erstellt habt. Das Repository sollte die folgende Struktur haben. Ersetzt das <code>a</code> in <code>big-data-analytics-group-a</code> durch euren Gruppenbuchstaben:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>big-data-analytics-group-a/</span>
+<li><p>Die Abgabe erfolgt über eine ZIP-Datei, die alle Dateien enthält, die ihr für die Bearbeitung der Fallstudie verwendet und erstellt habt. Die ZIP-Datei sollte die gleiche Struktur haben wie das bereitgestellte Repository, nur um eure Arbeiten ergänzt:</p>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode numberSource text number-lines code-with-copy"><code class="sourceCode"><span id="cb1-1"><a href="#cb1-1"></a>case-study-linse/</span>
 <span id="cb1-2"><a href="#cb1-2"></a>├── data/</span>
 <span id="cb1-3"><a href="#cb1-3"></a>│   ├── projekt-linse/</span>
 <span id="cb1-4"><a href="#cb1-4"></a>│   │   ├── brandenburg-ost/</span>
 <span id="cb1-5"><a href="#cb1-5"></a>│   │   ├── chemnitz-zwickau/</span>
 <span id="cb1-6"><a href="#cb1-6"></a>│   │   ├── erlangen-nuernberg/</span>
 <span id="cb1-7"><a href="#cb1-7"></a>│   │   ├── freiburg/</span>
-<span id="cb1-8"><a href="#cb1-8"></a>│   │   ├── mainz/</span>
-<span id="cb1-9"><a href="#cb1-9"></a>│   │   ├── oldenburg/</span>
-<span id="cb1-10"><a href="#cb1-10"></a>│   │   ├── paderborn/</span>
-<span id="cb1-11"><a href="#cb1-11"></a>│   │   ├── saarland/</span>
-<span id="cb1-12"><a href="#cb1-12"></a>│   │   ├── schleswig-holstein/</span>
-<span id="cb1-13"><a href="#cb1-13"></a>│   │   ├── stuttgart/</span>
-<span id="cb1-14"><a href="#cb1-14"></a>│   │   ├── wuppertal/</span>
-<span id="cb1-15"><a href="#cb1-15"></a>│   │   ├── classification_schema.xlsx</span>
-<span id="cb1-16"><a href="#cb1-16"></a>│   │   └── menus_consolidated_example.csv</span>
+<span id="cb1-8"><a href="#cb1-8"></a>│   │   ├── kassel/  </span>
+<span id="cb1-9"><a href="#cb1-9"></a>│   │   ├── mainz/</span>
+<span id="cb1-10"><a href="#cb1-10"></a>│   │   ├── oldenburg/</span>
+<span id="cb1-11"><a href="#cb1-11"></a>│   │   ├── osnabrück/</span>
+<span id="cb1-12"><a href="#cb1-12"></a>│   │   ├── paderborn/</span>
+<span id="cb1-13"><a href="#cb1-13"></a>│   │   ├── saarland/</span>
+<span id="cb1-14"><a href="#cb1-14"></a>│   │   ├── schleswig-holstein/</span>
+<span id="cb1-15"><a href="#cb1-15"></a>│   │   ├── stuttgart/</span>
+<span id="cb1-16"><a href="#cb1-16"></a>│   │   └── wuppertal/</span>
 <span id="cb1-17"><a href="#cb1-17"></a>│   ├── menus_consolidated.csv</span>
-<span id="cb1-18"><a href="#cb1-18"></a>│   └── menus_classified.csv</span>
+<span id="cb1-18"><a href="#cb1-18"></a>│   └── classification_schema.xlsx</span>
 <span id="cb1-19"><a href="#cb1-19"></a>├── communications/</span>
 <span id="cb1-20"><a href="#cb1-20"></a>│   ├── visualizations/</span>
-<span id="cb1-21"><a href="#cb1-21"></a>│   │   ├── ...</span>
+<span id="cb1-21"><a href="#cb1-21"></a>│   │   ├── scatter_plot.svg</span>
 <span id="cb1-22"><a href="#cb1-22"></a>│   │   └── ...</span>
 <span id="cb1-23"><a href="#cb1-23"></a>│   └── poster.pdf</span>
 <span id="cb1-24"><a href="#cb1-24"></a>├── scripts/</span>
-<span id="cb1-25"><a href="#cb1-25"></a>│   ├── subscripts_consolidate/</span>
+<span id="cb1-25"><a href="#cb1-25"></a>│   ├── subscripts_classify/</span>
 <span id="cb1-26"><a href="#cb1-26"></a>│   │   ├── &lt;script_name&gt;.R</span>
-<span id="cb1-27"><a href="#cb1-27"></a>│   │   └── ...</span>
-<span id="cb1-28"><a href="#cb1-28"></a>│   ├── subscripts_classify/</span>
-<span id="cb1-29"><a href="#cb1-29"></a>│   │   ├── &lt;script_name&gt;.R</span>
-<span id="cb1-30"><a href="#cb1-30"></a>│   │   ├── &lt;script_name&gt;.py</span>
+<span id="cb1-27"><a href="#cb1-27"></a>│   │   ├── &lt;script_name&gt;.py</span>
+<span id="cb1-28"><a href="#cb1-28"></a>│   │   └── ...</span>
+<span id="cb1-29"><a href="#cb1-29"></a>│   ├── subscripts_analyze/</span>
+<span id="cb1-30"><a href="#cb1-30"></a>│   │   ├── &lt;script_name&gt;.R</span>
 <span id="cb1-31"><a href="#cb1-31"></a>│   │   └── ...</span>
-<span id="cb1-32"><a href="#cb1-32"></a>│   ├── subscripts_analyze/</span>
-<span id="cb1-33"><a href="#cb1-33"></a>│   │   ├── &lt;script_name&gt;.R</span>
-<span id="cb1-34"><a href="#cb1-34"></a>│   │   └── ...</span>
-<span id="cb1-35"><a href="#cb1-35"></a>│   ├── consolidate.R</span>
-<span id="cb1-36"><a href="#cb1-36"></a>│   ├── classify.R</span>
-<span id="cb1-37"><a href="#cb1-37"></a>│   └── analyze.R</span>
-<span id="cb1-38"><a href="#cb1-38"></a>└── README.md</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div></li>
+<span id="cb1-32"><a href="#cb1-32"></a>│   ├── setup.R</span>
+<span id="cb1-33"><a href="#cb1-33"></a>│   ├── classify.R</span>
+<span id="cb1-34"><a href="#cb1-34"></a>│   └── analyze.R</span>
+<span id="cb1-35"><a href="#cb1-35"></a>└── README.md</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div></li>
 </ul>
 </section>
 <section id="postergalerie-und-präsentation" class="level3">
@@ -735,7 +743,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <ul>
 <li><p>Im Rahmen der Postergalerie präsentiert jede Gruppe ihr Poster in 10 Minuten. Während der Präsentation sollte jedes Gruppenmitglied ungefähr den gleichen Sprechanteil haben.</p></li>
 <li><p>Im Anschluss an die Präsentation findet eine Frage- und Diskussionsrunde statt. Stellt sicher, dass jedes Gruppenmitglied auf mögliche Fragen vorbereitet ist. Das gilt auch für das Erläutern bestimmter Schritte eurer Analyse, die vielleicht nicht auf dem Poster dargestellt sind.</p></li>
-<li><p>Das Poster im PDF-Format müsst ihr nicht zeitgleich mit den anderen Ergebnissen einreichen. Ihr müsst es aber bis spätestens 21 Uhr am Abend vor der Postergalerie in euer GitHub-Repository eingecheckt haben.</p></li>
+<li><p>Das Poster im PDF-Format müsst ihr nicht zeitgleich mit den anderen Ergebnissen einreichen. Ihr müsst es aber bis spätestens 21 Uhr am Abend vor der Postergalerie abgegeben haben.</p></li>
 </ul>
 <p>Viel Spaß und Erfolg bei der Bearbeitung der Fallstudie!</p>
 

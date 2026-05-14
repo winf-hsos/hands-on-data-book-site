@@ -25,7 +25,7 @@ Auf dieser Grundlage sollen Antworten auf die folgenden Forschungsfragen erarbei
 
 ## Informationen zum Datensatz
 
-Der Datensatz besteht aus einer Vielzahl von Excel- und CSV-Dateien, die die Speisepläne von insgesamt 27 Mensen von 11 verschiedenen Studierendenwerken in Deutschland über einen Zeitraum von mehreren Jahren enthalten. Insgesamt sind mehr als 1,1 Mio. Einträge enthalten.
+Der Datensatz besteht aus einer Vielzahl von Excel- und CSV-Dateien, die die Speisepläne von insgesamt 31 Mensen von 13 verschiedenen Studierendenwerken in Deutschland über einen Zeitraum von mehreren Jahren enthalten. Insgesamt sind mehr als 1,3 Mio. Einträge enthalten.
 
 Folgende Studierendenwerke sind im Datensatz enthalten:
 
@@ -35,8 +35,10 @@ Folgende Studierendenwerke sind im Datensatz enthalten:
 | Chemnitz-Zwickau   | 5       | `data/projekt-linse/chemnitz-zwickau`   |
 | Erlangen-Nürnberg  | 1       | `data/projekt-linse/erlangen-nuernberg` |
 | Freiburg           | 1       | `data/projekt-linse/freiburg`           |
+| Kassel             | 1       | `data/projekt-linse/kassel`             |
 | Mainz              | 1       | `data/projekt-linse/mainz`              |
 | Oldenburg          | 6       | `data/projekt-linse/oldenburg`          |
+| Osnabrück          | 3       | `data/projekt-linse/osnabrueck`         |
 | Paderborn          | 3       | `data/projekt-linse/paderborn`          |
 | Saarland           | 1       | `data/projekt-linse/saarland`           |
 | Schleswig-Holstein | 1       | `data/projekt-linse/schleswig-holstein` |
@@ -80,20 +82,20 @@ Erstellt für die Überführung der Daten ein R-Skript `scripts/consolidate.R`, 
 ::: callout-tip
 ## Hinweis
 
-Ein mögliches Ergebnis für den ersten Teil der Fallstudie findet ihr in der Datei `menus_consolidated.csv` im Ordner `data/`. Ihr könnt euch an diesem Ergebnis orientieren und damit in den folgenden Aufgaben arbeiten.
+Ein mögliches Ergebnis für den ersten Teil der Fallstudie findet ihr in der Datei `menus_consolidated.csv` im Ordner `data/`. Ihr könnt euch an diesem Ergebnis orientieren und damit in den folgenden Aufgaben arbeiten. Diesen Teil der Fallstudie müsst ihr somit nicht bearbeiten.
 :::
 
 ### Teil 2: Einheitliche Klassifikation der Speisen
 
 Im zweiten Teil klassifiziert ihr die Speisen inhaltlich nach einem Klassifikationsschema, das das Projekt Linse entwickelt hat. Dabei sollt ihr für eine Speise wie folgt vorgehen:
 
-1. Prüft, ob einer Speise eine oder mehrerer Lebensmittelklassen aus dem Klassifikationsschema zugeordnet werden können. Die Zuordnung geschieht dabei auf Basis der ersichtlichen Komponenten im Speisentext als auch auf den angenommen Zutaten in einer Komponente. 
+1. Prüft, ob einer Speise eine oder mehrerer Lebensmittelklassen aus dem Klassifikationsschema zugeordnet werden können. Die Zuordnung geschieht auf Basis der (angenommenen) Hauptzutaten einer Speise. Diese können aus dem Speisentext explizit ersichtlich sein, es kann aber auch notwendig sein, sie durch Wissen über die typischen Rezepte eines Gerichts abzuleiten. 
 
     Beispiel 1: Ein Gericht "Kalbsschnitzel mit Kartoffeln und Champignonrahmsauce" besteht aus den drei Komponenten "Kalbschnitzel", "Kartoffeln" und "Champignonrahmsauce". Eure Klassifikation sollte entsprechend diesem Gericht die Klassen "Rotes Fleisch", "Knollen / stärkehaltige Gemüse" und "Gemüse" (für die Pilze) sowie "Milchprodukte" (für den Rahm) zuordnen.
 
-    Beispiel 2: Ein Gericht "Flammkuchen Griechischer Art" könnte den Lebensmittelklassen "Weizen" (für den Teig), "Milchprodukte" (für den Käse) und "Gemüse" (für die Tomaten) zugeordnet werden.
+    Beispiel 2: Ein Gericht "Flammkuchen Griechischer Art" könnte den Lebensmittelklassen "Weizen" (für den Teig), "Milchprodukte" (für den Käse) und "Gemüse" (für die Tomaten) zugeordnet werden. Keine der Komponenten steht explizit im Speisentext.
 
-2. Entscheidet für jede enthaltene Lebensmittelklasse, wie groß der Anteil an der gesamten Speise ist. Verwendet dafür eine einfache qualitative Skala mit den Werten "hoch", "mitttel" und "gering".
+2. Entscheidet für jede enthaltene Lebensmittelklasse, wie groß der Anteil an der gesamten Speise ist. Verwendet dafür eine einfache qualitative Skala.
 
 Mit der Zuordnung zu einer Lebensmittlklasse ist auch die Zuordnung zu einer Hauptproteinquelle verbunden, die über ein Codesystem definiert ist. Auf der Grundlage der in Schritt 2 ermittelten ungefähren Anteile jeder Klasse könnt ihr später die Proteinzusammensetzung der Speisepläne analysieren und die Entwicklung über die Zeit verfolgen.
 
@@ -116,7 +118,7 @@ Speichert die erweiterte Zieltabelle mit den obigen Klassifikationsspalten als `
 Das Klassifikationsschema für die Lebensmittelgruppen inklusive der Codierung für die Proteinquelle aus dem Projekt Linse findet ihr in der Datei `classification_schema.xlsx` im Ordner `data/projekt-linse`.
 
 ::: callout-tip
-## Hinweis: Entwickelt mit einer Stichprobe
+## Hinweis: Entwickelt zunächst mit einer Stichprobe
 
 Zieht eine reproduzierbare, zufällige Stichprobe für die Entwicklung eures Vorgehens für die Klassifikation. Für die Evaluation bietet es sich an, die Stichprobe einmal manuell zu klassifizieren und etwa in einer Excel-Datei zu speichern. Damit hättet ihr eine Grundlage für die Evaluation, die dann natürlich automatisch durchgeführt werden sollte.
 :::
@@ -135,7 +137,9 @@ Im dritten Teil der Fallstudie erntet ihr die Früchte der aufwendigen Vorarbeit
 
 - Was sind die wichtigsten Proteinquellen und deren Anteile in den angebotenen Gerichten? Wie ist die Entwicklung über die Zeit? Gibt es hier Unterschiede zwischen den Mensen und Studierendenwerken?
 
-Erstellt ein R-Skript `scripts/analyze.R`, in dem ihr sämtliche Analysen durchführt und die Visualisierungen erstellt, die ihr später auf eurem Poster verwendet. Ihr könnt die Analysen auf mehrere Skripte aufteilen, die im zentralen Skript mithilfe von `source()` eingebunden werden.
+- Welche Schlüsse lassen sich zu der Beliebtheit der Speisen mit unterschiedlichen Proteinquellen ziehen? Gibt es hier Unterschiede zwischen den Mensen und Studierendenwerken?
+
+Erstellt ein oder mehrere R-Skripte `scripts/analyze.R` bzw. `scripts/subscripts_analyze/`, in denen ihr sämtliche Analysen durchführt und die Visualisierungen erstellt, die ihr später auf eurem Poster verwendet. Ihr könnt die Analysen auf mehrere Skripte aufteilen, die im zentralen Skript mithilfe von `source()` eingebunden werden.
 
 Das Skript sollte alle Visualisierungen beim Ausführen automatisch erstellen und im Ordner `communications/visualizations/` abspeichern. Verwendet für die Visualisierungen ausschließlich Funktionen aus dem `ggplot2`-Paket (und entsprechend Erweiterungspakete wie z. B. `ggridges`) und gestaltet sie so, dass sie auf einem wissenschaftlichen Poster präsentiert werden können. Achtet dabei auf eine einheitliche Auswahl der Farben, die Formatierung der Achsen und die Lesbarkeit der Beschriftungen.
 
@@ -184,36 +188,33 @@ Die Fallstudie wird mit insgesamt 100 Punkten bewertet, die sich wie folgt auf d
 
 ### Abgabe
 
-- Die Abgabe erfolgt über ein öffentliches GitHub-Repository, das alle Dateien enthält, die ihr für die Bearbeitung der Fallstudie verwendet und erstellt habt. Das Repository sollte die folgende Struktur haben. Ersetzt das `a` in `big-data-analytics-group-a` durch euren Gruppenbuchstaben:
+- Die Abgabe erfolgt über eine ZIP-Datei, die alle Dateien enthält, die ihr für die Bearbeitung der Fallstudie verwendet und erstellt habt. Die ZIP-Datei sollte die gleiche Struktur haben wie das bereitgestellte Repository, nur um eure Arbeiten ergänzt:
 
   ``` text
-  big-data-analytics-group-a/
+  case-study-linse/
   ├── data/
   │   ├── projekt-linse/
   │   │   ├── brandenburg-ost/
   │   │   ├── chemnitz-zwickau/
   │   │   ├── erlangen-nuernberg/
   │   │   ├── freiburg/
+  │   │   ├── kassel/  
   │   │   ├── mainz/
   │   │   ├── oldenburg/
+  │   │   ├── osnabrück/
   │   │   ├── paderborn/
   │   │   ├── saarland/
   │   │   ├── schleswig-holstein/
   │   │   ├── stuttgart/
-  │   │   ├── wuppertal/
-  │   │   ├── classification_schema.xlsx
-  │   │   └── menus_consolidated_example.csv
+  │   │   └── wuppertal/
   │   ├── menus_consolidated.csv
-  │   └── menus_classified.csv
+  │   └── classification_schema.xlsx
   ├── communications/
   │   ├── visualizations/
-  │   │   ├── ...
+  │   │   ├── scatter_plot.svg
   │   │   └── ...
   │   └── poster.pdf
   ├── scripts/
-  │   ├── subscripts_consolidate/
-  │   │   ├── <script_name>.R
-  │   │   └── ...
   │   ├── subscripts_classify/
   │   │   ├── <script_name>.R
   │   │   ├── <script_name>.py
@@ -221,7 +222,7 @@ Die Fallstudie wird mit insgesamt 100 Punkten bewertet, die sich wie folgt auf d
   │   ├── subscripts_analyze/
   │   │   ├── <script_name>.R
   │   │   └── ...
-  │   ├── consolidate.R
+  │   ├── setup.R
   │   ├── classify.R
   │   └── analyze.R
   └── README.md
@@ -233,6 +234,6 @@ Die Fallstudie wird mit insgesamt 100 Punkten bewertet, die sich wie folgt auf d
 
 - Im Anschluss an die Präsentation findet eine Frage- und Diskussionsrunde statt. Stellt sicher, dass jedes Gruppenmitglied auf mögliche Fragen vorbereitet ist. Das gilt auch für das Erläutern bestimmter Schritte eurer Analyse, die vielleicht nicht auf dem Poster dargestellt sind.
 
-- Das Poster im PDF-Format müsst ihr nicht zeitgleich mit den anderen Ergebnissen einreichen. Ihr müsst es aber bis spätestens 21 Uhr am Abend vor der Postergalerie in euer GitHub-Repository eingecheckt haben.
+- Das Poster im PDF-Format müsst ihr nicht zeitgleich mit den anderen Ergebnissen einreichen. Ihr müsst es aber bis spätestens 21 Uhr am Abend vor der Postergalerie abgegeben haben.
 
 Viel Spaß und Erfolg bei der Bearbeitung der Fallstudie!
