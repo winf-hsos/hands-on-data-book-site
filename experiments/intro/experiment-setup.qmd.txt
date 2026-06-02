@@ -100,14 +100,24 @@ Quarto ist das System, mit dem ihr in diesem Kurs Analysen als reproduzierbare B
 **13.** Rendert das Testdokument ein zweites Mal als PDF: Ändert im YAML-Header `format: html` auf `format: pdf` und rendert erneut. Quarto installiert dabei ggf. automatisch TinyTeX (eine kompakte LaTeX-Distribution). Vergleicht das PDF mit der HTML-Version: Sehen beide inhaltlich identisch aus?
 
 
-## Schritt 6: Kleine Zusatzhelfer
+## Schritt 6: Typst installieren (optional)
+
+::: task
+
+**14.** Ein weiteres spannendes Schreibwerkzeug, das textbasiert arbeitet, ist [Typst](https://typst.app). Es bietet eine moderne, einfach zu erlernende Alternative zu LaTeX mit einer einfacheren Syntax und schnellerem Rendering. In diesem Buch werden wir hauptsächlich mit Quarto arbeiten, weil es wunderbar mit der Arbeit mit Daten harmoniert. Wer aber neugierig ist, kann Typst als Ergänzung installieren und ausprobieren.
+
+Typst ist lediglich ein Komamndozeilentool, das ein in der Sprache Typst geschriebenen Dokument in ein PDF rendern kann. Ihr könnt es auf verschiedene Weise installieren. [Hier geht es zum Download](https://typst.app/open-source/#download).
+
+:::
+
+## Schritt 7: Kleine Zusatzhelfer
 
 Neben den Kernwerkzeugen gibt es einige Ergänzungen, die euch die tägliche Arbeit erheblich erleichtern.
 
-**14.** Installiert Git von `git-scm.com` (Windows) oder über Homebrew (`brew install git`, macOS). Konfiguriert anschließend euren Namen und eure Hochschul-E-Mail und überprüft mit `git --version`, dass Git gefunden wird.
+**15.** Installiert Git von `git-scm.com` (Windows) oder über Homebrew (`brew install git`, macOS). Konfiguriert anschließend euren Namen und eure Hochschul-E-Mail und überprüft mit `git --version`, dass Git gefunden wird.
 
 
-**15.** Aktualisiert den `renv`-Snapshot eures Projekts, um alle neu installierten Pakete in der Lock-Datei zu erfassen.
+**16.** Aktualisiert den `renv`-Snapshot eures Projekts, um alle neu installierten Pakete in der Lock-Datei zu erfassen.
 
 ```{r}
 # Update the project snapshot to record all installed packages
@@ -115,7 +125,7 @@ Neben den Kernwerkzeugen gibt es einige Ergänzungen, die euch die tägliche Arb
 ```
 
 
-**16.** Informiert euch über KI-Assistenten für die Programmierung. Im Kurs werden wir gelegentlich *Claude Code* (Anthropic), *Codex* (OpenAI) oder *GitHub Copilot* (Microsoft) als VS-Code-Erweiterung verwenden. Recherchiert kurz, was die beiden Tools können, und notiert, wie sich KI-Assistenten eurer Meinung nach auf das Erlernen von Programmierung auswirken könnten, sowohl positiv als auch negativ.
+**17.** Informiert euch über KI-Assistenten für die Programmierung. Im Kurs werden wir gelegentlich *Claude Code* (Anthropic), *Codex* (OpenAI) oder *GitHub Copilot* (Microsoft) als VS-Code-Erweiterung verwenden. Recherchiert kurz, was die beiden Tools können, und notiert, wie sich KI-Assistenten eurer Meinung nach auf das Erlernen von Programmierung auswirken könnten, sowohl positiv als auch negativ.
 
 ```{r}
 # Note your thoughts in comments
@@ -127,9 +137,9 @@ Neben den Kernwerkzeugen gibt es einige Ergänzungen, die euch die tägliche Arb
 ```
 
 
-## Schritt 7: Reflexion
+## Schritt 8: Reflexion
 
-**17.** Vergleicht R mit Tabellenkalkulationsprogrammen wie Microsoft Excel. Welche Aufgaben lassen sich in Excel gut erledigen? Für welche Aufgaben ist R klar im Vorteil? Nennt mindestens zwei Stärken von R gegenüber Excel und überlegt, ob es auch Szenarien gibt, in denen Excel die bessere Wahl ist.
+**18.** Vergleicht R mit Tabellenkalkulationsprogrammen wie Microsoft Excel. Welche Aufgaben lassen sich in Excel gut erledigen? Für welche Aufgaben ist R klar im Vorteil? Nennt mindestens zwei Stärken von R gegenüber Excel und überlegt, ob es auch Szenarien gibt, in denen Excel die bessere Wahl ist.
 
 ```{r}
 # Note your thoughts in comments
@@ -141,7 +151,7 @@ Neben den Kernwerkzeugen gibt es einige Ergänzungen, die euch die tägliche Arb
 ```
 
 
-**18.** Vergleicht R (mit `ggplot2`) mit Visualisierungstools wie Tableau oder Power BI. Was können diese Tools, was R nur schwer kann? Und umgekehrt: Was spricht für den Einsatz von `ggplot2`?
+**19.** Vergleicht R (mit `ggplot2`) mit Visualisierungstools wie Tableau oder Power BI. Was können diese Tools, was R nur schwer kann? Und umgekehrt: Was spricht für den Einsatz von `ggplot2`?
 
 ```{r}
 # Note your thoughts in comments
@@ -152,7 +162,7 @@ Neben den Kernwerkzeugen gibt es einige Ergänzungen, die euch die tägliche Arb
 ```
 
 
-**19.** Vergleicht Quarto mit Textverarbeitungsprogrammen wie Microsoft Word. Was sind die zentralen Unterschiede im Arbeitsablauf? Welche Vorteile bietet Quarto bei der Erstellung wissenschaftlicher oder technischer Berichte, welche Nachteile hat es?
+**20.** Vergleicht Quarto mit Textverarbeitungsprogrammen wie Microsoft Word. Was sind die zentralen Unterschiede im Arbeitsablauf? Welche Vorteile bietet Quarto bei der Erstellung wissenschaftlicher oder technischer Berichte, welche Nachteile hat es?
 
 ```{r}
 # Note your thoughts in comments
@@ -163,7 +173,7 @@ Neben den Kernwerkzeugen gibt es einige Ergänzungen, die euch die tägliche Arb
 ```
 
 
-**20.** Welche Bedeutung hat *Reproduzierbarkeit* für wissenschaftliche Analysen? Erläutert, wie die in diesem Experiment eingerichteten Werkzeuge (R, Quarto, renv, Git) gemeinsam dazu beitragen, dass Analysen reproduzierbar sind.
+**21.** Welche Bedeutung hat *Reproduzierbarkeit* für wissenschaftliche Analysen? Erläutert, wie die in diesem Experiment eingerichteten Werkzeuge (R, Quarto, renv, Git) gemeinsam dazu beitragen, dass Analysen reproduzierbar sind.
 
 ```{r}
 # Reflect on reproducibility

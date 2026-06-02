@@ -302,8 +302,9 @@ window.Quarto = {
   <li><a href="#schritt-3-positron-installieren" id="toc-schritt-3-positron-installieren" class="nav-link" data-scroll-target="#schritt-3-positron-installieren">Schritt 3: Positron installieren</a></li>
   <li><a href="#schritt-4-ein-projekt-einrichten" id="toc-schritt-4-ein-projekt-einrichten" class="nav-link" data-scroll-target="#schritt-4-ein-projekt-einrichten">Schritt 4: Ein Projekt einrichten</a></li>
   <li><a href="#schritt-5-quarto-einrichten-und-testen" id="toc-schritt-5-quarto-einrichten-und-testen" class="nav-link" data-scroll-target="#schritt-5-quarto-einrichten-und-testen">Schritt 5: Quarto einrichten und testen</a></li>
-  <li><a href="#schritt-6-kleine-zusatzhelfer" id="toc-schritt-6-kleine-zusatzhelfer" class="nav-link" data-scroll-target="#schritt-6-kleine-zusatzhelfer">Schritt 6: Kleine Zusatzhelfer</a></li>
-  <li><a href="#schritt-7-reflexion" id="toc-schritt-7-reflexion" class="nav-link" data-scroll-target="#schritt-7-reflexion">Schritt 7: Reflexion</a></li>
+  <li><a href="#schritt-6-typst-installieren-optional" id="toc-schritt-6-typst-installieren-optional" class="nav-link" data-scroll-target="#schritt-6-typst-installieren-optional">Schritt 6: Typst installieren (optional)</a></li>
+  <li><a href="#schritt-7-kleine-zusatzhelfer" id="toc-schritt-7-kleine-zusatzhelfer" class="nav-link" data-scroll-target="#schritt-7-kleine-zusatzhelfer">Schritt 7: Kleine Zusatzhelfer</a></li>
+  <li><a href="#schritt-8-reflexion" id="toc-schritt-8-reflexion" class="nav-link" data-scroll-target="#schritt-8-reflexion">Schritt 8: Reflexion</a></li>
   <li><a href="#zusatzmaterial" id="toc-zusatzmaterial" class="nav-link" data-scroll-target="#zusatzmaterial">Zusatzmaterial</a></li>
   </ul>
 </nav>
@@ -446,48 +447,55 @@ window.Quarto = {
 <span id="cb5-2"><a href="#cb5-2"></a>tinytex<span class="sc">::</span><span class="fu">install_tinytex</span>()</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 </section>
-<section id="schritt-6-kleine-zusatzhelfer" class="level2">
-<h2 class="anchored" data-anchor-id="schritt-6-kleine-zusatzhelfer">Schritt 6: Kleine Zusatzhelfer</h2>
+<section id="schritt-6-typst-installieren-optional" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-6-typst-installieren-optional">Schritt 6: Typst installieren (optional)</h2>
+<div class="task">
+<p><strong>14.</strong> Ein weiteres spannendes Schreibwerkzeug, das textbasiert arbeitet, ist <a href="https://typst.app">Typst</a>. Es bietet eine moderne, einfach zu erlernende Alternative zu LaTeX mit einer einfacheren Syntax und schnellerem Rendering. In diesem Buch werden wir hauptsächlich mit Quarto arbeiten, weil es wunderbar mit der Arbeit mit Daten harmoniert. Wer aber neugierig ist, kann Typst als Ergänzung installieren und ausprobieren.</p>
+<p>Typst ist lediglich ein Komamndozeilentool, das ein in der Sprache Typst geschriebenen Dokument in ein PDF rendern kann. Ihr könnt es auf verschiedene Weise installieren. <a href="https://typst.app/open-source/#download">Hier geht es zum Download</a>.</p>
+</div>
+</section>
+<section id="schritt-7-kleine-zusatzhelfer" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-7-kleine-zusatzhelfer">Schritt 7: Kleine Zusatzhelfer</h2>
 <p>Neben den Kernwerkzeugen gibt es einige Ergänzungen, die euch die tägliche Arbeit erheblich erleichtern.</p>
 <div class="task">
-<p><strong>14.</strong> Installiert Git von <code>git-scm.com</code> (Windows) oder über Homebrew (<code>brew install git</code>, macOS). Konfiguriert anschließend euren Namen und eure Hochschul-E-Mail und überprüft mit <code>git --version</code>, dass Git gefunden wird.</p>
+<p><strong>15.</strong> Installiert Git von <code>git-scm.com</code> (Windows) oder über Homebrew (<code>brew install git</code>, macOS). Konfiguriert anschließend euren Namen und eure Hochschul-E-Mail und überprüft mit <code>git --version</code>, dass Git gefunden wird.</p>
 </div>
 <pre><code>git config --global user.name "Euer Vorname Nachname"
 git config --global user.email "euer.name@hs-osnabrueck.de"
 git --version</code></pre>
 <p>Git wird im Kurs für die Versionskontrolle eurer Analyseprojekte verwendet. Damit könnt ihr Änderungen nachverfolgen und ältere Projektzustände wiederherstellen.</p>
 <div class="task">
-<p><strong>15.</strong> Aktualisiert den <code>renv</code>-Snapshot eures Projekts, um alle neu installierten Pakete in der Lock-Datei zu erfassen.</p>
+<p><strong>16.</strong> Aktualisiert den <code>renv</code>-Snapshot eures Projekts, um alle neu installierten Pakete in der Lock-Datei zu erfassen.</p>
 </div>
 <div class="cell">
 <div class="code-copy-outer-scaffold"><div class="sourceCode cell-code" id="cb7"><pre class="sourceCode numberSource r number-lines code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1"></a>renv<span class="sc">::</span><span class="fu">snapshot</span>()</span></code></pre></div><button title="In die Zwischenablage kopieren" class="code-copy-button"><i class="bi"></i></button></div>
 </div>
 <p>Nach dem Snapshot enthält die <code>renv.lock</code>-Datei alle Pakete mit ihren exakten Versionen. Checkt ihr das Projekt in Git ein, können andere die Umgebung mit <code>renv::restore()</code> exakt reproduzieren.</p>
 <div class="task">
-<p><strong>16.</strong> Informiert euch über KI-Assistenten für die Programmierung. Im Kurs werden wir gelegentlich <em>Claude Code</em> (Anthropic), <em>Codex</em> (OpenAI) oder <em>GitHub Copilot</em> (Microsoft) als VS-Code-Erweiterung verwenden. Recherchiert kurz, was die beiden Tools können, und notiert, wie sich KI-Assistenten eurer Meinung nach auf das Erlernen von Programmierung auswirken könnten, sowohl positiv als auch negativ.</p>
+<p><strong>17.</strong> Informiert euch über KI-Assistenten für die Programmierung. Im Kurs werden wir gelegentlich <em>Claude Code</em> (Anthropic), <em>Codex</em> (OpenAI) oder <em>GitHub Copilot</em> (Microsoft) als VS-Code-Erweiterung verwenden. Recherchiert kurz, was die beiden Tools können, und notiert, wie sich KI-Assistenten eurer Meinung nach auf das Erlernen von Programmierung auswirken könnten, sowohl positiv als auch negativ.</p>
 </div>
 <p>Claude Code ermöglicht es, Programmieraufgaben im Dialog mit einem Sprachmodell zu lösen und Fehlermeldungen erklären zu lassen. GitHub Copilot schlägt Code-Ergänzungen direkt im Editor vor.</p>
 <p>KI-Assistenten können beim Einstieg helfen, indem sie Beispiele liefern und Konzepte erklären. Die Gefahr besteht darin, Code zu übernehmen, ohne ihn zu verstehen. Eine gute Faustregel: KI nutzen, um Ideen und Erklärungen zu erhalten, aber generierten Code stets selbst nachvollziehen und anpassen.</p>
 </section>
-<section id="schritt-7-reflexion" class="level2">
-<h2 class="anchored" data-anchor-id="schritt-7-reflexion">Schritt 7: Reflexion</h2>
+<section id="schritt-8-reflexion" class="level2">
+<h2 class="anchored" data-anchor-id="schritt-8-reflexion">Schritt 8: Reflexion</h2>
 <div class="task">
-<p><strong>17.</strong> Vergleicht R mit Tabellenkalkulationsprogrammen wie Microsoft Excel. Welche Aufgaben lassen sich in Excel gut erledigen? Für welche Aufgaben ist R klar im Vorteil? Nennt mindestens zwei Stärken von R gegenüber Excel und überlegt, ob es auch Szenarien gibt, in denen Excel die bessere Wahl ist.</p>
+<p><strong>18.</strong> Vergleicht R mit Tabellenkalkulationsprogrammen wie Microsoft Excel. Welche Aufgaben lassen sich in Excel gut erledigen? Für welche Aufgaben ist R klar im Vorteil? Nennt mindestens zwei Stärken von R gegenüber Excel und überlegt, ob es auch Szenarien gibt, in denen Excel die bessere Wahl ist.</p>
 </div>
 <p>R hat klare Vorteile bei großen Datensätzen (Excel ist auf ca. 1 Mio. Zeilen begrenzt), bei wiederholbaren und automatisierten Analysen und bei der Reproduzierbarkeit. Jeder Analyseschritt ist als Code dokumentiert und kann auf neue Daten angewendet werden, ohne manuell wiederholt zu werden.</p>
 <p>Excel ist hingegen intuitiv für schnelle Summen, einfache Pivot-Tabellen oder das Nachschlagen einzelner Werte und braucht keine Programmierkenntnisse. In vielen Unternehmen ist es zudem das am weitesten verbreitete Werkzeug für einfache Datenhaltung und Reporting.</p>
 <div class="task">
-<p><strong>18.</strong> Vergleicht R (mit <code>ggplot2</code>) mit Visualisierungstools wie Tableau oder Power BI. Was können diese Tools, was R nur schwer kann? Und umgekehrt: Was spricht für den Einsatz von <code>ggplot2</code>?</p>
+<p><strong>19.</strong> Vergleicht R (mit <code>ggplot2</code>) mit Visualisierungstools wie Tableau oder Power BI. Was können diese Tools, was R nur schwer kann? Und umgekehrt: Was spricht für den Einsatz von <code>ggplot2</code>?</p>
 </div>
 <p>Tableau und Power BI bieten interaktive Dashboards per Drag-and-drop, die ohne Programmierkenntnisse erstellt und von Endnutzerinnen und Endnutzern exploriert werden können.</p>
 <p>Mit <code>ggplot2</code> hat man deutlich mehr Kontrolle über Darstellung und statistische Transformation, kann Visualisierungen als Teil eines reproduzierbaren Workflows einbetten und eigene Themen und Stile konsequent durchsetzen. Zudem sind R und <code>ggplot2</code> kostenlos und Open Source, während Tableau und Power BI Lizenzkosten verursachen.</p>
 <div class="task">
-<p><strong>19.</strong> Vergleicht Quarto mit Textverarbeitungsprogrammen wie Microsoft Word. Was sind die zentralen Unterschiede im Arbeitsablauf? Welche Vorteile bietet Quarto bei der Erstellung wissenschaftlicher oder technischer Berichte, welche Nachteile hat es?</p>
+<p><strong>20.</strong> Vergleicht Quarto mit Textverarbeitungsprogrammen wie Microsoft Word. Was sind die zentralen Unterschiede im Arbeitsablauf? Welche Vorteile bietet Quarto bei der Erstellung wissenschaftlicher oder technischer Berichte, welche Nachteile hat es?</p>
 </div>
 <p>In Word schreibt man Text und fügt Ergebnisse wie Tabellen und Grafiken manuell ein. Ändert sich die Datenlage, müssen alle Elemente manuell aktualisiert werden, was fehleranfällig ist. Quarto verbindet Code und Bericht in einer Datei: Beim Rendern werden alle Ergebnisse automatisch neu berechnet.</p>
 <p>Nachteile von Quarto: Die Einstiegshürde ist höher, kollaboratives Bearbeiten mit Kommentarfunktion ist in Word intuitiver, und für rein textliche Dokumente ohne Analyseanteil bleibt Word oft die praktischere Wahl.</p>
 <div class="task">
-<p><strong>20.</strong> Welche Bedeutung hat <em>Reproduzierbarkeit</em> für wissenschaftliche Analysen? Erläutert, wie die in diesem Experiment eingerichteten Werkzeuge (R, Quarto, renv, Git) gemeinsam dazu beitragen, dass Analysen reproduzierbar sind.</p>
+<p><strong>21.</strong> Welche Bedeutung hat <em>Reproduzierbarkeit</em> für wissenschaftliche Analysen? Erläutert, wie die in diesem Experiment eingerichteten Werkzeuge (R, Quarto, renv, Git) gemeinsam dazu beitragen, dass Analysen reproduzierbar sind.</p>
 </div>
 <p>Reproduzierbarkeit bedeutet, dass eine Analyse mit denselben Daten und demselben Code zu denselben Ergebnissen führt, unabhängig davon, wer sie ausführt und wann. Das ist ein Grundprinzip wissenschaftlicher Arbeit.</p>
 <p>Die eingerichteten Werkzeuge unterstützen das auf vier Ebenen:</p>
